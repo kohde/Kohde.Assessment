@@ -36,6 +36,14 @@ namespace Kohde.Assessment.UnitTest
             });
 
             Assert.IsTrue(!string.IsNullOrEmpty(value2));
+
+            /*Also test cases where there are multiple values that satisfy the LINQ condition */
+            var value3 = Program.GetSingleStringValue(new List<string>
+            {
+                "Jhn", "Jan", "Sarah", "Pt"
+            });
+
+            Assert.AreEqual("Jan", value3);
         }
     }
 }
