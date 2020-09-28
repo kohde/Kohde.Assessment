@@ -237,14 +237,14 @@ namespace Kohde.Assessment
         public static int GetFirstEvenValue(List<int> numbers)
         {
             // RETURN THE FIRST EVEN NUMBER IN THE SEQUENCE
-            var first = numbers.Where(x => x % 2 == 0).First();
+            var first = numbers.Where(x => x % 2 == 0).FirstOrDefault(); /* <= FirstOrDefault incase LINQ returns no elements*/
             return first;
         }
 
         public static string GetSingleStringValue(List<string> stringList)
         {
             // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
-            var first = stringList.Where(x => x.IndexOf("a") != -1).Single();
+            var first = stringList.Where(x => x.IndexOf("a") != -1).FirstOrDefault(); /* <= FirstOrDefault incase LINQ returns no elements, or more than one*/
             return first;
         }
 
