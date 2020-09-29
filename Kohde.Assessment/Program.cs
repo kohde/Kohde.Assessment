@@ -375,9 +375,9 @@ namespace Kohde.Assessment
             Ioc.Container = simpleContainer;
 
             // 2. resolve the IDeviceProcessor
-            //var deviceProcessor = ???
-            // call the GetDevicePrice method
-            //Console.WriteLine(deviceProcessor.GetDevicePrice());
+            var samsungDevice = new SamsungDevice();
+            var deviceProcessor = new DeviceProcessor(samsungDevice);
+            Console.WriteLine(deviceProcessor.GetDevicePrice());
         }
 
         #endregion
