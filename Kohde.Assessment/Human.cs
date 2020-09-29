@@ -1,6 +1,6 @@
 ﻿namespace Kohde.Assessment
 {
-    public class Human : NameableAgeable
+    public class Human : Mammal
     {
         public string Gender { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace Kohde.Assessment
 {
-    public interface INameableAgeable
+    public interface IMammal
     {
         int Age { get; set; }
         string Name { get; set; }

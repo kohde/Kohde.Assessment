@@ -1,6 +1,6 @@
 ﻿namespace Kohde.Assessment
 {
-    public class Dog : NameableAgeable, System.IDisposable
+    public class Dog : Mammal, System.IDisposable
     {
         public string Food { get; set; }
 

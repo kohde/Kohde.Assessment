@@ -1,6 +1,6 @@
 ﻿namespace Kohde.Assessment
 {
-    public abstract class NameableAgeable : INameableAgeable
+    public abstract class Mammal : IMammal
     {
         public int Age { get; set; }
         public string Name { get; set; }
