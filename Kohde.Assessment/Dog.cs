@@ -1,8 +1,13 @@
 ﻿namespace Kohde.Assessment
 {
-    public class Dog : NameableAgeable
+    public class Dog : NameableAgeable, System.IDisposable
     {
         public string Food { get; set; }
+
+        public void Dispose()
+        {
+            throw new System.NotImplementedException();
+        }
 
         public override string ToString()
         {

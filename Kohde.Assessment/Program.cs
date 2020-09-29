@@ -78,9 +78,12 @@ namespace Kohde.Assessment
             // correct the following statement(s)
             try
             {
-                Dog bulldog = null;
-                var disposeDog = (IDisposable) bulldog;
-                disposeDog.Dispose();
+                /* Not entirely sure what I'm supposed to be correcting here? Desposing of an null referenced object? */
+                using (Dog bulldog = null)
+                {
+                    var disposeDog = (IDisposable)bulldog;
+                    disposeDog.Dispose();
+                }
             }
             catch (Exception ex)
             {
