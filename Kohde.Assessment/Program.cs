@@ -1,3 +1,4 @@
+using Kohde.Assessment.Container;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -368,7 +369,10 @@ namespace Kohde.Assessment
              */
 
             // 1. register the interfaces and classes
-            // TODO: ???
+            var simpleContainer = new SimpleContainer();
+            simpleContainer.Register<IDevice, SamsungDevice>();
+            simpleContainer.Register<IDeviceProcessor, DeviceProcessor>();
+            Ioc.Container = simpleContainer;
 
             // 2. resolve the IDeviceProcessor
             //var deviceProcessor = ???
