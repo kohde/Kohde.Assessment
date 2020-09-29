@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -118,10 +118,10 @@ namespace Kohde.Assessment
 
             // UNCOMMENT THE FOLLOWING PIECE OF CODE - IT WILL CAUSE A COMPILER ERROR - BECAUSE YOU HAVE TO CREATE THE METHOD
 
-            //string a = Program.GenericTester(walter => walter.GetDetails(), dog);
-            //Console.WriteLine("Result A: {0}", a);
-            //int b = Program.GenericTester(snowball => snowball.Age, cat);
-            //Console.WriteLine("Result B: {0}", b);
+            string a = Program.GenericTester(walter => walter.GetDetails(), dog);
+            Console.WriteLine("Result A: {0}", a);
+            int b = Program.GenericTester(snowball => snowball.Age, cat);
+            Console.WriteLine("Result B: {0}", b);
 
             #endregion
 
@@ -291,6 +291,14 @@ namespace Kohde.Assessment
         public static void ShowSomeMammalInformation<TMammal>(TMammal mammal) where TMammal : Mammal
         {
             Console.WriteLine("Name:" + mammal.Name + " Age: " + mammal.Age);
+        }
+
+        public static TReturn GenericTester<TMammal, TReturn>(Func<TMammal, TReturn> func, TMammal mammal)
+            where TMammal : new()
+        {
+            if (mammal == null)
+                mammal = new TMammal();
+            return func(mammal);
         }
 
         #endregion
