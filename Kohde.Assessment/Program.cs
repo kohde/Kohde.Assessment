@@ -260,14 +260,10 @@ namespace Kohde.Assessment
             // IMPROVE THE FOLLOWING PIECE OF CODE
             // as well as the PerformSomeLongRunningOperation method
             var disposableObject = new DisposableObject();
-            try
+            using(disposableObject)
             {
                 disposableObject.PerformSomeLongRunningOperation();
                 disposableObject.RaiseEvent("raised event");
-            }
-            finally
-            {
-                disposableObject.Dispose();
             }
 
             return disposableObject;
