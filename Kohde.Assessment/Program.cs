@@ -181,7 +181,6 @@ namespace Kohde.Assessment
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*
             List<Dog> dogs = new List<Dog>
             {
                 new Dog {Age = 8, Name = "Max"},
@@ -205,7 +204,6 @@ namespace Kohde.Assessment
             // < CATS REQUIRED OUTPUT =>
             //      Name: Capri Age: 1
             //      Name: Captain Hooks Age: 3
-            */
 
             #endregion
 
@@ -384,6 +382,8 @@ namespace Kohde.Assessment
         #region Bonus XP - Dungeon Methods
 
         public static IEnumerable<char> SelectOnlyVowels(this string str) => str.Where(c => "aeiouAEIOU".IndexOf(c) >= 0);
+
+        public static IEnumerable<TMammal> CustomWhere<TMammal>(this List<TMammal> mammals, Func<TMammal, bool> func) => mammals.Where(func);
 
         #endregion
     }
