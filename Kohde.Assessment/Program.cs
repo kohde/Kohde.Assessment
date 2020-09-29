@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -311,9 +311,9 @@ namespace Kohde.Assessment
             {
                 ThrowException();
             }
-            catch (ArithmeticException e)
+            catch (ArithmeticException)
             {
-                throw e;
+                throw;
             }
         }
 
