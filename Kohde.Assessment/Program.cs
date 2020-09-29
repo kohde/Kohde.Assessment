@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -286,6 +286,11 @@ namespace Kohde.Assessment
         public static void ShowSomeCatInformation(Cat cat)
         {
             Console.WriteLine("Name:" + cat.Name + " Age: " + cat.Age);
+        }
+
+        public static void ShowSomeMammalInformation<TMammal>(TMammal mammal) where TMammal : Mammal
+        {
+            Console.WriteLine("Name:" + mammal.Name + " Age: " + mammal.Age);
         }
 
         #endregion
