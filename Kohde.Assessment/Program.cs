@@ -169,13 +169,12 @@ namespace Kohde.Assessment
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*  
                 const string abc = "asduqwezxc";
                 foreach (var vowel in abc.SelectOnlyVowels())
                 {
                     Console.WriteLine("{0}", vowel);
                 }
-            */
+
             // < REQUIRED OUTPUT => a u e
 
             // > UNCOMMENT THE CODE BELOW AND CREATE A METHOD SO THAT THE FOLLOWING CODE WILL WORK
@@ -379,6 +378,12 @@ namespace Kohde.Assessment
             var deviceProcessor = new DeviceProcessor(samsungDevice);
             Console.WriteLine(deviceProcessor.GetDevicePrice());
         }
+
+        #endregion
+
+        #region Bonus XP - Dungeon Methods
+
+        public static IEnumerable<char> SelectOnlyVowels(this string str) => str.Where(c => "aeiouAEIOU".IndexOf(c) >= 0);
 
         #endregion
     }
