@@ -77,18 +77,20 @@ namespace Kohde.Assessment
 
             // there are multiple corrections required!!
             // correct the following statement(s)
+            
+            /* Not entirely sure what I'm supposed to be correcting here? Desposing of an null referenced object? */
+            Dog bulldog = null;
+            var disposeDog = (IDisposable)bulldog;
             try
-            {
-                /* Not entirely sure what I'm supposed to be correcting here? Desposing of an null referenced object? */
-                using (Dog bulldog = null)
-                {
-                    var disposeDog = (IDisposable)bulldog;
-                    disposeDog.Dispose();
-                }
-            }
+            { }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                if (disposeDog != null)
+                    disposeDog.Dispose();
             }
 
             #endregion
