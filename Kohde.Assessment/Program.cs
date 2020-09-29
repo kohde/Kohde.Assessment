@@ -329,9 +329,10 @@ namespace Kohde.Assessment
             // BY MAKING USE OF ONLY REFLECTION
             // CALL THE FOLLOWING METHOD: DisplaySomeStuff [WHICH IN JUST BELOW THIS ONE]
             // AND RETURN THE STRING CONTENT
-
+            var method = typeof(Program).GetMethod("DisplaySomeStuff");
+            var generic = method.MakeGenericMethod(typeof(string));
+            return generic.Invoke(typeof(Program), new object[] { "Hello World" }).ToString();
             // DO NOT CHANGE THE NAME, RETURN TYPE OR ANY IMPLEMENTATION OF THIS METHOD NOR THE BELOW METHOD
-            throw new NotImplementedException(); // ATT: REMOVE THIS LINE
         }
 
         public static string DisplaySomeStuff<T>(T toDisplay) where T : class
