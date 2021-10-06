@@ -13,8 +13,7 @@ namespace Kohde.Assessment
 
         public void PerformSomeLongRunningOperation()
         {
-            foreach (var i in Enumerable.Range(1, 10))
-            {
+            for (int i = 0; i < 10; i++) {
                 this.SomethingHappened += HandleSomethingHappened;
             }
         }
@@ -38,9 +37,15 @@ namespace Kohde.Assessment
             if (disposing)
             {
                 // Dispose managed resources
+                //
+                for (int i = 0; i < 10; i++)
+                {
+                    this.SomethingHappened -= SomethingHappened;
+                }
             }
-
             // Free native resources
+            Counter = 1;
+            this.SomethingHappened = null;
         }
 
         public void Dispose()

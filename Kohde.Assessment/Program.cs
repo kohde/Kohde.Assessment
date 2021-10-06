@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Text;
+using Kohde.Assessment.Container;
+using IContainer = System.ComponentModel.IContainer;
 
 namespace Kohde.Assessment
 {
@@ -16,22 +20,26 @@ namespace Kohde.Assessment
             // the below class declarations looks like a 1st year student developed it
             // NOTE: this includes the class declarations as well
             // IMPROVE THE ARCHITECTURE 
-            Human human = new Human();
-            human.Name = "John";
-            human.Age = 35;
-            human.Gender = "M";
+            var human = new Human() {
+                Name = "John",
+                Age = 35,
+                Gender = "M"
+            };
+
+            var dog = new Dog() {
+                Name = "Walter",
+                Age = 7,
+                Food = "Epol"
+            };
+
+            var cat = new Cat() {
+                Name = "Snowball",
+                Age = 35,
+                Food = "Whiskers"
+            };
+
             Console.WriteLine(human.GetDetails());
-
-            Dog dog = new Dog();
-            dog.Name = "Walter";
-            dog.Age = 7;
-            dog.Food = "Epol";
             Console.WriteLine(dog.GetDetails());
-
-            Cat cat = new Cat();
-            cat.Name = "Snowball";
-            cat.Age = 35;
-            cat.Food = "Whiskers";
             Console.WriteLine(cat.GetDetails());
 
             #endregion
@@ -85,7 +93,7 @@ namespace Kohde.Assessment
 
             #region Assessment E
 
-            DisposeSomeObject();            
+            DisposeSomeObject();
 
             #endregion
 
@@ -96,9 +104,9 @@ namespace Kohde.Assessment
             // output must still render as: Name: [name] Age: [age]
             // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
-            ShowSomeHumanInformation(human);
-            ShowSomeDogInformation(dog);
-            ShowSomeCatInformation(cat);
+            ShowSomeMammalInformation(human);
+            ShowSomeMammalInformation(dog);
+            ShowSomeMammalInformation(cat);
 
 
             // # SECTION B #
@@ -128,6 +136,10 @@ namespace Kohde.Assessment
             catch (ArithmeticException e)
             {
                 Console.WriteLine("Implicitly specified:{0}{1}", Environment.NewLine, e.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("General Exception:{0}{1}", Environment.NewLine, ex.StackTrace);
             }
 
             #endregion            
@@ -159,13 +171,13 @@ namespace Kohde.Assessment
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*  
+             
                 const string abc = "asduqwezxc";
                 foreach (var vowel in abc.SelectOnlyVowels())
                 {
                     Console.WriteLine("{0}", vowel);
                 }
-            */
+            
             // < REQUIRED OUTPUT => a u e
 
             // > UNCOMMENT THE CODE BELOW AND CREATE A METHOD SO THAT THE FOLLOWING CODE WILL WORK
@@ -198,25 +210,30 @@ namespace Kohde.Assessment
             //      Name: Captain Hooks Age: 3
             */
 
+
+
             #endregion
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadLine();
         }
 
+       
+
         #region Assessment B Method
 
         public static void PerformanceTest()
         {
-            var someLongDataString = "";
+            StringBuilder someLongDataString = new StringBuilder();
             const int sLen = 30, loops = 500000; // YOU MAY NOT CHANGE THE NUMBER OF LOOPS IN ANY WAY !!
             var source = new string('X', sLen);
+             
 
             // DO NOT CHANGE THE ACTUAL FOR LOOP IN ANY WAY !!
             // in other words, you may not change: for (INITIALIZATION; CONDITION; INCREMENT/DECREMENT)
             for (var i = 0; i < loops; i++) 
             {
-                someLongDataString += source;
+                someLongDataString.Append(source);
             }
         }
 
@@ -227,14 +244,14 @@ namespace Kohde.Assessment
         public static int GetFirstEvenValue(List<int> numbers)
         {
             // RETURN THE FIRST EVEN NUMBER IN THE SEQUENCE
-            var first = numbers.Where(x => x % 2 == 0).First();
+            var first = numbers.Where(x => x % 2 == 0).FirstOrDefault();
             return first;
         }
 
         public static string GetSingleStringValue(List<string> stringList)
         {
             // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
-            var first = stringList.Where(x => x.IndexOf("a") != -1).Single();
+            var first = stringList.Where(x => x.IndexOf("a") != -1).SingleOrDefault();
             return first;
         }
 
@@ -250,6 +267,7 @@ namespace Kohde.Assessment
             try
             {
                 disposableObject.PerformSomeLongRunningOperation();
+                disposableObject.Dispose();
                 disposableObject.RaiseEvent("raised event");
             }
             finally
@@ -279,6 +297,17 @@ namespace Kohde.Assessment
             Console.WriteLine("Name:" + cat.Name + " Age: " + cat.Age);
         }
 
+        public static void ShowSomeMammalInformation<T>(T input) {
+            Console.WriteLine(input.ToString());
+        }
+        private static T GenericTester<T>(T prop, IMammal mammal)
+        {
+            if (mammal == null && mammal == typeof(Dog) ) {
+                mammal = new Dog();
+            }
+            return (T)prop;
+        }
+
         #endregion
 
         #region Assessment G Methods
@@ -291,6 +320,7 @@ namespace Kohde.Assessment
             }
             catch (ArithmeticException e)
             {
+
                 throw e;
             }
         }
@@ -311,7 +341,15 @@ namespace Kohde.Assessment
             // AND RETURN THE STRING CONTENT
 
             // DO NOT CHANGE THE NAME, RETURN TYPE OR ANY IMPLEMENTATION OF THIS METHOD NOR THE BELOW METHOD
-            throw new NotImplementedException(); // ATT: REMOVE THIS LINE
+
+            
+            string parameter =  "Joe";
+
+            Type myType = typeof(Program);
+            MethodInfo method = myType.GetMethod(nameof(Program.DisplaySomeStuff));
+            MethodInfo generic = method.MakeGenericMethod(typeof(string));
+            var res = generic.Invoke(null, new[] { parameter }).ToString();
+            return res;
         }
 
         public static string DisplaySomeStuff<T>(T toDisplay) where T : class
@@ -347,14 +385,28 @@ namespace Kohde.Assessment
 
             // 1. register the interfaces and classes
             // TODO: ???
+            Ioc.Container.Register<IDevice,SamsungDevice>();
+            Ioc.Container.Register<IDeviceProcessor, DeviceProcessor>();
 
             // 2. resolve the IDeviceProcessor
-            //var deviceProcessor = ???
+            var deviceProcessor = Ioc.Container.Resolve(typeof(IDeviceProcessor)) as IDeviceProcessor;
             // call the GetDevicePrice method
-            //Console.WriteLine(deviceProcessor.GetDevicePrice());
+            if (deviceProcessor != null) Console.WriteLine(deviceProcessor.GetDevicePrice());
+        }
+        #endregion
+
+        public static string SelectOnlyVowels(this IEnumerable<char> str)
+        {
+            char[] vowels = new char[5] { 'a', 'e', 'i', 'o', 'u' };
+            var result = str.Where(c => vowels.Contains(c));
+            return result.ToString();
         }
 
-        #endregion
+        public static IEnumerable<Mammal> CustomWhere(this IEnumerable<Mammal> list )
+        {
+           
+            return list;
+        }
     }
 
     public interface IDevice
@@ -392,4 +444,5 @@ namespace Kohde.Assessment
             return this.Device.DeviceCode.Equals("Samsung") ? 12.95 : 19.95;
         }
     }
+
 }
