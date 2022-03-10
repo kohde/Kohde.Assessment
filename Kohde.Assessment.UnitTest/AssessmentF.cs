@@ -19,6 +19,7 @@ namespace Kohde.Assessment.UnitTest
                 Name = "John Doe", Age = 34
             };
             var dog = new Dog
+
             {
                 Name = "Russell",
                 Age = 7

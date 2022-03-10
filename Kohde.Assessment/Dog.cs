@@ -1,14 +1,15 @@
-﻿namespace Kohde.Assessment
+﻿using System;
+
+namespace Kohde.Assessment
 {
-    public class Dog
+    //implemented Disposable interface
+    public class Dog : Mammal,IDisposable
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
         public string Food { get; set; }
 
-        public string GetDetails()
+        public void Dispose()
         {
-            return "Name: " + Name + "Age: " + Age;
+            Food = null;
         }
     }
 }

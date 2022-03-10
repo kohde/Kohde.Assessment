@@ -23,13 +23,13 @@ namespace Kohde.Assessment
         {
             if (this.SomethingHappened != null)
             {
-                this.SomethingHappened(data);
+                SomethingHappened(data);
             }
         }
 
         private void HandleSomethingHappened(string foo)
         {
-            this.Counter = this.Counter + 1;
+            this.Counter++;
             Console.WriteLine("HIT {0} => HandleSomethingHappened. Data: {1}", this.Counter, foo);
         }
 
@@ -37,8 +37,13 @@ namespace Kohde.Assessment
         {
             if (disposing)
             {
+                Counter = 1;
+                SomethingHappened = null;
+             
                 // Dispose managed resources
             }
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
 
             // Free native resources
         }
