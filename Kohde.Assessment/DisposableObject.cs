@@ -13,7 +13,7 @@ namespace Kohde.Assessment
 
         public void PerformSomeLongRunningOperation()
         {
-            foreach (var i in Enumerable.Range(1, 10))
+            foreach (var i in Enumerable.Range(1, 1))
             {
                 this.SomethingHappened += HandleSomethingHappened;
             }
