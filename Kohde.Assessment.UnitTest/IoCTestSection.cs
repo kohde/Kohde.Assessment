@@ -1,5 +1,6 @@
 ﻿using System;
 using Kohde.Assessment.Container;
+using Kohde.Assessment.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Kohde.Assessment.UnitTest

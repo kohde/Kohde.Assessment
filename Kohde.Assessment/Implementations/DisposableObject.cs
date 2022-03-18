@@ -1,12 +1,21 @@
-﻿using System;
+﻿using Microsoft.Win32.SafeHandles;
+using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 
-namespace Kohde.Assessment
+namespace Kohde.Assessment.Implementations
 {
     public delegate void MyEventHandler(string foo);
 
     public class DisposableObject : IDisposable
     {
+        #region Private Methods
+
+        private bool _disposed;
+        private SafeHandle _safeHandle = new SafeFileHandle(IntPtr.Zero, true);
+
+        #endregion
+
         public event MyEventHandler SomethingHappened;
 
         public int Counter { get; private set; }
@@ -15,32 +24,37 @@ namespace Kohde.Assessment
         {
             foreach (var i in Enumerable.Range(1, 10))
             {
-                this.SomethingHappened += HandleSomethingHappened;
+                SomethingHappened += HandleSomethingHappened;
             }
         }
 
         public void RaiseEvent(string data)
         {
-            if (this.SomethingHappened != null)
+            if (SomethingHappened != null)
             {
-                this.SomethingHappened(data);
+                SomethingHappened(data);
             }
         }
 
         private void HandleSomethingHappened(string foo)
         {
-            this.Counter = this.Counter + 1;
+            Counter += 1;
             Console.WriteLine("HIT {0} => HandleSomethingHappened. Data: {1}", this.Counter, foo);
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing = false)
         {
+            if (_disposed)
+                return;
+
             if (disposing)
             {
-                // Dispose managed resources
+                _safeHandle.Dispose();
+                SomethingHappened = null;
+                Counter = 1;
             }
 
-            // Free native resources
+            _disposed = true;
         }
 
         public void Dispose()
@@ -51,7 +65,7 @@ namespace Kohde.Assessment
 
         ~DisposableObject()
         {
-            Dispose(false);
+            Dispose(true);
         }
     }
 }

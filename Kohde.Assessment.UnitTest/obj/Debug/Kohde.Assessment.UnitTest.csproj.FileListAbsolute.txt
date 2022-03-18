@@ -1,0 +1,11 @@
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment.UnitTest\bin\Debug\Kohde.Assessment.UnitTest.dll
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment.UnitTest\bin\Debug\Kohde.Assessment.UnitTest.pdb
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment.UnitTest\bin\Debug\Kohde.Assessment.exe
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment.UnitTest\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment.UnitTest\bin\Debug\Kohde.Assessment.pdb
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment.UnitTest\bin\Debug\Kohde.Assessment.exe.config
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment.UnitTest\obj\Debug\Kohde.Assessment.UnitTest.csproj.AssemblyReference.cache
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment.UnitTest\obj\Debug\Kohde.Assessment.UnitTest.csproj.CoreCompileInputs.cache
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment.UnitTest\obj\Debug\Kohde.Assessment.UnitTest.csproj.CopyComplete
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment.UnitTest\obj\Debug\Kohde.Assessment.UnitTest.dll
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment.UnitTest\obj\Debug\Kohde.Assessment.UnitTest.pdb

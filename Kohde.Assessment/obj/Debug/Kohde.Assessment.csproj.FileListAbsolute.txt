@@ -1,0 +1,7 @@
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment\bin\Debug\Kohde.Assessment.exe.config
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment\bin\Debug\Kohde.Assessment.exe
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment\bin\Debug\Kohde.Assessment.pdb
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment\obj\Debug\Kohde.Assessment.csproj.AssemblyReference.cache
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment\obj\Debug\Kohde.Assessment.csproj.CoreCompileInputs.cache
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment\obj\Debug\Kohde.Assessment.exe
+C:\git_\interviews_\kohde_technical_assessment\Kohde.Assessment\obj\Debug\Kohde.Assessment.pdb
