@@ -1,14 +1,40 @@
-﻿namespace Kohde.Assessment
+﻿using System;
+
+namespace Kohde.Assessment
 {
-    public class Dog
+    public class Dog : Mammal, IDisposable
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
+        private bool disposedValue;
+
         public string Food { get; set; }
 
-        public string GetDetails()
+        protected virtual void Dispose(bool disposing)
         {
-            return "Name: " + Name + "Age: " + Age;
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~Dog()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

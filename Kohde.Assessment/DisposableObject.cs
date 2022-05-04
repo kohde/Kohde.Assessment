@@ -15,7 +15,7 @@ namespace Kohde.Assessment
         {
             foreach (var i in Enumerable.Range(1, 10))
             {
-                this.SomethingHappened += HandleSomethingHappened;
+                SomethingHappened += HandleSomethingHappened;
             }
         }
 
@@ -38,8 +38,9 @@ namespace Kohde.Assessment
             if (disposing)
             {
                 // Dispose managed resources
+                //Dispose();
             }
-
+            //Dispose();
             // Free native resources
         }
 
