@@ -12,7 +12,7 @@ namespace Kohde.Assessment.UnitTest
         {
             var value = Program.GetFirstEvenValue(new List<int>
             {
-                1, 3, 5, 7, 9, 11, 13, 15, 17, 19
+                1, 4, 5, 9, 11, 15, 20, 27, 34, 55
             });
 
             Trace.TraceInformation("Value: {0}", value);
@@ -24,7 +24,7 @@ namespace Kohde.Assessment.UnitTest
         {
             var value = Program.GetSingleStringValue(new List<string>
             {
-                "Jhn", "Jn", "Srh", "Pt"
+                "John", "Jane", "Sarah", "Pete", "Anna"
             });
 
             Trace.TraceInformation("Testing for: System.InvalidOperationException: Sequence contains no elements");
@@ -32,7 +32,7 @@ namespace Kohde.Assessment.UnitTest
 
             var value2 = Program.GetSingleStringValue(new List<string>
             {
-                "Jhn", "Jn", "Sarah", "Pt"
+                "John", "Jane", "Sarah", "Pete", "Anna"
             });
 
             Assert.IsTrue(!string.IsNullOrEmpty(value2));

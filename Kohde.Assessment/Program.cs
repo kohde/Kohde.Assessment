@@ -16,22 +16,28 @@ namespace Kohde.Assessment
             // the below class declarations looks like a 1st year student developed it
             // NOTE: this includes the class declarations as well
             // IMPROVE THE ARCHITECTURE 
-            Human human = new Human();
-            human.Name = "John";
-            human.Age = 35;
-            human.Gender = "M";
+            Human human = new Human
+            {
+                Name = "John",
+                Age = 35,
+                Gender = "M"
+            };
             Console.WriteLine(human.GetDetails());
 
-            Dog dog = new Dog();
-            dog.Name = "Walter";
-            dog.Age = 7;
-            dog.Food = "Epol";
+            Dog dog = new Dog
+            {
+                Name = "Walter",
+                Age = 7,
+                Food = "Epol"
+            };
             Console.WriteLine(dog.GetDetails());
 
-            Cat cat = new Cat();
-            cat.Name = "Snowball";
-            cat.Age = 35;
-            cat.Food = "Whiskers";
+            Cat cat = new Cat
+            {
+                Name = "Snowball",
+                Age = 35,
+                Food = "Whiskers"
+            };
             Console.WriteLine(cat.GetDetails());
 
             #endregion
@@ -70,10 +76,12 @@ namespace Kohde.Assessment
 
             // there are multiple corrections required!!
             // correct the following statement(s)
+            
+            
             try
             {
-                Dog bulldog = null;
-                var disposeDog = (IDisposable) bulldog;
+                Dog bulldog = new Dog();
+                var disposeDog = (IDisposable)bulldog;
                 disposeDog.Dispose();
             }
             catch (Exception ex)
@@ -96,9 +104,13 @@ namespace Kohde.Assessment
             // output must still render as: Name: [name] Age: [age]
             // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
-            ShowSomeHumanInformation(human);
-            ShowSomeDogInformation(dog);
-            ShowSomeCatInformation(cat);
+            //ShowSomeHumanInformation(human);
+            //ShowSomeDogInformation(dog);
+            //ShowSomeCatInformation(cat);
+
+            ShowSomeMammalInformation<Human>(human);            
+            ShowSomeMammalInformation<Dog>(dog);
+            ShowSomeMammalInformation<Cat>(cat);
 
 
             // # SECTION B #
@@ -159,20 +171,18 @@ namespace Kohde.Assessment
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*  
-                const string abc = "asduqwezxc";
-                foreach (var vowel in abc.SelectOnlyVowels())
-                {
-                    Console.WriteLine("{0}", vowel);
-                }
-            */
+            const string abc = "asduqwezxc";
+            foreach (var vowel in abc.SelectOnlyVowels())
+            {
+                Console.WriteLine("{0}", vowel);
+            }
+
             // < REQUIRED OUTPUT => a u e
 
             // > UNCOMMENT THE CODE BELOW AND CREATE A METHOD SO THAT THE FOLLOWING CODE WILL WORK
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*
             List<Dog> dogs = new List<Dog>
             {
                 new Dog {Age = 8, Name = "Max"},
@@ -180,7 +190,7 @@ namespace Kohde.Assessment
                 new Dog {Age = 9, Name = "XML"}
             };
 
-            var foo = dogs.CustomWhere(x => x.Age > 6 && x.Name.SelectOnlyVowels().Any());
+            //var foo = dogs.CustomWhere(x => x.Age > 6 && x.Name.SelectOnlyVowels().Any());
 
             // < DOGS REQUIRED OUTPUT =>
             //      Name: Max Age: 8
@@ -192,11 +202,10 @@ namespace Kohde.Assessment
                 new Cat {Age = 3, Name = "Captain Hooks"}
             };
 
-            var bar = cats.CustomWhere(x => x.Age <= 4);
+            //var bar = cats.CustomWhere(x => x.Age <= 4);
             // < CATS REQUIRED OUTPUT =>
             //      Name: Capri Age: 1
             //      Name: Captain Hooks Age: 3
-            */
 
             #endregion
 
@@ -208,15 +217,15 @@ namespace Kohde.Assessment
 
         public static void PerformanceTest()
         {
-            var someLongDataString = "";
+            string someLongDataString = "";
             const int sLen = 30, loops = 500000; // YOU MAY NOT CHANGE THE NUMBER OF LOOPS IN ANY WAY !!
-            var source = new string('X', sLen);
+            string source = new string('X', sLen);
 
             // DO NOT CHANGE THE ACTUAL FOR LOOP IN ANY WAY !!
             // in other words, you may not change: for (INITIALIZATION; CONDITION; INCREMENT/DECREMENT)
-            for (var i = 0; i < loops; i++) 
+            for (int i = 0; i < loops; i++) 
             {
-                someLongDataString += source;
+                someLongDataString = string.Join("", source);
             }
         }
 
@@ -234,7 +243,7 @@ namespace Kohde.Assessment
         public static string GetSingleStringValue(List<string> stringList)
         {
             // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
-            var first = stringList.Where(x => x.IndexOf("a") != -1).Single();
+            var first = stringList.Where(x => x.IndexOf("a") != -1).First();
             return first;
         }
 
@@ -291,7 +300,7 @@ namespace Kohde.Assessment
             }
             catch (ArithmeticException e)
             {
-                throw e;
+                throw e;                
             }
         }
 
@@ -355,6 +364,16 @@ namespace Kohde.Assessment
         }
 
         #endregion
+
+        #region Assessment F Section a Method
+        // Generic implementation for assessment F section A
+        public static void ShowSomeMammalInformation<T>(T gots)
+            where T : Mammal
+        {
+            Console.WriteLine("Name : " + gots.Name + " . Age : " + gots.Age + "!!!");
+        }
+
+        #endregion
     }
 
     public interface IDevice
@@ -390,6 +409,16 @@ namespace Kohde.Assessment
         {
             // the actual implementation of this method does not matter....
             return this.Device.DeviceCode.Equals("Samsung") ? 12.95 : 19.95;
+        }
+    }
+
+    public static class StringExtentions
+    {
+        public static string SelectOnlyVowels(this string text)
+        {
+            string vowels = "aoiue";
+
+            return new String(text.Where(p => vowels.IndexOf(p.ToString(), StringComparison.InvariantCultureIgnoreCase) >= 0).ToArray());
         }
     }
 }
