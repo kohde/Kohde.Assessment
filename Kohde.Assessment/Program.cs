@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Kohde.Assessment.Container;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
 
 namespace Kohde.Assessment
 {
@@ -9,32 +12,36 @@ namespace Kohde.Assessment
     // PLEASE READ ALL COMMENTS / INSTRUCTIONS
     public static class Program
     {
+
         static void Main(string[] args)
         {
+
+            //Console.ReadKey();
+
             #region Assessment A
 
             // the below class declarations looks like a 1st year student developed it
             // NOTE: this includes the class declarations as well
             // IMPROVE THE ARCHITECTURE 
-            Human human = new Human();
-            human.Name = "John";
-            human.Age = 35;
-            human.Gender = "M";
-            Console.WriteLine(human.GetDetails());
 
-            Dog dog = new Dog();
-            dog.Name = "Walter";
-            dog.Age = 7;
-            dog.Food = "Epol";
-            Console.WriteLine(dog.GetDetails());
 
-            Cat cat = new Cat();
-            cat.Name = "Snowball";
-            cat.Age = 35;
-            cat.Food = "Whiskers";
-            Console.WriteLine(cat.GetDetails());
+            //Create all Required Instances of Parties that are used in Assessment A and F
+            Human human = new Human(Name: "John", Age: 35, Gender: "M");
+            Dog dog = new Dog(Name: "Walter", Age: 7, Food: "Epol");
+            Cat cat = new Cat(Name: "Snowball", Age: 35, Food: "Whiskers");
+
+            //Combine All Different Parties.
+            List<PartyDetailsBase> parties = new List<PartyDetailsBase>() { human , dog , cat };
+
+            //Print All Combined Parties to the console
+            foreach (PartyDetailsBase part in parties)
+            {
+                Console.WriteLine(part.GetDetails());
+            }
 
             #endregion
+
+            //Console.ReadKey();
 
             #region Assessment B
 
@@ -44,6 +51,8 @@ namespace Kohde.Assessment
             PerformanceTest();
 
             #endregion
+
+            //Console.ReadKey();
 
             #region Assessment C
 
@@ -66,13 +75,16 @@ namespace Kohde.Assessment
 
             #endregion
 
+            //Console.ReadKey();
+
             #region Assessment D
 
             // there are multiple corrections required!!
             // correct the following statement(s)
             try
             {
-                Dog bulldog = null;
+                //Instantiate the Dog Class which inherits the IDisposable interface.
+                Dog bulldog = new Dog();
                 var disposeDog = (IDisposable) bulldog;
                 disposeDog.Dispose();
             }
@@ -83,11 +95,15 @@ namespace Kohde.Assessment
 
             #endregion
 
+            //Console.ReadKey();
+
             #region Assessment E
 
-            DisposeSomeObject();            
+            DisposeSomeObject();
 
             #endregion
+
+            //Console.ReadKey();
 
             #region Assessment F
 
@@ -96,9 +112,9 @@ namespace Kohde.Assessment
             // output must still render as: Name: [name] Age: [age]
             // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
-            ShowSomeHumanInformation(human);
-            ShowSomeDogInformation(dog);
-            ShowSomeCatInformation(cat);
+            ShowSomeMammalInformation(human);
+            ShowSomeMammalInformation(dog);
+            ShowSomeMammalInformation(cat);
 
 
             // # SECTION B #
@@ -109,12 +125,14 @@ namespace Kohde.Assessment
 
             // UNCOMMENT THE FOLLOWING PIECE OF CODE - IT WILL CAUSE A COMPILER ERROR - BECAUSE YOU HAVE TO CREATE THE METHOD
 
-            //string a = Program.GenericTester(walter => walter.GetDetails(), dog);
-            //Console.WriteLine("Result A: {0}", a);
-            //int b = Program.GenericTester(snowball => snowball.Age, cat);
-            //Console.WriteLine("Result B: {0}", b);
+            string a = Program.GenericTester(walter => walter.GetDetails(), dog);
+            Console.WriteLine("Result A: {0}", a);
+            int b = Program.GenericTester(snowball => snowball.Age, cat);
+            Console.WriteLine("Result B: {0}", b);
 
             #endregion
+
+            //Console.ReadKey();
 
             #region Assessment G
 
@@ -132,6 +150,8 @@ namespace Kohde.Assessment
 
             #endregion            
 
+            //Console.ReadKey();
+
             #region Assessment H
 
             try
@@ -146,6 +166,8 @@ namespace Kohde.Assessment
 
             #endregion            
 
+            //Console.ReadKey();
+
             #region IoC / DI
 
             // everything can be viewed in this method....
@@ -153,26 +175,28 @@ namespace Kohde.Assessment
 
             #endregion
 
+            //Console.ReadKey();
+
             #region Bonus XP - Dungeon
 
             // > UNCOMMENT THE CODE BELOW AND CREATE A METHOD SO THAT THE FOLLOWING CODE WILL WORK
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*  
-                const string abc = "asduqwezxc";
-                foreach (var vowel in abc.SelectOnlyVowels())
-                {
-                    Console.WriteLine("{0}", vowel);
-                }
-            */
+
+            const string abc = "asduqwezxc";
+            foreach (var vowel in abc.SelectOnlyVowels())
+            {
+                Console.WriteLine("{0}", vowel);
+            }
+
             // < REQUIRED OUTPUT => a u e
 
             // > UNCOMMENT THE CODE BELOW AND CREATE A METHOD SO THAT THE FOLLOWING CODE WILL WORK
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*
+            
             List<Dog> dogs = new List<Dog>
             {
                 new Dog {Age = 8, Name = "Max"},
@@ -196,7 +220,7 @@ namespace Kohde.Assessment
             // < CATS REQUIRED OUTPUT =>
             //      Name: Capri Age: 1
             //      Name: Captain Hooks Age: 3
-            */
+            
 
             #endregion
 
@@ -212,12 +236,18 @@ namespace Kohde.Assessment
             const int sLen = 30, loops = 500000; // YOU MAY NOT CHANGE THE NUMBER OF LOOPS IN ANY WAY !!
             var source = new string('X', sLen);
 
+            //Use the Stringbuilder to manage string manipulation :
+            System.Text.StringBuilder bob = new System.Text.StringBuilder();
+
             // DO NOT CHANGE THE ACTUAL FOR LOOP IN ANY WAY !!
             // in other words, you may not change: for (INITIALIZATION; CONDITION; INCREMENT/DECREMENT)
             for (var i = 0; i < loops; i++) 
             {
-                someLongDataString += source;
+                bob.Append(source);
             }
+
+            //Store String value in variable used before.
+            someLongDataString = bob.ToString();
         }
 
         #endregion
@@ -227,14 +257,20 @@ namespace Kohde.Assessment
         public static int GetFirstEvenValue(List<int> numbers)
         {
             // RETURN THE FIRST EVEN NUMBER IN THE SEQUENCE
-            var first = numbers.Where(x => x % 2 == 0).First();
+
+            //First query where the even numbers exists, then take the first or default item.
+            var first = numbers.Where(x => x % 2 == 0).FirstOrDefault();
             return first;
         }
 
         public static string GetSingleStringValue(List<string> stringList)
         {
             // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
-            var first = stringList.Where(x => x.IndexOf("a") != -1).Single();
+
+            //Query collection to only return items containing the letter 'a'.
+            //Then make sure to return the first or default item.
+            var first = stringList.Where(x => x.ToLower().Contains("a")).FirstOrDefault();
+
             return first;
         }
 
@@ -251,6 +287,10 @@ namespace Kohde.Assessment
             {
                 disposableObject.PerformSomeLongRunningOperation();
                 disposableObject.RaiseEvent("raised event");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
             finally
             {
@@ -279,6 +319,48 @@ namespace Kohde.Assessment
             Console.WriteLine("Name:" + cat.Name + " Age: " + cat.Age);
         }
 
+        public static void ShowSomeMammalInformation<TheType>(TheType value)
+        {
+            if (value == null)
+                return;
+
+            //Get the Type of the generic type
+            Type OurObjectType = typeof(TheType);
+
+            //Get the properties of the generic type
+            List<System.Reflection.PropertyInfo> OurObjectPropertyInfos = OurObjectType.GetProperties().ToList();
+
+            string NameValue = null;
+            string AgeValue = null;
+
+            //loop through the properties, then when we come accross property Name and Age we get those values to print to the console.
+            foreach (System.Reflection.PropertyInfo propertyInfo in OurObjectPropertyInfos)
+            {
+                object Value = propertyInfo.GetValue(value);
+                string StringValue = Value?.ToString();
+
+                if (string.Equals(propertyInfo.Name, "Name", StringComparison.OrdinalIgnoreCase))
+                    NameValue = StringValue;
+
+                if (string.Equals(propertyInfo.Name, "Age", StringComparison.OrdinalIgnoreCase))
+                    AgeValue = StringValue;
+
+            }
+
+            Console.WriteLine($"Name: {NameValue} Age: {AgeValue}");
+        }
+
+
+        public static dynamic GenericTester<YourType, ReturnType>(Func<YourType, ReturnType> query , YourType value) where YourType : class ,  new()
+        {
+            if (value == null)
+                value = new YourType();
+
+            object ReturnValue = query.Invoke(value);
+            return ReturnValue;
+        }
+
+
         #endregion
 
         #region Assessment G Methods
@@ -291,7 +373,9 @@ namespace Kohde.Assessment
             }
             catch (ArithmeticException e)
             {
-                throw e;
+                //Rethrow the existing exception. Keep the Original Exception in the stack trace.
+                Console.WriteLine($"Error Log : {e.Message}");
+                throw;
             }
         }
 
@@ -311,7 +395,17 @@ namespace Kohde.Assessment
             // AND RETURN THE STRING CONTENT
 
             // DO NOT CHANGE THE NAME, RETURN TYPE OR ANY IMPLEMENTATION OF THIS METHOD NOR THE BELOW METHOD
-            throw new NotImplementedException(); // ATT: REMOVE THIS LINE
+
+            //Using reflection get a Method by the name "DisplaySomeStuff"
+            var method = typeof(Program).GetMethod("DisplaySomeStuff");
+            //This is the parameters we expect the method to take in
+            Type[] MethodArguments = { typeof(string) };
+            var GenericMethod = method.MakeGenericMethod(MethodArguments);
+
+            //Call the method and get the resuls so we can return as string.
+            var MethodResultValue = GenericMethod.Invoke(typeof(Program), new object[] { "" });
+
+            return MethodResultValue?.ToString();
         }
 
         public static string DisplaySomeStuff<T>(T toDisplay) where T : class
@@ -346,15 +440,89 @@ namespace Kohde.Assessment
              */
 
             // 1. register the interfaces and classes
-            // TODO: ???
+
+            //Dependancy Injection Configuration, here we configure which implementations to use for which interfaces when required using this IOC container.
+            IContainer DI_Container = Ioc.Container;
+            DI_Container.Register<IDevice, SamsungDevice>();
+            DI_Container.Register<IDeviceProcessor, DeviceProcessor>();
 
             // 2. resolve the IDeviceProcessor
-            //var deviceProcessor = ???
-            // call the GetDevicePrice method
-            //Console.WriteLine(deviceProcessor.GetDevicePrice());
+
+            // use the IOC container to resolve our implementation for interface IDeviceProcessor
+            IDeviceProcessor deviceProcessor = DI_Container.Resolve<IDeviceProcessor>();
+
+            // call the GetDevicePrice method from interface IDeviceProcessor
+            Console.WriteLine(deviceProcessor.GetDevicePrice());
         }
 
         #endregion
+
+        #region Dungeon 
+
+        /// <summary>
+        /// Extension method for type string to select only vowels.
+        /// </summary>
+        public static IEnumerable<char> SelectOnlyVowels(this string value)
+        {
+            //List the Vowels we are going to look for :
+            List<string> vowels = new List<string>() 
+            {
+                "a", "e", "i", "o", "u"
+            };
+
+            //Only Return the Vowels by 
+            List<char> charactersToReturn = new List<char>();
+            
+            foreach(char c in value)
+            {
+                //Check if the vowel exists, then add to collection.
+                if(vowels.FirstOrDefault(s =>  string.Equals($"{c}", s, StringComparison.OrdinalIgnoreCase)) != null)
+                    charactersToReturn.Add(c);
+            }
+
+            return charactersToReturn;
+        }
+
+
+
+        /// <summary>
+        /// Generic method that should take in lamda query and return the results it resolves into.
+        /// </summary>
+        public static List<T> CustomWhere<T>(this IEnumerable<T> value, Expression<Func<T, bool>> lamdaQuery)
+        {
+            try
+            {
+                //Compile the Lambda Expression
+                Func<T, bool> result = lamdaQuery.Compile();
+
+                //our collection to return in the end.
+                List<T> resultList = new List<T>();
+
+                //Loop through each item of the generic collection type
+                foreach(T item in value)
+                {
+                    //run the function declared in the lamda expression to see if its boolean value returns true. If True return value.
+                    var valueResult = result(item);
+                    if (valueResult)
+                        resultList.Add(item);
+                }
+
+                return resultList;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return default;
+        }
+
+
+
+
+        #endregion
+
+
+
     }
 
     public interface IDevice
