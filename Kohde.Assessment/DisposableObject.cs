@@ -17,6 +17,7 @@ namespace Kohde.Assessment
             {
                 this.SomethingHappened += HandleSomethingHappened;
             }
+            //return true;
         }
 
         public void RaiseEvent(string data)

@@ -8,7 +8,7 @@
 
         public string GetDetails()
         {
-            return "Name: " + Name + "Age: " + Age;
+            return "Name: " + Name + " Age: " + Age;
         }
     }
 }

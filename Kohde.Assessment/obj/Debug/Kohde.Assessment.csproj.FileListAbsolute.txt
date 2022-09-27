@@ -1,0 +1,14 @@
+D:\Shaun Schietekat\Interview\Kohde\Kohde.Assessment\bin\Debug\Kohde.Assessment.exe.config
+D:\Shaun Schietekat\Interview\Kohde\Kohde.Assessment\bin\Debug\Kohde.Assessment.exe
+D:\Shaun Schietekat\Interview\Kohde\Kohde.Assessment\bin\Debug\Kohde.Assessment.pdb
+D:\Shaun Schietekat\Interview\Kohde\Kohde.Assessment\obj\Debug\Kohde.Assessment.csproj.AssemblyReference.cache
+D:\Shaun Schietekat\Interview\Kohde\Kohde.Assessment\obj\Debug\Kohde.Assessment.csproj.CoreCompileInputs.cache
+D:\Shaun Schietekat\Interview\Kohde\Kohde.Assessment\obj\Debug\Kohde.Assessment.exe
+D:\Shaun Schietekat\Interview\Kohde\Kohde.Assessment\obj\Debug\Kohde.Assessment.pdb
+D:\Shaun Schietekat\Interview\Kohde New\Kohde.Assessment\bin\Debug\Kohde.Assessment.exe.config
+D:\Shaun Schietekat\Interview\Kohde New\Kohde.Assessment\bin\Debug\Kohde.Assessment.exe
+D:\Shaun Schietekat\Interview\Kohde New\Kohde.Assessment\bin\Debug\Kohde.Assessment.pdb
+D:\Shaun Schietekat\Interview\Kohde New\Kohde.Assessment\obj\Debug\Kohde.Assessment.csproj.AssemblyReference.cache
+D:\Shaun Schietekat\Interview\Kohde New\Kohde.Assessment\obj\Debug\Kohde.Assessment.csproj.CoreCompileInputs.cache
+D:\Shaun Schietekat\Interview\Kohde New\Kohde.Assessment\obj\Debug\Kohde.Assessment.exe
+D:\Shaun Schietekat\Interview\Kohde New\Kohde.Assessment\obj\Debug\Kohde.Assessment.pdb
