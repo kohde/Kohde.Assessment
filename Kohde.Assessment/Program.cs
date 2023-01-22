@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Kohde.Assessment
 {
@@ -199,7 +200,7 @@ namespace Kohde.Assessment
 
     public static void PerformanceTest()
     {
-      var someLongDataString = "";
+      var someLongDataString = new StringBuilder();
       const int sLen = 30, loops = 500000; // YOU MAY NOT CHANGE THE NUMBER OF LOOPS IN ANY WAY !!
       var source = new string('X', sLen);
 
@@ -207,7 +208,7 @@ namespace Kohde.Assessment
       // in other words, you may not change: for (INITIALIZATION; CONDITION; INCREMENT/DECREMENT)
       for (var i = 0; i < loops; i++)
       {
-        someLongDataString += source;
+        someLongDataString.Append(source);
       }
     }
 
