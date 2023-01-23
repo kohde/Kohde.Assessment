@@ -6,7 +6,13 @@
   {
     public string Food { get; set; }
 
-    // created a constructor for easier and cleaner declarations
+    // created default constructor
+    public Dog()
+    {
+
+    }
+
+    // created another constructor for easier and cleaner declarations
     public Dog(string name, int age, string food = null) : base(name, age)
     {
       Name = name;
@@ -18,7 +24,7 @@
     // to include the new property that is not in the base class
     public override string GetDetails()
     {
-      return $"Name: {Name}, Age: {Age}, Food: {Food}";
+      return $"Name: {Name} Age: {Age} Food: {Food}";
     }
 
     // override the ToString method to make it more meaningful
