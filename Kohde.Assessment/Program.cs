@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
@@ -156,20 +157,19 @@ namespace Kohde.Assessment
       // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
       // > DO NOT ALTER THE EXISTING CODE
 
-      /*  
-          const string abc = "asduqwezxc";
-          foreach (var vowel in abc.SelectOnlyVowels())
-          {
-              Console.WriteLine("{0}", vowel);
-          }
-      */
+      const string abc = "asduqwezxc";
+      foreach (var vowel in abc.SelectOnlyVowels())
+      {
+        Console.WriteLine("{0}", vowel);
+      }
+
       // < REQUIRED OUTPUT => a u e
 
       // > UNCOMMENT THE CODE BELOW AND CREATE A METHOD SO THAT THE FOLLOWING CODE WILL WORK
       // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
       // > DO NOT ALTER THE EXISTING CODE
 
-      /*
+
       List<Dog> dogs = new List<Dog>
       {
           new Dog {Age = 8, Name = "Max"},
@@ -193,7 +193,6 @@ namespace Kohde.Assessment
       // < CATS REQUIRED OUTPUT =>
       //      Name: Capri Age: 1
       //      Name: Captain Hooks Age: 3
-      */
 
       #endregion
 
@@ -364,6 +363,21 @@ namespace Kohde.Assessment
       var deviceProcessor = Ioc.Container.Resolve<IDeviceProcessor>();
       // call the GetDevicePrice method
       Console.WriteLine(deviceProcessor.GetDevicePrice());
+    }
+
+    #endregion
+
+    #region Dungeon
+
+    public static IEnumerable<char> SelectOnlyVowels(this IEnumerable<char> input)
+    {
+      var vowels = new HashSet<char> { 'a', 'e', 'i', 'o', 'u' };
+      return input.Where(i => vowels.Contains(i));
+    }
+
+    public static IEnumerable<T> CustomWhere<T>(this IEnumerable<T> source, Expression<Func<T, bool>> condition)
+    {
+      return source.Where(condition.Compile());
     }
 
     #endregion
