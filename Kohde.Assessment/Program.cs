@@ -92,10 +92,9 @@ namespace Kohde.Assessment
       // output must still render as: Name: [name] Age: [age]
       // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
       // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
-      ShowSomeHumanInformation(human);
-      ShowSomeDogInformation(dog);
-      ShowSomeCatInformation(cat);
-
+      ShowSomeMammalInformation(human);
+      ShowSomeMammalInformation(dog);
+      ShowSomeMammalInformation(cat);
 
       // # SECTION B #
       // BY MAKING USE OF REFLECTION (amongst other things):
@@ -105,10 +104,10 @@ namespace Kohde.Assessment
 
       // UNCOMMENT THE FOLLOWING PIECE OF CODE - IT WILL CAUSE A COMPILER ERROR - BECAUSE YOU HAVE TO CREATE THE METHOD
 
-      //string a = Program.GenericTester(walter => walter.GetDetails(), dog);
-      //Console.WriteLine("Result A: {0}", a);
-      //int b = Program.GenericTester(snowball => snowball.Age, cat);
-      //Console.WriteLine("Result B: {0}", b);
+      string a = Program.GenericTester(walter => walter.GetDetails(), dog);
+      Console.WriteLine("Result A: {0}", a);
+      int b = Program.GenericTester(snowball => snowball.Age, cat);
+      Console.WriteLine("Result B: {0}", b);
 
       #endregion
 
@@ -268,6 +267,19 @@ namespace Kohde.Assessment
     public static void ShowSomeCatInformation(Cat cat)
     {
       Console.WriteLine("Name:" + cat.Name + " Age: " + cat.Age);
+    }
+
+    public static void ShowSomeMammalInformation<T>(T mammal) where T : Mammal.Mammal
+    {
+      Console.WriteLine($"Name: {mammal.Name} Age: {mammal.Age}");
+    }
+
+    public static TResult GenericTester<T, TResult>(Func<T, TResult> func, T mammal) where T : Mammal.Mammal, new()
+    {
+      if(mammal == null)
+        mammal = Activator.CreateInstance<T>();
+
+      return func(mammal);
     }
 
     #endregion
