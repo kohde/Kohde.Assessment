@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Kohde.Assessment
@@ -276,7 +277,7 @@ namespace Kohde.Assessment
 
     public static TResult GenericTester<T, TResult>(Func<T, TResult> func, T mammal) where T : Mammal.Mammal, new()
     {
-      if(mammal == null)
+      if (mammal == null)
         mammal = Activator.CreateInstance<T>();
 
       return func(mammal);
@@ -315,7 +316,11 @@ namespace Kohde.Assessment
       // AND RETURN THE STRING CONTENT
 
       // DO NOT CHANGE THE NAME, RETURN TYPE OR ANY IMPLEMENTATION OF THIS METHOD NOR THE BELOW METHOD
-      throw new NotImplementedException(); // ATT: REMOVE THIS LINE
+      var method = typeof(Program).GetMethod("DisplaySomeStuff", BindingFlags.Public | BindingFlags.Static);
+      var generic = method.MakeGenericMethod(typeof(string));
+      var result = generic.Invoke(typeof(Program), new object[] { "Hello World!" });
+
+      return (string)result;
     }
 
     public static string DisplaySomeStuff<T>(T toDisplay) where T : class
