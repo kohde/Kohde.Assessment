@@ -6,7 +6,13 @@
   {
     public string Food { get; set; }
 
-    // created a constructor for easier and cleaner declarations
+    // created default constructor
+    public Cat()
+    {
+
+    }
+
+    // created another constructor for easier and cleaner declarations
     public Cat(string name, int age, string food = null) : base(name, age)
     {
       Name = name;

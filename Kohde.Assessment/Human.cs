@@ -6,7 +6,13 @@
   {
     public string Gender { get; set; }
 
-    // created a constructor for easier and cleaner declarations
+    // created default constructor
+    public Human()
+    {
+
+    }
+
+    // created another constructor for easier and cleaner declarations
     public Human(string name, int age, string gender = null) : base(name, age)
     {
       Name = name;
