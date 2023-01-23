@@ -294,7 +294,8 @@ namespace Kohde.Assessment
       }
       catch (ArithmeticException e)
       {
-        throw e;
+        // rethrow the exception with the original stack trace
+        throw;
       }
     }
 
