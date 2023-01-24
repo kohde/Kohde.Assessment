@@ -35,10 +35,13 @@ namespace Kohde.Assessment
 
         protected virtual void Dispose(bool disposing)
         {
+      
             if (disposing)
             {
-                // Dispose managed resources
+                Counter = 1;
             }
+
+            FreeObject();
 
             // Free native resources
         }
@@ -52,6 +55,11 @@ namespace Kohde.Assessment
         ~DisposableObject()
         {
             Dispose(false);
+        }
+
+        private void FreeObject()
+        { 
+            this.SomethingHappened = null;
         }
     }
 }
