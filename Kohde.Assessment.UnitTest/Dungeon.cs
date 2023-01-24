@@ -13,7 +13,6 @@ namespace Kohde.Assessment.UnitTest
         [TestMethod]
         public void InvokeLvlAExtensionMethod()
         {
-            var fuckThis = typeof(Program).GetMethod("SelectOnlyVowels");
             var methodInfo = typeof(Program).GetMethod("SelectOnlyVowels", new[] { typeof(IEnumerable<char>) });
 
             Assert.IsTrue(methodInfo != null, "Indicates whether the extension method has not been implemented");
