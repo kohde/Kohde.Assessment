@@ -21,6 +21,7 @@ namespace Kohde.Assessment.UnitTest
         [TestMethod]
         public void TestA3()
         {
+            //Can't get the declaring type to be "Human", it stays "Object"
             Assert.AreSame(typeof(Human).GetMethod("ToString").DeclaringType, typeof(Human));
         }
 

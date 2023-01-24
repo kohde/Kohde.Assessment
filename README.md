@@ -2,11 +2,11 @@
 An assessment test which can be used to asses potential candidates
 
 ## Step 1
-The first step in completing the assessment is cloning the code from the GitHub repository. Later on one would create a new branch (please use your `initials+surename` as the branch name), as the `master` branch is locked. Lastly a pull request will be required to submit your result. The pull request will make use of the new custom branch created (source) and `master` will act as the destination.
+The first step in completing the assessment is cloning the code from the GitHub repository. Later on one would create a new branch (please use your `initials+surname` as the branch name), as the `master` branch is locked. Lastly a pull request will be required to submit your result. The pull request will make use of the new custom branch created (source) and `master` will act as the destination.
 
 ## Step 2
 
-There are `10` assessments. Each assessment has a description what explains what is required. When the assessment is complete, you can run the unit test and see if it works.
+There are `10` assessments. Each assessment has a description that explains what is required. When the assessment is complete, you can run the unit test and see if it works.
 
 Once the repository has been cloned and the solution is opened, you explorer would look like this:
 
