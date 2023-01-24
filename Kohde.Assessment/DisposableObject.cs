@@ -12,21 +12,21 @@ namespace Kohde.Assessment
 
     public void PerformSomeLongRunningOperation()
     {
-      this.SomethingHappened += HandleSomethingHappened;
+      SomethingHappened += HandleSomethingHappened;
     }
 
     public void RaiseEvent(string data)
     {
-      if (this.SomethingHappened != null)
+      if (SomethingHappened != null)
       {
-        this.SomethingHappened(data);
+        SomethingHappened(data);
       }
     }
 
     private void HandleSomethingHappened(string foo)
     {
-      this.Counter = this.Counter + 1;
-      Console.WriteLine("HIT {0} => HandleSomethingHappened. Data: {1}", this.Counter, foo);
+      Counter++;
+      Console.WriteLine("HIT {0} => HandleSomethingHappened. Data: {1}", Counter, foo);
     }
 
     protected virtual void Dispose(bool disposing)
@@ -34,7 +34,7 @@ namespace Kohde.Assessment
       if (disposing)
       {
         // Dispose managed resources
-        this.SomethingHappened -= HandleSomethingHappened;
+        SomethingHappened -= HandleSomethingHappened;
       }
 
       // Free native resources

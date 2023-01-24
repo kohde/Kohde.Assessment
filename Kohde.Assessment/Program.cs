@@ -67,7 +67,7 @@ namespace Kohde.Assessment
       // correct the following statement(s)
       try
       {
-        Dog bulldog = null;
+        Dog bulldog = new Dog();
 
         if (bulldog != null)
         {
@@ -95,6 +95,11 @@ namespace Kohde.Assessment
       // output must still render as: Name: [name] Age: [age]
       // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
       // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
+      ShowSomeHumanInformation(human);
+      ShowSomeDogInformation(dog);
+      ShowSomeCatInformation(cat);
+
+      // new implementation
       ShowSomeMammalInformation(human);
       ShowSomeMammalInformation(dog);
       ShowSomeMammalInformation(cat);
@@ -107,9 +112,9 @@ namespace Kohde.Assessment
 
       // UNCOMMENT THE FOLLOWING PIECE OF CODE - IT WILL CAUSE A COMPILER ERROR - BECAUSE YOU HAVE TO CREATE THE METHOD
 
-      string a = Program.GenericTester(walter => walter.GetDetails(), dog);
+      string a = GenericTester(walter => walter.GetDetails(), dog);
       Console.WriteLine("Result A: {0}", a);
-      int b = Program.GenericTester(snowball => snowball.Age, cat);
+      int b = GenericTester(snowball => snowball.Age, cat);
       Console.WriteLine("Result B: {0}", b);
 
       #endregion
@@ -204,6 +209,7 @@ namespace Kohde.Assessment
 
     public static void PerformanceTest()
     {
+      // made use of string builder which handles performance better
       var someLongDataString = new StringBuilder();
       const int sLen = 30, loops = 500000; // YOU MAY NOT CHANGE THE NUMBER OF LOOPS IN ANY WAY !!
       var source = new string('X', sLen);
@@ -394,7 +400,7 @@ namespace Kohde.Assessment
 
     public SamsungDevice()
     {
-      this.DeviceCode = "Samsung";
+      DeviceCode = "Samsung";
     }
   }
 
@@ -409,13 +415,13 @@ namespace Kohde.Assessment
 
     public DeviceProcessor(IDevice device)
     {
-      this.Device = device;
+      Device = device;
     }
 
     public double GetDevicePrice()
     {
       // the actual implementation of this method does not matter....
-      return this.Device.DeviceCode.Equals("Samsung") ? 12.95 : 19.95;
+      return Device.DeviceCode.Equals("Samsung") ? 12.95 : 19.95;
     }
   }
 }
