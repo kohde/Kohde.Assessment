@@ -24,7 +24,7 @@
     // to include the new property that is not in the base class
     public override string GetDetails()
     {
-      return $"Name: {Name}, Age: {Age}, Food: {Food}";
+      return $"Name: {Name} Age: {Age} Food: {Food}";
     }
 
     // override the ToString method to make it more meaningful
