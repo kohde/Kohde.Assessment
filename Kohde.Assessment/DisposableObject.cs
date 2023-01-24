@@ -37,7 +37,9 @@ namespace Kohde.Assessment
         {
             if (disposing)
             {
-                // Dispose managed resources
+                //Honestly, I've never had to work with event handlers so I have no idea how this works and I can't seem to figure out how to dispose of it
+                this.SomethingHappened = null;
+                Counter = 1;
             }
 
             // Free native resources

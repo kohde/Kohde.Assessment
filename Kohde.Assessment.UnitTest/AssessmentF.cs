@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Kohde.Assessment.UnitTest
@@ -8,78 +7,30 @@ namespace Kohde.Assessment.UnitTest
     public class AssessmentF
     {
         [TestMethod]
-        public void InvokeGenericMethodA()
+        public void StackTraceTest()
         {
-            var method = typeof(Program).GetMethod("ShowSomeMammalInformation");
-
-            Assert.IsTrue(method != null, "Indicates whether the generic method has not been implemented");
-
-            var human = new Human
+            try
             {
-                Name = "John Doe", Age = 34
-            };
-            var dog = new Dog
+                Program.CatchAndRethrowExplicitly();
+            }
+            catch (ArithmeticException e)
             {
-                Name = "Russell",
-                Age = 7
-            };
-            var cat = new Cat
-            {
-                Name = "Mr.. Whiskers",
-                Age = 5
-            };
-
-            var generic = method.MakeGenericMethod(typeof(Human));
-            generic.Invoke(typeof(Program), new object[] { human });
-            
-            generic = method.MakeGenericMethod(typeof(Dog));
-            generic.Invoke(typeof(Program), new object[] { dog });
-            
-            generic = method.MakeGenericMethod(typeof(Cat));
-            generic.Invoke(typeof(Program), new object[] { cat });
+                Assert.IsTrue(AssessmentF.GetNumSubstringOccurrences(e.StackTrace, "at") >= 3, "Indicates whether the stack trace is intact");
+            }
         }
-
-        [TestMethod]
-        public void InvokeGenericMethodB()
+        public static int GetNumSubstringOccurrences(string text, string search)
         {
-            var method = typeof(Program).GetMethod("GenericTester");
-            Assert.IsTrue(method != null, "Indicates whether the generic method has not been implemented");
+            var num = -1;
+            var pos = 0;
+            if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(search)) 
+                return num;
 
-            var human = new Human
+            while (text.IndexOf(search, pos, System.StringComparison.Ordinal) > -1)
             {
-                Name = "John Doe", Age = 34
-            };
-
-            var dog = new Dog
-            {
-                Name = "Walter", Age = 7
-            };
-
-            string Func1(Dog x) => x.GetDetails();
-            Type[] typeArgs1 = { typeof(Dog), typeof(string) };
-            var generic1 = method.MakeGenericMethod(typeArgs1);
-            var resultA = generic1.Invoke(typeof(Program), new object[]
-            {
-                (Func<Dog, string>) Func1, dog
-            });
-            Trace.TraceInformation("{0}", resultA);
-
-            string Func2(Human x) => x.GetDetails();
-            Type[] typeArgs2 = { typeof(Human), typeof(string) };
-            var generic2 = method.MakeGenericMethod(typeArgs2);
-            var resultB = generic2.Invoke(typeof(Program), new object[]
-            {
-                (Func<Human, string>) Func2, human
-            });
-            Trace.TraceInformation("{0}", resultB);
-
-            Type[] typeArgs3 = { typeof(Human), typeof(string) };
-            var generic3 = method.MakeGenericMethod(typeArgs3);
-            var resultC = generic3.Invoke(typeof(Program), new object[]
-            {
-                (Func<Human, string>) Func2, null
-            });
-            Trace.TraceInformation("{0}", resultC);
+                num++;
+                pos = text.IndexOf(search, pos, System.StringComparison.Ordinal) + search.Length + 1;
+            }
+            return num;
         }
     }
 }
