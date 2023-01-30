@@ -296,7 +296,8 @@ namespace Kohde.Assessment
             }
             catch (ArithmeticException e)
             {
-                throw e;
+                throw; // exception will be thrown for system exception by removing the e in throw e. This will not clash with the ArithmeticException. 
+                // Alternative solution is to create a new ArithmeticException fo it the display as an inner exception to the ThrowException result.
             }
         }
 
