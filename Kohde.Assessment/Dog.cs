@@ -1,14 +1,15 @@
 ﻿namespace Kohde.Assessment
 {
-    public class Dog
+    public class Dog : Mammals
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
         public string Food { get; set; }
-
-        public string GetDetails()
+        public override string GetDetails()
         {
-            return "Name: " + Name + "Age: " + Age;
+            return base.ToString();
+        }
+        public override string ToString()
+        {
+            return $"{GetDetails()}, Food: {Food}";
         }
     }
 }
