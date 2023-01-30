@@ -8,6 +8,7 @@ namespace Kohde.Assessment
     public class DisposableObject : IDisposable
     {
         public event MyEventHandler SomethingHappened;
+        private bool disposed = false;
 
         public int Counter { get; private set; }
 
@@ -35,12 +36,23 @@ namespace Kohde.Assessment
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposed) // Check if event hasnt been desposed yet
             {
-                // Dispose managed resources
-            }
+                if (disposing)
+                {
+                    // Dispose managed resources
+                    if (this.SomethingHappened != null)
+                    {
+                        foreach (var eventHandler in this.SomethingHappened.GetInvocationList())
+                        {
+                            this.SomethingHappened -= (MyEventHandler)eventHandler; // Remove each event at a time from the SomethingHappend event
+                        }
+                    }
+                }
 
-            // Free native resources
+                // Free native resources
+                disposed = true;
+            }
         }
 
         public void Dispose()

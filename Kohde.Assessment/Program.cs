@@ -256,18 +256,13 @@ namespace Kohde.Assessment
         {
             // IMPROVE THE FOLLOWING PIECE OF CODE
             // as well as the PerformSomeLongRunningOperation method
-            var disposableObject = new DisposableObject();
-            try
+
+            using (var disposableObject = new DisposableObject()) // using dispose object by default until not used anymore. 
             {
                 disposableObject.PerformSomeLongRunningOperation();
                 disposableObject.RaiseEvent("raised event");
-            }
-            finally
-            {
-                disposableObject.Dispose();
-            }
-
-            return disposableObject;
+                return disposableObject;
+            };    
         }
 
         #endregion
