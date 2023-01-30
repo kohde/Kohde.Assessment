@@ -54,6 +54,8 @@
     <Compile Include="DisposableObject.cs" />
     <Compile Include="Dog.cs" />
     <Compile Include="Human.cs" />
+    <Compile Include="IMammalDetails.cs" />
+    <Compile Include="Mammals.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
