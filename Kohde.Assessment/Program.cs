@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kohde.Assessment.Container;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -358,10 +359,18 @@ namespace Kohde.Assessment
             // 1. register the interfaces and classes
             // TODO: ???
 
+            Ioc.Container.Register<IDevice, SamsungDevice>();
+            Ioc.Container.Register<IDeviceProcessor, DeviceProcessor>();
+
             // 2. resolve the IDeviceProcessor
             //var deviceProcessor = ???
             // call the GetDevicePrice method
             //Console.WriteLine(deviceProcessor.GetDevicePrice());
+
+            var deviceProcessor = Ioc.Container.Resolve<IDeviceProcessor>();
+            var price = deviceProcessor.GetDevicePrice();
+
+            Console.WriteLine(price);
         }
 
         #endregion
