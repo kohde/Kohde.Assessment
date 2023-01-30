@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Kohde.Assessment
@@ -95,7 +96,7 @@ namespace Kohde.Assessment
 
             #region Assessment E
 
-            DisposeSomeObject();            
+            DisposeSomeObject();
 
             #endregion
 
@@ -106,9 +107,9 @@ namespace Kohde.Assessment
             // output must still render as: Name: [name] Age: [age]
             // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
-            ShowSomeHumanInformation(human);
-            ShowSomeDogInformation(dog);
-            ShowSomeCatInformation(cat);
+            ShowSomeMammalInformation(human);
+            ShowSomeMammalInformation(dog);
+            ShowSomeMammalInformation(cat);
 
 
             // # SECTION B #
@@ -119,10 +120,10 @@ namespace Kohde.Assessment
 
             // UNCOMMENT THE FOLLOWING PIECE OF CODE - IT WILL CAUSE A COMPILER ERROR - BECAUSE YOU HAVE TO CREATE THE METHOD
 
-            //string a = Program.GenericTester(walter => walter.GetDetails(), dog);
-            //Console.WriteLine("Result A: {0}", a);
-            //int b = Program.GenericTester(snowball => snowball.Age, cat);
-            //Console.WriteLine("Result B: {0}", b);
+            string a = Program.GenericTester(walter => walter.GetDetails(), dog);
+            Console.WriteLine("Result A: {0}", a);
+            int b = Program.GenericTester(snowball => snowball.Age, cat);
+            Console.WriteLine("Result B: {0}", b);
 
             #endregion
 
@@ -269,19 +270,18 @@ namespace Kohde.Assessment
 
         #region Assessment F Methods
 
-        public static void ShowSomeHumanInformation(Human human)
+        public static void ShowSomeMammalInformation<T>(T mammal) where T : IMammalDetails
         {
-            Console.WriteLine("Name:" + human.Name + " Age: " + human.Age);
+            Console.WriteLine(mammal.ToString());
         }
-
-        public static void ShowSomeDogInformation(Dog dog)
+        public static TResult GenericTester<T, TResult>(Func<T, TResult> func, T obj) where T : class, new()
         {
-            Console.WriteLine("Name:" + dog.Name + " Age: " + dog.Age);
-        }
+            if (obj == null)
+            {
+                obj = new T();
+            }
 
-        public static void ShowSomeCatInformation(Cat cat)
-        {
-            Console.WriteLine("Name:" + cat.Name + " Age: " + cat.Age);
+            return func(obj);
         }
 
         #endregion
