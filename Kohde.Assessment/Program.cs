@@ -80,9 +80,11 @@ namespace Kohde.Assessment
             // correct the following statement(s)
             try
             {
-                Dog bulldog = null;
-                var disposeDog = (IDisposable) bulldog;
-                disposeDog.Dispose();
+                Dog bulldog = new Dog();
+                if (bulldog is IDisposable disposeDog)
+                {
+                    disposeDog.Dispose();
+                }   
             }
             catch (Exception ex)
             {
