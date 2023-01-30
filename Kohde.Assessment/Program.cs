@@ -172,20 +172,20 @@ namespace Kohde.Assessment
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*  
-                const string abc = "asduqwezxc";
-                foreach (var vowel in abc.SelectOnlyVowels())
-                {
-                    Console.WriteLine("{0}", vowel);
-                }
-            */
+
+            const string abc = "asduqwezxc";
+            foreach (var vowel in abc.SelectOnlyVowels())
+            {
+                Console.WriteLine("{0}", vowel);
+            }
+
             // < REQUIRED OUTPUT => a u e
 
             // > UNCOMMENT THE CODE BELOW AND CREATE A METHOD SO THAT THE FOLLOWING CODE WILL WORK
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*
+
             List<Dog> dogs = new List<Dog>
             {
                 new Dog {Age = 8, Name = "Max"},
@@ -197,7 +197,7 @@ namespace Kohde.Assessment
 
             // < DOGS REQUIRED OUTPUT =>
             //      Name: Max Age: 8
-             
+
             List<Cat> cats = new List<Cat>
             {
                 new Cat {Age = 1, Name = "Capri"},
@@ -209,7 +209,7 @@ namespace Kohde.Assessment
             // < CATS REQUIRED OUTPUT =>
             //      Name: Capri Age: 1
             //      Name: Captain Hooks Age: 3
-            */
+
 
             #endregion
 
@@ -373,6 +373,24 @@ namespace Kohde.Assessment
             Console.WriteLine(price);
         }
 
+        #endregion
+
+        #region Bonus XP - Dungeon Methods
+        public static IEnumerable<char> SelectOnlyVowels(this IEnumerable<char> input)
+        {
+            return input.Where(c => "aeiou".Contains(c));
+        }
+
+        public static IEnumerable<T> CustomWhere<T>(this List<T> list, Func<T, bool> expression)
+        {
+            foreach (var item in list)
+            {
+                if (expression(item))
+                {
+                    yield return item;
+                }
+            }
+        }
         #endregion
     }
 
