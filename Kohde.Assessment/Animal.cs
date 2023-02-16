@@ -16,9 +16,7 @@
 
         }
 
-        public abstract string GetDetails();
-
-        public override string ToString()
+        public string GetDetails()
         {
             return $"{nameof(Name)}: {Name}, {nameof(Age)}: {Age}";
         }

@@ -14,11 +14,6 @@
 
         }
 
-        public override string GetDetails()
-        {
-            return base.ToString();
-        }
-
         public override string ToString()
         {
             return $"{GetDetails()}, {nameof(Gender)}: {Gender}";
