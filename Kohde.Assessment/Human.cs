@@ -1,14 +1,22 @@
 ﻿namespace Kohde.Assessment
 {
-    public class Human
+    public class Human : Animal
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
         public string Gender { get; set; }
 
-        public string GetDetails()
+        public Human(string name, int age, string gender) : base(name, age)
         {
-            return "Name: " + Name + "Age: " + Age;
+            Gender = gender;
+        }
+
+        public Human()
+        {
+
+        }
+
+        public override string ToString()
+        {
+            return $"{GetDetails()}, {nameof(Gender)}: {Gender}";
         }
     }
 }
