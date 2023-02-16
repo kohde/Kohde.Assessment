@@ -19,29 +19,13 @@ namespace Kohde.Assessment
             // the below class declarations looks like a 1st year student developed it
             // NOTE: this includes the class declarations as well
             // IMPROVE THE ARCHITECTURE 
-            Human human = new Human()
-            {
-                Name = "John",
-                Age = 35,
-                Gender = "M",
-            };
-
+            Human human = new Human("John", 35, "M");
             Console.WriteLine(human.GetDetails());
 
-            Dog dog = new Dog
-            {
-                Name = "Walter",
-                Age = 7,
-                Food = "Epol"
-            };
+            Dog dog = new Dog("Walter", 7, "Epol");
             Console.WriteLine(dog.GetDetails());
 
-            Cat cat = new Cat
-            {
-                Name = "Snowball",
-                Age = 35,
-                Food = "Whiskers"
-            };
+            Cat cat = new Cat("Snowball", 35, "Whiskers");
             Console.WriteLine(cat.GetDetails());
 
             #endregion
