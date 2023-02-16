@@ -20,7 +20,7 @@
 
         public override string ToString()
         {
-            return $"Name: {Name}, Age: {Age}";
+            return $"{nameof(Name)}: {Name}, {nameof(Age)}: {Age}";
         }
     }
 }
