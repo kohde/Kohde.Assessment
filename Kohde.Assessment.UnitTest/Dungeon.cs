@@ -40,9 +40,9 @@ namespace Kohde.Assessment.UnitTest
             var selectMethodInfo = typeof(Program).GetMethod("SelectOnlyVowels", new[] { typeof(IEnumerable<char>) });
             Assert.IsTrue(selectMethodInfo != null, "Indicates whether the SelectOnlyVowels extension method has not been implemented");
 
-            //Func<Dog, bool> expressionB = x => x.Age > 6 && (selectMethodInfo.Invoke(typeof(Program), new object[] { x.Name }) as IEnumerable<char>).Any();
+            Func<Dog, bool> expression = x => x.Age > 6 && (selectMethodInfo.Invoke(typeof(Program), new object[] { x.Name }) as IEnumerable<char>).Any();
 
-            Expression<Func<Dog, bool>> expression = x => x.Age > 6 && (selectMethodInfo.Invoke(typeof(Program), new object[] { x.Name }) as IEnumerable<char>).Any();
+            //Expression<Func<Dog, bool>> expression = x => x.Age > 6 && (selectMethodInfo.Invoke(typeof(Program), new object[] { x.Name }) as IEnumerable<char>).Any();
 
             IEnumerable<Dog> dogs = new List<Dog>
             {
