@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using Kohde.Assessment.AssessmentA;
 
@@ -91,9 +92,9 @@ namespace Kohde.Assessment
             // output must still render as: Name: [name] Age: [age]
             // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
-            ShowSomeHumanInformation(human);
-            ShowSomeDogInformation(dog);
-            ShowSomeCatInformation(cat);
+            ShowSomeMammalInformation(human);
+            ShowSomeMammalInformation(dog);
+            ShowSomeMammalInformation(cat);
 
 
             // # SECTION B #
@@ -265,19 +266,9 @@ namespace Kohde.Assessment
 
         #region Assessment F Methods
 
-        public static void ShowSomeHumanInformation(Human human)
+        public static string ShowSomeMammalInformation(IMammal pMammal)
         {
-            Console.WriteLine("Name:" + human.Name + " Age: " + human.Age);
-        }
-
-        public static void ShowSomeDogInformation(Dog dog)
-        {
-            Console.WriteLine("Name:" + dog.Name + " Age: " + dog.Age);
-        }
-
-        public static void ShowSomeCatInformation(Cat cat)
-        {
-            Console.WriteLine("Name:" + cat.Name + " Age: " + cat.Age);
+          return $"Name: {pMammal.Name} Age: {pMammal.Age}";
         }
 
         #endregion
