@@ -69,8 +69,7 @@ namespace Kohde.Assessment
             try
             {
                 Dog bulldog = null;
-                var disposeDog = (IDisposable) bulldog;
-                disposeDog.Dispose();
+                bulldog?.Dispose();
             }
             catch (Exception ex)
             {

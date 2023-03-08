@@ -1,12 +1,19 @@
 ﻿using System;
+using System.Resources;
+using System.Runtime.InteropServices;
+using System.Security.Policy;
+using System.Xml.Linq;
 using Kohde.Assessment.AssessmentA;
 
 namespace Kohde.Assessment
 {
   // We inherit from a base class Mammal(IMammal)
   // and then for the Food property I used IMammalFood for the contract (in this case its overkill but there for example completeness)
-  public class Dog : Mammal, IMammalFood
+  public class Dog : Mammal, IMammalFood, IDisposable
   {
+    // To detect redundant calls
+    private bool mDisposedValue;
+
     public string Food { get; set; }
 
     // default constructor
@@ -40,5 +47,41 @@ namespace Kohde.Assessment
     {
       return $"Name: {Name}, Age: {Age}, Food: {Food}";
     }
+
+
+
+
+
+
+
+
+    // Public implementation of Dispose pattern
+    public void Dispose()
+    {
+      Dispose(true);
+    }
+
+    // Protected implementation of Dispose pattern
+    protected virtual void Dispose(bool pDisposing)
+    {
+      // Check to see if Dispose has already been called
+      if (!mDisposedValue)
+      {
+        // If pDisposing is false then the method has been called from the finalizer 
+        if (pDisposing)
+        {
+          // Dispose managed objects here
+        }
+
+        // Free unmanaged resources here
+
+        mDisposedValue = true;
+      }
+
+      // We should also Call the base class implementation to dispose as well (I have not implemented that here)
+      //base.Dispose(pDisposing);
+    }
+
+
   }
 }
