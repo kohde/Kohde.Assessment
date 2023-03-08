@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kohde.Assessment.AssessmentA;
 
 namespace Kohde.Assessment
 {
@@ -11,27 +12,20 @@ namespace Kohde.Assessment
     {
         static void Main(string[] args)
         {
-            #region Assessment A
+          #region Assessment A
 
-            // the below class declarations looks like a 1st year student developed it
-            // NOTE: this includes the class declarations as well
-            // IMPROVE THE ARCHITECTURE 
-            Human human = new Human();
-            human.Name = "John";
-            human.Age = 35;
-            human.Gender = "M";
+          // the below class declarations looks like a 1st year student developed it
+          // NOTE: this includes the class declarations as well
+          // IMPROVE THE ARCHITECTURE 
+
+            // The Mammal class is the base class here and implements IMammal
+            var human = new Human("John", 35, "M");
             Console.WriteLine(human.GetDetails());
 
-            Dog dog = new Dog();
-            dog.Name = "Walter";
-            dog.Age = 7;
-            dog.Food = "Epol";
+            var dog = new Dog("Walter", 7, "Epol");
             Console.WriteLine(dog.GetDetails());
 
-            Cat cat = new Cat();
-            cat.Name = "Snowball";
-            cat.Age = 35;
-            cat.Food = "Whiskers";
+            var cat = new Cat("Snowball", 35, "Whiskers");
             Console.WriteLine(cat.GetDetails());
 
             #endregion
