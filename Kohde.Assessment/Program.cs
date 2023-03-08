@@ -13,11 +13,11 @@ namespace Kohde.Assessment
     {
         static void Main(string[] args)
         {
-          #region Assessment A
+            #region Assessment A
 
-          // the below class declarations looks like a 1st year student developed it
-          // NOTE: this includes the class declarations as well
-          // IMPROVE THE ARCHITECTURE 
+            // the below class declarations looks like a 1st year student developed it
+            // NOTE: this includes the class declarations as well
+            // IMPROVE THE ARCHITECTURE 
 
             // The Mammal class is the base class here and implements IMammal
             var human = new Human("John", 35, "M");
@@ -47,7 +47,8 @@ namespace Kohde.Assessment
             {
                 1, 4, 5, 9, 11, 15, 20, 27, 34, 55 // you may not change the numbers
             };
-            // the following method must return the first event number - as suggested by it's name
+
+            // the following method must return the first even number - as suggested by it's name
             var firstValue = GetFirstEvenValue(numbers);
             Console.WriteLine("First Number: " + firstValue);
 
@@ -225,14 +226,23 @@ namespace Kohde.Assessment
         public static int GetFirstEvenValue(List<int> numbers)
         {
             // RETURN THE FIRST EVEN NUMBER IN THE SEQUENCE
-            var first = numbers.Where(x => x % 2 == 0).First();
+            
+            // This code will throw an exception if there are no even numbers
+            //var first = numbers.Where(x => x % 2 == 0).First();
+
+            // FirstOrDefault will return 0 if no even numbers are found and is considered even as well
+            // Depending on what kind of logic we want to use returning 0 might not be the best case but thats what we will go with for now
+            var first = numbers.Where(x => x % 2 == 0).FirstOrDefault();
             return first;
         }
 
         public static string GetSingleStringValue(List<string> stringList)
         {
             // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
-            var first = stringList.Where(x => x.IndexOf("a") != -1).Single();
+
+            // I dont see the need for 'SingleOrDefault' if we just want the first item with the letter 'a'.
+            // it will throw and exception if there are multiples "System.InvalidOperationException: 'Sequence contains more than one element'"
+            var first = stringList.Where(x => x.IndexOf("a") != -1).SingleOrDefault();
             return first;
         }
 
