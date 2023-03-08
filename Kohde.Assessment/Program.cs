@@ -292,9 +292,13 @@ namespace Kohde.Assessment
             {
                 ThrowException();
             }
-            catch (ArithmeticException e)
+            catch
             {
-                throw e;
+                // if we use this then the stack trace will say that the method 'CatchAndRethrowExplicitly' threw the exception
+                // throw e;
+
+                // To preserve the stack trace we need to just throw the ex on, to see that 'ThrowException' threw it at line 307
+                throw;
             }
         }
 
