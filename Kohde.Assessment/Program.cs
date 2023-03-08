@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -105,10 +106,10 @@ namespace Kohde.Assessment
 
             // UNCOMMENT THE FOLLOWING PIECE OF CODE - IT WILL CAUSE A COMPILER ERROR - BECAUSE YOU HAVE TO CREATE THE METHOD
 
-            //string a = Program.GenericTester(walter => walter.GetDetails(), dog);
-            //Console.WriteLine("Result A: {0}", a);
-            //int b = Program.GenericTester(snowball => snowball.Age, cat);
-            //Console.WriteLine("Result B: {0}", b);
+            string a = Program.GenericTester<Dog, string>(walter => walter.GetDetails(), dog);
+            Console.WriteLine("Result A: {0}", a);
+            int b = Program.GenericTester<Cat, int>(snowball => snowball.Age, cat);
+            Console.WriteLine("Result B: {0}", b);
 
             #endregion
 
@@ -269,6 +270,16 @@ namespace Kohde.Assessment
         public static string ShowSomeMammalInformation(IMammal pMammal)
         {
           return $"Name: {pMammal.Name} Age: {pMammal.Age}";
+        }
+
+        // I dont have much experience with this so with intellisenses help I managed to find 'Activator.CreateInstance'
+        // I then specified the input type and output type as generics named T and TResult
+        private static TResult GenericTester<T, TResult>(Func<T, TResult> pFunc, T pMammal)
+        {
+          if (pMammal == null)
+            pMammal = (T)Activator.CreateInstance(typeof(T)); // Create a new instance of the specified type 
+
+          return pFunc(pMammal); // Run the method passing the object into the method as a argument
         }
 
         #endregion
