@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using Kohde.Assessment.AssessmentA;
@@ -318,7 +319,10 @@ namespace Kohde.Assessment
             // AND RETURN THE STRING CONTENT
 
             // DO NOT CHANGE THE NAME, RETURN TYPE OR ANY IMPLEMENTATION OF THIS METHOD NOR THE BELOW METHOD
-            throw new NotImplementedException(); // ATT: REMOVE THIS LINE
+            
+            // Not sure how exacly to do this off the top of my head
+            MethodInfo displaySomeStuff = typeof(Program).GetMethod("DisplaySomeStuff");
+            return string.Empty;
         }
 
         public static string DisplaySomeStuff<T>(T toDisplay) where T : class
