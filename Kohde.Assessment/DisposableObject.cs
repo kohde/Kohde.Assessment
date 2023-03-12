@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 
 namespace Kohde.Assessment
 {
@@ -13,10 +14,18 @@ namespace Kohde.Assessment
 
         public void PerformSomeLongRunningOperation()
         {
+            // Im not sure why you would create multiple events like this so we are going to just skip hooking up the event again every time
             foreach (var i in Enumerable.Range(1, 10))
             {
+                if (this.SomethingHappened != null)
+                  continue;
+
                 this.SomethingHappened += HandleSomethingHappened;
             }
+
+            // Probably wanted to do just this:
+            // Thread.Sleep(3000); // long operation
+            // this.SomethingHappened += HandleSomethingHappened;
         }
 
         public void RaiseEvent(string data)
@@ -38,6 +47,7 @@ namespace Kohde.Assessment
             if (disposing)
             {
                 // Dispose managed resources
+                this.SomethingHappened = null;
             }
 
             // Free native resources
