@@ -74,6 +74,7 @@ namespace Kohde.Assessment
       // correct the following statement(s)
       try
       {
+        // Do null check and implement Dispose pattern
         Dog bulldog = null;
         bulldog?.Dispose();
       }
