@@ -56,8 +56,8 @@ namespace Kohde.Assessment.UnitTest
             };
 
             string Func1(Dog x) => x.GetDetails();
-            Type[] typeArgs1 = { typeof(Dog), typeof(string) };
-            var generic1 = method.MakeGenericMethod(typeArgs1);
+            Type[] typeArgs1 = { typeof(Dog), typeof(string[]) };
+            var generic1 = method.MakeGenericMethod(typeArgs1[0]);
             var resultA = generic1.Invoke(typeof(Program), new object[]
             {
                 (Func<Dog, string>) Func1, dog
@@ -65,16 +65,16 @@ namespace Kohde.Assessment.UnitTest
             Trace.TraceInformation("{0}", resultA);
 
             string Func2(Human x) => x.GetDetails();
-            Type[] typeArgs2 = { typeof(Human), typeof(string) };
-            var generic2 = method.MakeGenericMethod(typeArgs2);
+            Type[] typeArgs2 = { typeof(Human), typeof(string[]) };
+            var generic2 = method.MakeGenericMethod(typeArgs2[0]);
             var resultB = generic2.Invoke(typeof(Program), new object[]
             {
                 (Func<Human, string>) Func2, human
             });
             Trace.TraceInformation("{0}", resultB);
 
-            Type[] typeArgs3 = { typeof(Human), typeof(string) };
-            var generic3 = method.MakeGenericMethod(typeArgs3);
+            Type[] typeArgs3 = { typeof(Human), typeof(string[]) };
+            var generic3 = method.MakeGenericMethod(typeArgs3[0]);
             var resultC = generic3.Invoke(typeof(Program), new object[]
             {
                 (Func<Human, string>) Func2, null

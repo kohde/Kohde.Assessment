@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace Kohde.Assessment
 {
@@ -11,36 +10,45 @@ namespace Kohde.Assessment
 
         public int Counter { get; private set; }
 
+        private bool disposed = false;
+
         public void PerformSomeLongRunningOperation()
         {
-            foreach (var i in Enumerable.Range(1, 10))
-            {
-                this.SomethingHappened += HandleSomethingHappened;
-            }
+            SomethingHappened += HandleSomethingHappened;
         }
 
         public void RaiseEvent(string data)
         {
             if (this.SomethingHappened != null)
             {
-                this.SomethingHappened(data);
+                SomethingHappened.Invoke(data);
             }
         }
 
         private void HandleSomethingHappened(string foo)
         {
-            this.Counter = this.Counter + 1;
+            Counter++;
             Console.WriteLine("HIT {0} => HandleSomethingHappened. Data: {1}", this.Counter, foo);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!disposed)
             {
-                // Dispose managed resources
+                if (disposing)
+                {
+                    // Dispose managed resources
+                    if (SomethingHappened != null)
+                    {
+                        foreach (var handler in SomethingHappened.GetInvocationList())
+                        {
+                            SomethingHappened -= (MyEventHandler)handler;
+                        }
+                    }
+                }
+                // Free native resources
+                disposed = true;
             }
-
-            // Free native resources
         }
 
         public void Dispose()
