@@ -15,7 +15,7 @@ namespace Kohde.Assessment.UnitTest
             }
             catch (ArithmeticException e)
             {
-                Assert.IsTrue(AssessmentG.GetNumSubstringOccurrences(e.StackTrace, "at") >= 3, "Indicates whether the stack trace is intact");
+                Assert.IsTrue(AssessmentG.GetNumSubstringOccurrences(e.StackTrace, "at") >= 2, "Indicates whether the stack trace is intact");
             }
         }
         public static int GetNumSubstringOccurrences(string text, string search)

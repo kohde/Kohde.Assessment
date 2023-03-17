@@ -1,0 +1,11 @@
+C:\Users\Hp\source\repos\Kohde.Assessment\Kohde.Assessment.UnitTest\obj\Debug\Kohde.Assessment.UnitTest.csproj.AssemblyReference.cache
+C:\Users\Hp\source\repos\Kohde.Assessment\Kohde.Assessment.UnitTest\obj\Debug\Kohde.Assessment.UnitTest.csproj.CoreCompileInputs.cache
+C:\Users\Hp\source\repos\Kohde.Assessment\Kohde.Assessment.UnitTest\bin\Debug\Kohde.Assessment.UnitTest.dll
+C:\Users\Hp\source\repos\Kohde.Assessment\Kohde.Assessment.UnitTest\bin\Debug\Kohde.Assessment.UnitTest.pdb
+C:\Users\Hp\source\repos\Kohde.Assessment\Kohde.Assessment.UnitTest\bin\Debug\Kohde.Assessment.exe
+C:\Users\Hp\source\repos\Kohde.Assessment\Kohde.Assessment.UnitTest\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\Hp\source\repos\Kohde.Assessment\Kohde.Assessment.UnitTest\bin\Debug\Kohde.Assessment.pdb
+C:\Users\Hp\source\repos\Kohde.Assessment\Kohde.Assessment.UnitTest\bin\Debug\Kohde.Assessment.exe.config
+C:\Users\Hp\source\repos\Kohde.Assessment\Kohde.Assessment.UnitTest\obj\Debug\Kohde.Assessment.UnitTest.csproj.CopyComplete
+C:\Users\Hp\source\repos\Kohde.Assessment\Kohde.Assessment.UnitTest\obj\Debug\Kohde.Assessment.UnitTest.dll
+C:\Users\Hp\source\repos\Kohde.Assessment\Kohde.Assessment.UnitTest\obj\Debug\Kohde.Assessment.UnitTest.pdb

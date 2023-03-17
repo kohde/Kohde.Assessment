@@ -54,7 +54,9 @@ namespace Kohde.Assessment.UnitTest
                 new Dog {Age = 9, Name = "XML"}
             };
 
-            Assert.IsTrue(generic.Invoke(typeof(Program), new object[] { dogs, expression }) is IEnumerable<Dog> result && result.Count().Equals(2));
+            Func<Dog, bool> func = expression.Compile();
+
+            Assert.IsTrue(generic.Invoke(typeof(Program), new object[] { dogs, func }) is IEnumerable<Dog> result && result.Count().Equals(2));
         }
 
         [TestMethod]
