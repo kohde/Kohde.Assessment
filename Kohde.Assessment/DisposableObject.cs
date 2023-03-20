@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Kohde.Assessment
 {
@@ -29,7 +30,7 @@ namespace Kohde.Assessment
 
         private void HandleSomethingHappened(string foo)
         {
-            this.Counter = this.Counter + 1;
+            this.Counter += 1;
             Console.WriteLine("HIT {0} => HandleSomethingHappened. Data: {1}", this.Counter, foo);
         }
 
@@ -38,9 +39,11 @@ namespace Kohde.Assessment
             if (disposing)
             {
                 // Dispose managed resources
+                this.SomethingHappened = default;
             }
 
             // Free native resources
+            this.Counter = 1;
         }
 
         public void Dispose()
