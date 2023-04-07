@@ -16,23 +16,19 @@ namespace Kohde.Assessment
             // the below class declarations looks like a 1st year student developed it
             // NOTE: this includes the class declarations as well
             // IMPROVE THE ARCHITECTURE 
-            Human human = new Human();
-            human.Name = "John";
-            human.Age = 35;
-            human.Gender = "M";
-            Console.WriteLine(human.GetDetails());
+            ConstructerInjector ci;
 
-            Dog dog = new Dog();
-            dog.Name = "Walter";
-            dog.Age = 7;
-            dog.Food = "Epol";
-            Console.WriteLine(dog.GetDetails());
+            Human human = new Human("John", 35, "M");
+            ci = new ConstructerInjector(human);
+            Console.WriteLine(ci.GetDetails());
 
-            Cat cat = new Cat();
-            cat.Name = "Snowball";
-            cat.Age = 35;
-            cat.Food = "Whiskers";
-            Console.WriteLine(cat.GetDetails());
+            Dog dog = new Dog("Walter", 7, "Epol");
+            ci = new ConstructerInjector(dog);
+            Console.WriteLine(ci.GetDetails());
+
+            Cat cat = new Cat("Snowball", 35, "Whiskers");            
+            ci = new ConstructerInjector(cat);
+            Console.WriteLine(ci.GetDetails());
 
             #endregion
 
@@ -73,7 +69,7 @@ namespace Kohde.Assessment
             try
             {
                 Dog bulldog = null;
-                var disposeDog = (IDisposable) bulldog;
+                var disposeDog = (IDisposable)bulldog;
                 disposeDog.Dispose();
             }
             catch (Exception ex)
@@ -85,7 +81,7 @@ namespace Kohde.Assessment
 
             #region Assessment E
 
-            DisposeSomeObject();            
+            DisposeSomeObject();
 
             #endregion
 
@@ -214,7 +210,7 @@ namespace Kohde.Assessment
 
             // DO NOT CHANGE THE ACTUAL FOR LOOP IN ANY WAY !!
             // in other words, you may not change: for (INITIALIZATION; CONDITION; INCREMENT/DECREMENT)
-            for (var i = 0; i < loops; i++) 
+            for (var i = 0; i < loops; i++)
             {
                 someLongDataString += source;
             }
@@ -239,7 +235,7 @@ namespace Kohde.Assessment
         }
 
         #endregion
-        
+
         #region Assessment E Method
 
         public static DisposableObject DisposeSomeObject()
