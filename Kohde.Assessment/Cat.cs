@@ -4,8 +4,7 @@ namespace Kohde.Assessment
 {
     public class Cat : Animal
     {
-        private string Name { get; set; }
-        
+               
         //Empty contructor not required, but usually good practice
         public Cat() { }
 
