@@ -234,8 +234,9 @@ namespace Kohde.Assessment
         public static string GetSingleStringValue(List<string> stringList)
         {
             // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
-            //return SingleOrDefault, because the list might be empty
-            var first = stringList.Where(x => x.IndexOf("a") != -1).SingleOrDefault();
+            //return FirstOrDefault, because the list might be empty 
+            //can return SingleOrDefault if an error should rather be thrown
+            var first = stringList.Where(x => x.IndexOf("a") != -1).FirstOrDefault();
             return first;
         }
 
