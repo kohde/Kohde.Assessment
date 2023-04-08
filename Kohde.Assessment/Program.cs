@@ -16,20 +16,21 @@ namespace Kohde.Assessment
 
             // the below class declarations looks like a 1st year student developed it
             // NOTE: this includes the class declarations as well
-            // IMPROVE THE ARCHITECTURE 
-            ConstructerInjector ci;
+            // IMPROVE THE ARCHITECTURE             
 
             Human human = new Human("John", 35, "M");
-            ci = new ConstructerInjector(human);
-            Console.WriteLine(ci.GetDetails());
-
             Dog dog = new Dog("Walter", 7, "Epol");
-            ci = new ConstructerInjector(dog);
-            Console.WriteLine(ci.GetDetails());
+            Cat cat = new Cat("Snowball", 35, "Whiskers");
 
-            Cat cat = new Cat("Snowball", 35, "Whiskers");            
-            ci = new ConstructerInjector(cat);
-            Console.WriteLine(ci.GetDetails());
+            List<Mammal> mammals = new List<Mammal>();
+            mammals.Add(human);
+            mammals.Add(dog);
+            mammals.Add(cat);
+
+            foreach (Mammal m in mammals)
+            {
+                Console.WriteLine(m.GetDetails());
+            }
 
             #endregion
 
@@ -248,7 +249,7 @@ namespace Kohde.Assessment
         {
             // IMPROVE THE FOLLOWING PIECE OF CODE
             // as well as the PerformSomeLongRunningOperation method
-            
+
             //by wrapping in "using" statement it adds better exception handling
             //and will also call Dispose even if there was an exception.
             using(var disposableObject = new DisposableObject())
@@ -256,8 +257,8 @@ namespace Kohde.Assessment
                 disposableObject.PerformSomeLongRunningOperation();
                 disposableObject.RaiseEvent("raised event");
                 return disposableObject;
-            }            
-            
+            }
+
         }
 
         #endregion
