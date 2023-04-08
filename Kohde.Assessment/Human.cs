@@ -7,10 +7,20 @@ namespace Kohde.Assessment
         private string name;
         private int age;
         private string gender;
-        public override string Name { get; set; }
+        public override string Name
+        {
+            get => name;
+            set => name = value;
+        }
 
-        public override int Age { get; set; }
-        public string Gender { get; set; }
+        public override int Age {
+            get => age;
+            set => age = value;
+        }
+        public string Gender { 
+            get => gender;
+            set => gender = value;
+        }
 
         //Empty contructor not required, but usually good practice
         public Human() { }
@@ -26,16 +36,16 @@ namespace Kohde.Assessment
         //Overriding abstract method getDetails with own implementation
         public override string GetDetails()
         {
-            return "Name: " + name + "Age: " + age;
+            return "Name: " + name + " Age: " + age;
         }
 
         //Default equals method to check object equality
         public override bool Equals(object obj)
         {
             return obj is Human human &&
-                   name == human.Name &&
-                   age == human.Age &&
-                   gender == human.Gender;
+                   name == human.name &&
+                   age == human.age &&
+                   gender == human.gender;
         }
 
         //Default ToString method
@@ -49,7 +59,7 @@ namespace Kohde.Assessment
         {
             int hashCode = -1497452382;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
-            hashCode = hashCode * -1521134295 + Age.GetHashCode();
+            hashCode = hashCode * -1521134295 + age.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(gender);
             return hashCode;
         }

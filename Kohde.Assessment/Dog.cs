@@ -8,9 +8,21 @@ namespace Kohde.Assessment
         private string name;
         private int age;
         private string food;
-        public override string Name { get; set; }
-        public override int Age { get; set; }
-        public string Food { get; set; }
+        public override string Name
+        {
+            get => name;
+            set => name = value;
+        }
+        public override int Age
+        {
+            get => age;
+            set => age = value;
+        }
+        public string Food
+        {
+            get => food;
+            set => food = value;
+        }
 
         //Empty contructor not required, but usually good practice
         public Dog() { }
@@ -26,7 +38,7 @@ namespace Kohde.Assessment
         //Overriding abstract method getDetails with own implementation
         public override string GetDetails()
         {
-            return "Name: " + name + "Age: " + age;
+            return "Name: " + name + " Age: " + age;
         }
 
         //Default ToString method
@@ -39,9 +51,9 @@ namespace Kohde.Assessment
         public override bool Equals(object obj)
         {
             return obj is Dog dog &&
-                   name == dog.Name &&
-                   age == dog.Age &&
-                   food == dog.Food;
+                   name == dog.name &&
+                   age == dog.age &&
+                   food == dog.food;
         }
 
         //Default GetHashCode method
@@ -49,7 +61,7 @@ namespace Kohde.Assessment
         {
             int hashCode = -1123064597;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
-            hashCode = hashCode * -1521134295 + Age.GetHashCode();
+            hashCode = hashCode * -1521134295 + age.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(food);
             return hashCode;
         }
