@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kohde.Assessment.Container;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -384,11 +385,18 @@ namespace Kohde.Assessment
 
             // 1. register the interfaces and classes
             // TODO: ???
+            
+            //Get a container instance 
+            var container = Ioc.Container;
+            //register the DeviceProcessor with service as IDeviceProcessor (will throw exception if service has already been registered)
+            container.Register<IDeviceProcessor, DeviceProcessor>();
+            //register the SamsungDevice with service as IDevice (will throw exception if service has already been registered)
+            container.Register<IDevice, SamsungDevice>();                       
 
-            // 2. resolve the IDeviceProcessor
-            //var deviceProcessor = ???
-            // call the GetDevicePrice method
-            //Console.WriteLine(deviceProcessor.GetDevicePrice());
+            //// 2. resolve the IDeviceProcessor service to get an instance of DeviceProcessor           
+            var deviceProcessor = container.Resolve<IDeviceProcessor>();
+            //// call the GetDevicePrice method
+            Console.WriteLine(deviceProcessor.GetDevicePrice());
         }
 
         #endregion
