@@ -337,8 +337,16 @@ namespace Kohde.Assessment
             // CALL THE FOLLOWING METHOD: DisplaySomeStuff [WHICH IN JUST BELOW THIS ONE]
             // AND RETURN THE STRING CONTENT
 
-            // DO NOT CHANGE THE NAME, RETURN TYPE OR ANY IMPLEMENTATION OF THIS METHOD NOR THE BELOW METHOD
-            throw new NotImplementedException(); // ATT: REMOVE THIS LINE
+            // DO NOT CHANGE THE NAME, RETURN TYPE OR ANY IMPLEMENTATION OF THIS METHOD NOR THE BELOW METHOD            
+
+            //Get method by using method name
+            var method = typeof(Program).GetMethod("DisplaySomeStuff");
+            //Make generic method and Substitute type for type arguments
+            var generic = method.MakeGenericMethod(typeof(string));
+            //Create some random string argument
+            var args = new[] { "some string"};
+            //return the value after the generic method was invoked
+            return (string) generic.Invoke(null, args);
         }
 
         public static string DisplaySomeStuff<T>(T toDisplay) where T : class
