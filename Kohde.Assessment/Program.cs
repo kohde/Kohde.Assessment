@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Kohde.Assessment
@@ -22,10 +23,12 @@ namespace Kohde.Assessment
             Dog dog = new Dog("Walter", 7, "Epol");
             Cat cat = new Cat("Snowball", 35, "Whiskers");
 
-            List<Mammal> mammals = new List<Mammal>();
-            mammals.Add(human);
-            mammals.Add(dog);
-            mammals.Add(cat);
+            List<Mammal> mammals = new List<Mammal>
+            {
+                human,
+                dog,
+                cat
+            };
 
             foreach (Mammal m in mammals)
             {
@@ -94,9 +97,9 @@ namespace Kohde.Assessment
             // output must still render as: Name: [name] Age: [age]
             // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
-            ShowSomeHumanInformation(human);
-            ShowSomeDogInformation(dog);
-            ShowSomeCatInformation(cat);
+            ShowSomeMammalInformation(human);
+            ShowSomeMammalInformation(dog);
+            ShowSomeMammalInformation(cat);
 
 
             // # SECTION B #
@@ -107,11 +110,12 @@ namespace Kohde.Assessment
 
             // UNCOMMENT THE FOLLOWING PIECE OF CODE - IT WILL CAUSE A COMPILER ERROR - BECAUSE YOU HAVE TO CREATE THE METHOD
 
-            //string a = Program.GenericTester(walter => walter.GetDetails(), dog);
-            //Console.WriteLine("Result A: {0}", a);
-            //int b = Program.GenericTester(snowball => snowball.Age, cat);
-            //Console.WriteLine("Result B: {0}", b);
+            string a = Program.GenericTester<Mammal, string>(walter => walter.GetDetails(), dog);
+            Console.WriteLine("Result A: {0}", a);
+            int b = Program.GenericTester<Mammal, int>(snowball => snowball.Age, cat);
+            Console.WriteLine("Result B: {0}", b);
 
+            test();
             #endregion
 
             #region Assessment G
@@ -252,7 +256,7 @@ namespace Kohde.Assessment
 
             //by wrapping in "using" statement it adds better exception handling
             //and will also call Dispose even if there was an exception.
-            using(var disposableObject = new DisposableObject())
+            using (var disposableObject = new DisposableObject())
             {
                 disposableObject.PerformSomeLongRunningOperation();
                 disposableObject.RaiseEvent("raised event");
@@ -263,21 +267,43 @@ namespace Kohde.Assessment
 
         #endregion
 
-        #region Assessment F Methods
+        #region Assessment F Methods        
 
-        public static void ShowSomeHumanInformation(Human human)
+        public static void ShowSomeMammalInformation<T>(T mammal) where T : Mammal
         {
-            Console.WriteLine("Name:" + human.Name + " Age: " + human.Age);
+            Console.WriteLine("Name: " + mammal.Name + " Age: " + mammal.Age);
         }
 
-        public static void ShowSomeDogInformation(Dog dog)
+        public static void test()
         {
-            Console.WriteLine("Name:" + dog.Name + " Age: " + dog.Age);
+            var method = typeof(Program).GetMethod("GenericTester");
+            Type[] typeArgs = { typeof(string), typeof(int) };
+            //MethodInfo tii = thenInclude();
+            MethodInfo generic = method.MakeGenericMethod(typeArgs);
+            Console.WriteLine("a");
+            //generic.Invoke(this, null);
         }
 
-        public static void ShowSomeCatInformation(Cat cat)
+
+        public static dynamic GenericTester<T, U>(Func<T, object> value, Mammal mammal)
         {
-            Console.WriteLine("Name:" + cat.Name + " Age: " + cat.Age);
+
+            //return "";
+
+            //Type mammalType = mammal.GetType();
+            if (/*mammalType == typeof(Dog) &&*/ mammal == null)
+            {
+                //string type = value.GetMethodInfo().GetParameters()[0].ParameterType.Name;                
+                //Type type2 = Type.GetType(type);
+                //object a = Activator.CreateInstance(type2);                
+                mammal = new Human { Name = "Spots", Age = 2 };
+                //return value.GetMethodInfo().Invoke(typeof(Program), new object[] { mammal });
+
+                //var method = typeof(Program).GetMethod("testGenericMethod");
+                //Type[] typeArgs = { typeof(Dog) };
+            }
+            return value.DynamicInvoke(mammal);
+            //return mammal;
         }
 
         #endregion
