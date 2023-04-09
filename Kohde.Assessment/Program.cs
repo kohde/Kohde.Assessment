@@ -316,9 +316,11 @@ namespace Kohde.Assessment
             {
                 ThrowException();
             }
-            catch (ArithmeticException e)
+            catch (ArithmeticException)
             {
-                throw e;
+                //If 'throw e' is used here it basically throws the exception from this point.
+                //Just using 'throw' keeps the stack trace intact (passes the exception along) when rethrowing exceptions.
+                throw;
             }
         }
 
