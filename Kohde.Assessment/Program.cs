@@ -116,7 +116,6 @@ namespace Kohde.Assessment
             int b = Program.GenericTester<Mammal, int>(snowball => snowball.Age, cat);
             Console.WriteLine("Result B: {0}", b);
 
-            test();
             #endregion
 
             #region Assessment G
@@ -272,39 +271,21 @@ namespace Kohde.Assessment
 
         public static void ShowSomeMammalInformation<T>(T mammal) where T : Mammal
         {
-            Console.WriteLine("Name: " + mammal.Name + " Age: " + mammal.Age);
+            mammal.GetDetails();
         }
 
-        public static void test()
-        {
-            var method = typeof(Program).GetMethod("GenericTester");
-            Type[] typeArgs = { typeof(string), typeof(int) };
-            //MethodInfo tii = thenInclude();
-            MethodInfo generic = method.MakeGenericMethod(typeArgs);
-            Console.WriteLine("a");
-            //generic.Invoke(this, null);
-        }
-
-
-        public static dynamic GenericTester<T, U>(Func<T, object> value, Mammal mammal)
+        public static dynamic GenericTester<TMammal, Ttype>(Func<TMammal, object> value, Mammal mammal)
         {
 
-            //return "";
-
-            //Type mammalType = mammal.GetType();
-            if (/*mammalType == typeof(Dog) &&*/ mammal == null)
+            if (mammal == null)
             {
-                //string type = value.GetMethodInfo().GetParameters()[0].ParameterType.Name;                
-                //Type type2 = Type.GetType(type);
-                //object a = Activator.CreateInstance(type2);                
-                mammal = new Human { Name = "Spots", Age = 2 };
-                //return value.GetMethodInfo().Invoke(typeof(Program), new object[] { mammal });
+                Type mammalType = typeof(TMammal);
+                object instance = Activator.CreateInstance(mammalType);
+                MethodInfo mi = mammalType.GetMethod("GetDetails");
+                return mi.Invoke(instance, null);
 
-                //var method = typeof(Program).GetMethod("testGenericMethod");
-                //Type[] typeArgs = { typeof(Dog) };
             }
             return value.DynamicInvoke(mammal);
-            //return mammal;
         }
 
         #endregion
@@ -347,9 +328,9 @@ namespace Kohde.Assessment
             //Make generic method and Substitute type for type arguments
             var generic = method.MakeGenericMethod(typeof(string));
             //Create some random string argument
-            var args = new[] { "some string"};
+            var args = new[] { "some string" };
             //return the value after the generic method was invoked
-            return (string) generic.Invoke(null, args);
+            return (string)generic.Invoke(null, args);
         }
 
         public static string DisplaySomeStuff<T>(T toDisplay) where T : class
@@ -385,13 +366,13 @@ namespace Kohde.Assessment
 
             // 1. register the interfaces and classes
             // TODO: ???
-            
+
             //Get a container instance 
             var container = Ioc.Container;
             //register the DeviceProcessor with service as IDeviceProcessor (will throw exception if service has already been registered)
             container.Register<IDeviceProcessor, DeviceProcessor>();
             //register the SamsungDevice with service as IDevice (will throw exception if service has already been registered)
-            container.Register<IDevice, SamsungDevice>();                       
+            container.Register<IDevice, SamsungDevice>();
 
             //// 2. resolve the IDeviceProcessor service to get an instance of DeviceProcessor           
             var deviceProcessor = container.Resolve<IDeviceProcessor>();
