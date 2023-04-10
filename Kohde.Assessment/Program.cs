@@ -72,15 +72,20 @@ namespace Kohde.Assessment
 
             // there are multiple corrections required!!
             // correct the following statement(s)
-            Dog bulldog = null;
-            using (bulldog as IDisposable)
+            try
             {
-                //do suff
-                
-                //even if there are exceptions,
+                //bulldog cannot be cast to IDisposable if it is null, so instansiate it
+                Dog bulldog = new Dog();
                 //the using statement block ensures that the object is still disposed
-                //can also have try catch inside using statement to explicitely catch exceptions
-            }           
+                using (var disposibleDog = (IDisposable)bulldog)
+                {
+                    //do suff
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             #endregion
 
@@ -97,7 +102,7 @@ namespace Kohde.Assessment
             // output must still render as: Name: [name] Age: [age]
             // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
-            
+
             //This could have been done in a foreach, but I think the reason was only to
             //demonstrate the use of a generic method for different objecs
             ShowSomeMammalInformation(human);
