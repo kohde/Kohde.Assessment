@@ -72,16 +72,15 @@ namespace Kohde.Assessment
 
             // there are multiple corrections required!!
             // correct the following statement(s)
-            try
+            Dog bulldog = null;
+            using (bulldog as IDisposable)
             {
-                Dog bulldog = null;
-                var disposeDog = (IDisposable)bulldog;
-                disposeDog.Dispose();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+                //do suff
+                
+                //even if there are exceptions,
+                //the using statement block ensures that the object is still disposed
+                //can also have try catch inside using statement to explicitely catch exceptions
+            }           
 
             #endregion
 
