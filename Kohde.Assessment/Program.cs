@@ -98,6 +98,9 @@ namespace Kohde.Assessment
             // output must still render as: Name: [name] Age: [age]
             // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
+            
+            //This could have been done in a foreach, but I think the reason was only to
+            //demonstrate the use of a generic method for different objecs
             ShowSomeMammalInformation(human);
             ShowSomeMammalInformation(dog);
             ShowSomeMammalInformation(cat);
@@ -111,9 +114,9 @@ namespace Kohde.Assessment
 
             // UNCOMMENT THE FOLLOWING PIECE OF CODE - IT WILL CAUSE A COMPILER ERROR - BECAUSE YOU HAVE TO CREATE THE METHOD
 
-            string a = Program.GenericTester<Mammal, string>(walter => walter.GetDetails(), dog);
+            string a = Program.GenericTester(walter => walter.GetDetails(), dog);
             Console.WriteLine("Result A: {0}", a);
-            int b = Program.GenericTester<Mammal, int>(snowball => snowball.Age, cat);
+            int b = Program.GenericTester(snowball => snowball.Age, cat);
             Console.WriteLine("Result B: {0}", b);
 
             #endregion
@@ -269,23 +272,34 @@ namespace Kohde.Assessment
 
         #region Assessment F Methods        
 
+        /*
+         * Generic method to call GetDetails from any mammal
+         * Could be even more generic for any class, then restriction should be on 'class' and not 'Mammal' 
+         * Then one would have to check if the object contains the getdetails method with reflection and call it
+         * else it should log a default output
+         */
         public static void ShowSomeMammalInformation<T>(T mammal) where T : Mammal
         {
             mammal.GetDetails();
         }
 
-        public static dynamic GenericTester<Mammal, Ttype>(Func<Mammal, object> value, Mammal mammal)
+        /*
+         * GenericTester function takes a generic Func delegate and object on which to call the delegate as input
+         * TOutType => the generic return type specified in the delegate
+         * TClassType => the type of the input to the delegate
+         * Contraints on TClassType => any class and that it must contain a public parameterless constructor         * 
+         */
+        public static TOutType GenericTester<TClassType, TOutType>(Func<TClassType, TOutType> func, TClassType obj) where TClassType : class, new()
         {
-
-            if (mammal == null)
+            //If the input obj is null, then create a new instance of the output type given in the delegate function
+            if (obj == null)
             {
-                Type mammalType = typeof(Mammal);
-                object instance = Activator.CreateInstance(mammalType);
-                //MethodInfo mi = mammalType.GetMethod("GetDetails");
-                return value.Invoke((Mammal)instance);// mi.Invoke(instance, null);
+                //Create a new instance of the TClassType by using reflection (i.e. get type at runtime) and set it to obj
+                obj = Activator.CreateInstance<TClassType>(); ;
 
             }
-            return value.Invoke(mammal);
+            //return the result of the function that was evaluated with the input parameter
+            return func(obj);
         }
 
         #endregion
@@ -390,7 +404,7 @@ namespace Kohde.Assessment
         public static string SelectOnlyVowels(this IEnumerable<char> str)
         {
             //List to store chars to match against                         
-            List<char> vowels = new List<char>() { 'a', 'e', 'o', 'u', 'i' };            
+            List<char> vowels = new List<char>() { 'a', 'e', 'o', 'u', 'i' };
             //return chars that are found in the list above and join the result in a string
             return string.Join("", str.Where(x => vowels.Contains(x)));
         }
