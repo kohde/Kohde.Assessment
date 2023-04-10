@@ -274,18 +274,18 @@ namespace Kohde.Assessment
             mammal.GetDetails();
         }
 
-        public static dynamic GenericTester<TMammal, Ttype>(Func<TMammal, object> value, Mammal mammal)
+        public static dynamic GenericTester<Mammal, Ttype>(Func<Mammal, object> value, Mammal mammal)
         {
 
             if (mammal == null)
             {
-                Type mammalType = typeof(TMammal);
+                Type mammalType = typeof(Mammal);
                 object instance = Activator.CreateInstance(mammalType);
-                MethodInfo mi = mammalType.GetMethod("GetDetails");
-                return mi.Invoke(instance, null);
+                //MethodInfo mi = mammalType.GetMethod("GetDetails");
+                return value.Invoke((Mammal)instance);// mi.Invoke(instance, null);
 
             }
-            return value.DynamicInvoke(mammal);
+            return value.Invoke(mammal);
         }
 
         #endregion
