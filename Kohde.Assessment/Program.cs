@@ -161,20 +161,20 @@ namespace Kohde.Assessment
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*  
-                const string abc = "asduqwezxc";
-                foreach (var vowel in abc.SelectOnlyVowels())
-                {
-                    Console.WriteLine("{0}", vowel);
-                }
-            */
+
+            const string abc = "asduqwezxc";
+            foreach (var vowel in abc.SelectOnlyVowels())
+            {
+                Console.WriteLine("{0}", vowel);
+            }
+
             // < REQUIRED OUTPUT => a u e
 
             // > UNCOMMENT THE CODE BELOW AND CREATE A METHOD SO THAT THE FOLLOWING CODE WILL WORK
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*
+
             List<Dog> dogs = new List<Dog>
             {
                 new Dog {Age = 8, Name = "Max"},
@@ -186,7 +186,7 @@ namespace Kohde.Assessment
 
             // < DOGS REQUIRED OUTPUT =>
             //      Name: Max Age: 8
-             
+
             List<Cat> cats = new List<Cat>
             {
                 new Cat {Age = 1, Name = "Capri"},
@@ -198,7 +198,7 @@ namespace Kohde.Assessment
             // < CATS REQUIRED OUTPUT =>
             //      Name: Capri Age: 1
             //      Name: Captain Hooks Age: 3
-            */
+
 
             #endregion
 
@@ -381,6 +381,71 @@ namespace Kohde.Assessment
         }
 
         #endregion
+
+        #region Dungeon Methods
+
+        //IEnumerable<char> is a generic collection
+        //IEnumerable<char> is used here instead of string, since we know we will be iterating through each element of the input.
+        //By using IEnumerable<char> it increases performance 
+        public static string SelectOnlyVowels(this IEnumerable<char> str)
+        {
+            //List to store chars to match against                         
+            List<char> vowels = new List<char>() { 'a', 'e', 'o', 'u', 'i' };            
+            //return chars that are found in the list above and join the result in a string
+            return string.Join("", str.Where(x => vowels.Contains(x)));
+        }
+
+        /*
+         * To pass the InvokeLvlB2ExtensionMethod test
+         */
+        public static IEnumerable<T> CustomWhere<T>(this IEnumerable<T> source, Func<T, bool> func)
+        {
+            //Iterate through each element of source
+            foreach (var item in source)
+            {
+                //check if the item should be returned, i.e. if it passes the lambda expression provided
+                if (func(item))
+                {
+                    //Below is just to print the result, but is not required
+                    Type type = typeof(T);
+                    MethodInfo method = type.GetMethod("GetDetails");
+                    var result = method.Invoke(item, null);
+                    Console.WriteLine(result);
+
+                    //yield return is used to return a collection/sequence of values
+                    yield return item;
+                }
+            }
+        }
+
+        /*
+         * To pass the InvokeLvlB1ExtensionMethod test
+         */
+        //public static IEnumerable<T> CustomWhere<T>(this IEnumerable<T> source, System.Linq.Expressions.Expression<Func<T, bool>> func)
+        //{
+        //    //compile the expression tree into callable code
+        //    Func<T, bool> compiledDelegate = func.Compile();
+
+        //    //iterate through each element of source
+        //    foreach (var element in source)
+        //    {
+        //        //check if the item should be returned, i.e. if it passes the lambda expression provided
+        //        if (compiledDelegate(element))
+        //        {
+        //            //Below is just to print the result, but is not required
+        //            Type type = typeof(T);
+        //            MethodInfo method = type.GetMethod("GetDetails");
+        //            var result = method.Invoke(element, null);
+        //            Console.WriteLine(result);
+
+        //            //yield return is used to return a collection/sequence of values
+        //            yield return element;
+        //        }
+        //    }
+        //}
+
+        #endregion
+
     }
 
     public interface IDevice
