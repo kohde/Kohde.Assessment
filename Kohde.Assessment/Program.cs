@@ -261,15 +261,14 @@ namespace Kohde.Assessment
             // IMPROVE THE FOLLOWING PIECE OF CODE
             // as well as the PerformSomeLongRunningOperation method
 
-            //by wrapping in "using" statement it adds better exception handling
-            //and will also call Dispose even if there was an exception.
+            //by wrapping in "using" statement dispose will be called when the code inside the block has finished executing ( even if there was an exception )                       
             using (var disposableObject = new DisposableObject())
             {
                 disposableObject.PerformSomeLongRunningOperation();
-                disposableObject.RaiseEvent("raised event");
+                disposableObject.RaiseEvent("raised event");                
                 return disposableObject;
             }
-
+            
         }
 
         #endregion
