@@ -20,10 +20,15 @@ namespace Kohde.Assessment
             // NOTE: this includes the class declarations as well
             // IMPROVE THE ARCHITECTURE             
 
+
+            //Construct classes using a constucter
+            //It can also be possible to create injectors for each of the classes below
+            //So that they are injected rather than created here
             Human human = new Human("John", 35, "M");
             Dog dog = new Dog("Walter", 7, "Epol");
             Cat cat = new Cat("Snowball", 35, "Whiskers");
 
+            //Add objects to a list
             List<Mammal> mammals = new List<Mammal>
             {
                 human,
@@ -31,6 +36,7 @@ namespace Kohde.Assessment
                 cat
             };
 
+            //Call method on each object in a list
             foreach (Mammal m in mammals)
             {
                 Console.WriteLine(m.GetDetails());
@@ -263,7 +269,7 @@ namespace Kohde.Assessment
         public static string GetSingleStringValue(List<string> stringList)
         {
             // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT            
-            //can return FirstOrDefault if an exception should not be thrown for an empty list
+            //can return FirstOrDefault if an exception should not be thrown for an empty list, or a list containing more than one value
             var first = stringList.Where(x => x.IndexOf("a") != -1).SingleOrDefault();
             return first;
         }
@@ -461,6 +467,7 @@ namespace Kohde.Assessment
         /*
          * To pass the InvokeLvlB1ExtensionMethod test
          */
+        //Here the method takes an expression tree as an input rather than a delegate function
         //public static IEnumerable<T> CustomWhere<T>(this IEnumerable<T> source, System.Linq.Expressions.Expression<Func<T, bool>> func)
         //{
         //    //compile the expression tree into callable code

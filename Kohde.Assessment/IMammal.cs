@@ -8,6 +8,10 @@ namespace Kohde.Assessment
 {
     public interface IMammal
     {
+        //Properties that all Mammals require
+        string Name { get; }
+        int Age { get; }
+        //Method that all Mammals require
         string GetDetails();
     }
 }

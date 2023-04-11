@@ -4,19 +4,10 @@ namespace Kohde.Assessment
 {
     public class Human : Mammal
     {
-        private string name;
-        private int age;
+        //private gender property
         private string gender;
-        public override string Name
-        {
-            get => name;
-            set => name = value;
-        }
 
-        public override int Age {
-            get => age;
-            set => age = value;
-        }
+        //public gender getter and setter to access private property
         public string Gender { 
             get => gender;
             set => gender = value;
@@ -28,25 +19,17 @@ namespace Kohde.Assessment
         //Human constructer to create Human object
         public Human(string name, int age, string gender)
         {
-            this.name = name;
-            this.age = age;
+            Name = name;
+            Age = age;
             this.gender = gender;
         }
 
-        //Overriding abstract method getDetails with own implementation
-        public override string GetDetails()
-        {
-            return "Name: " + name + " Age: " + age;
-        }
+        //Overriding abstract method getDetails with own implementation if you would like
+        //public override string GetDetails()
+        //{
+        //    return base.GetDetails() + ", Gender: " + gender;
+        //}
 
-        //Default equals method to check object equality
-        public override bool Equals(object obj)
-        {
-            return obj is Human human &&
-                   name == human.name &&
-                   age == human.age &&
-                   gender == human.gender;
-        }
 
         //Default ToString method
         public override string ToString()
@@ -54,16 +37,6 @@ namespace Kohde.Assessment
             return base.ToString();
         }
 
-        //Default getHashcode method 
-        public override int GetHashCode()
-        {
-            int hashCode = -1497452382;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
-            hashCode = hashCode * -1521134295 + age.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(gender);
-            return hashCode;
-        }
-
-
+        //usually equals and hascode methods are added for equality test, but not required
     }
 }

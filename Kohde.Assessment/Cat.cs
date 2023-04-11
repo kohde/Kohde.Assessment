@@ -2,27 +2,17 @@
 
 namespace Kohde.Assessment
 {
-    public class Cat : Mammal//Animal
+    public class Cat : Mammal
     {
-        private string name;
-        private int age;
+        //private food property
         private string food;
-        public override string Name
-        {
-            get => name;
-            set => name = value;
-        }
-        public override int Age
-        {
-            get => age;
-            set => age = value;
-        }
+        
+        //public food getter and setter to access private property
         public string Food
         {
             get => food;
             set => food = value;
         }
-
 
         //Empty contructor not required, but usually good practice
         public Cat() { }
@@ -30,16 +20,16 @@ namespace Kohde.Assessment
         //Cat constructer to create Cat object
         public Cat(string name, int age, string food)
         {
-            this.name = name;
-            this.age = age;
+            Name = name;
+            Age = age;
             this.food = food;
         }
 
-        //Overriding abstract method getDetails with own implementation
-        public override string GetDetails()
-        {
-            return "Name: " + name + " Age: " + age;
-        }
+        //Overriding abstract method getDetails with own implementation if you would like
+        //public override string GetDetails()
+        //{
+        //    return base.GetDetails() + ", Food: " + food;
+        //}
 
         //Default ToString method
         public override string ToString()
@@ -47,23 +37,7 @@ namespace Kohde.Assessment
             return base.ToString();
         }
 
-        //Default Equals method
-        public override bool Equals(object obj)
-        {
-            return obj is Cat cat &&
-                   name == cat.name &&
-                   age == cat.age &&
-                   food == cat.food;
-        }
+        //usually equals and hascode methods are added for equality test, but not required
 
-        //Default GetHashCode method
-        public override int GetHashCode()
-        {
-            int hashCode = -1123064597;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
-            hashCode = hashCode * -1521134295 + age.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(food);
-            return hashCode;
-        }
     }
 }

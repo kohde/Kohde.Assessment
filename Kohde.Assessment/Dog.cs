@@ -5,19 +5,10 @@ namespace Kohde.Assessment
     public class Dog : Mammal
     {
 
-        private string name;
-        private int age;
+        //private food property
         private string food;
-        public override string Name
-        {
-            get => name;
-            set => name = value;
-        }
-        public override int Age
-        {
-            get => age;
-            set => age = value;
-        }
+        
+        //public food getter and setter to access private property
         public string Food
         {
             get => food;
@@ -30,16 +21,18 @@ namespace Kohde.Assessment
         //Dog constructer to create Dog object
         public Dog(string name, int age, string food)
         {
-            this.name = name;
-            this.age = age;
+            //set properties inhereted from parent
+            Name = name;
+            Age = age;
+            //set private property
             this.food = food;
         }
 
-        //Overriding abstract method getDetails with own implementation
-        public override string GetDetails()
-        {
-            return "Name: " + name + " Age: " + age;
-        }
+        //Overriding abstract method getDetails with own implementation if you would like
+        //public override string GetDetails()
+        //{
+        //    return base.GetDetails() + ", Food: " + food;
+        //}
 
         //Default ToString method
         public override string ToString()
@@ -47,23 +40,6 @@ namespace Kohde.Assessment
             return base.ToString();
         }
 
-        //Default Equals method
-        public override bool Equals(object obj)
-        {
-            return obj is Dog dog &&
-                   name == dog.name &&
-                   age == dog.age &&
-                   food == dog.food;
-        }
-
-        //Default GetHashCode method
-        public override int GetHashCode()
-        {
-            int hashCode = -1123064597;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
-            hashCode = hashCode * -1521134295 + age.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(food);
-            return hashCode;
-        }
+        //usually equals and hascode methods are added for equality test, but not required
     }
 }
