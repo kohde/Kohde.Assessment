@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Kohde.Assessment.Container;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 
 namespace Kohde.Assessment
 {
@@ -15,24 +18,29 @@ namespace Kohde.Assessment
 
             // the below class declarations looks like a 1st year student developed it
             // NOTE: this includes the class declarations as well
-            // IMPROVE THE ARCHITECTURE 
-            Human human = new Human();
-            human.Name = "John";
-            human.Age = 35;
-            human.Gender = "M";
-            Console.WriteLine(human.GetDetails());
+            // IMPROVE THE ARCHITECTURE             
 
-            Dog dog = new Dog();
-            dog.Name = "Walter";
-            dog.Age = 7;
-            dog.Food = "Epol";
-            Console.WriteLine(dog.GetDetails());
 
-            Cat cat = new Cat();
-            cat.Name = "Snowball";
-            cat.Age = 35;
-            cat.Food = "Whiskers";
-            Console.WriteLine(cat.GetDetails());
+            //Construct classes using a constucter
+            //It can also be possible to create injectors for each of the classes below
+            //So that they are injected rather than created here
+            Human human = new Human("John", 35, "M");
+            Dog dog = new Dog("Walter", 7, "Epol");
+            Cat cat = new Cat("Snowball", 35, "Whiskers");
+
+            //Add objects to a list
+            List<Mammal> mammals = new List<Mammal>
+            {
+                human,
+                dog,
+                cat
+            };
+
+            //Call method on each object in a list
+            foreach (Mammal m in mammals)
+            {
+                Console.WriteLine(m.GetDetails());
+            }
 
             #endregion
 
@@ -70,11 +78,32 @@ namespace Kohde.Assessment
 
             // there are multiple corrections required!!
             // correct the following statement(s)
+
+
+            //this for me depends what you want to acheive
+            //Direct casting to IDisposable won't work if the object does not implement the IDisposable interface (like Dog)
+            //Using the "as" keyword for casting will work, but will return null if the object does not implement the IDisposable interface (like Dog).           
+
+            //What could have been done is for Mammal to implement IDisposable             
+            //Then dog would be able to call the Dispose method of its base class
+
+            //The below code will however work in the sense that it doesn't produce errors, but it doesn't do anything
             try
             {
+                //The below would work if Mammal implments IDisposable
+                //bulldog can also not be null if you want to call Dispose on it. It needs to be an instance of the object
+                //Dog bulldog = new Dog();
+                //var disposeDog = (IDisposable)bulldog;
+                //disposeDog.Dispose();
+
                 Dog bulldog = null;
-                var disposeDog = (IDisposable) bulldog;
-                disposeDog.Dispose();
+                //the using statement block ensures that the object is still disposed, even with exceptions
+                //although in this case dispose cannot be called since Dog or Mammal doesn't implement IDisposable    
+                using (var disposeDog = bulldog as IDisposable)
+                {
+                    //In this case disposeDog will still be null
+                    //do suff
+                }
             }
             catch (Exception ex)
             {
@@ -85,7 +114,7 @@ namespace Kohde.Assessment
 
             #region Assessment E
 
-            DisposeSomeObject();            
+            DisposeSomeObject();
 
             #endregion
 
@@ -96,9 +125,12 @@ namespace Kohde.Assessment
             // output must still render as: Name: [name] Age: [age]
             // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
-            ShowSomeHumanInformation(human);
-            ShowSomeDogInformation(dog);
-            ShowSomeCatInformation(cat);
+
+            //This could have been done in a foreach, but I think the reason was only to
+            //demonstrate the use of a generic method for different objec types
+            ShowSomeMammalInformation(human);
+            ShowSomeMammalInformation(dog);
+            ShowSomeMammalInformation(cat);
 
 
             // # SECTION B #
@@ -109,10 +141,10 @@ namespace Kohde.Assessment
 
             // UNCOMMENT THE FOLLOWING PIECE OF CODE - IT WILL CAUSE A COMPILER ERROR - BECAUSE YOU HAVE TO CREATE THE METHOD
 
-            //string a = Program.GenericTester(walter => walter.GetDetails(), dog);
-            //Console.WriteLine("Result A: {0}", a);
-            //int b = Program.GenericTester(snowball => snowball.Age, cat);
-            //Console.WriteLine("Result B: {0}", b);
+            string a = Program.GenericTester(walter => walter.GetDetails(), dog);
+            Console.WriteLine("Result A: {0}", a);
+            int b = Program.GenericTester(snowball => snowball.Age, cat);
+            Console.WriteLine("Result B: {0}", b);
 
             #endregion
 
@@ -159,20 +191,20 @@ namespace Kohde.Assessment
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*  
-                const string abc = "asduqwezxc";
-                foreach (var vowel in abc.SelectOnlyVowels())
-                {
-                    Console.WriteLine("{0}", vowel);
-                }
-            */
+
+            const string abc = "asduqwezxc";
+            foreach (var vowel in abc.SelectOnlyVowels())
+            {
+                Console.WriteLine("{0}", vowel);
+            }
+
             // < REQUIRED OUTPUT => a u e
 
             // > UNCOMMENT THE CODE BELOW AND CREATE A METHOD SO THAT THE FOLLOWING CODE WILL WORK
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*
+
             List<Dog> dogs = new List<Dog>
             {
                 new Dog {Age = 8, Name = "Max"},
@@ -184,7 +216,7 @@ namespace Kohde.Assessment
 
             // < DOGS REQUIRED OUTPUT =>
             //      Name: Max Age: 8
-             
+
             List<Cat> cats = new List<Cat>
             {
                 new Cat {Age = 1, Name = "Capri"},
@@ -196,7 +228,7 @@ namespace Kohde.Assessment
             // < CATS REQUIRED OUTPUT =>
             //      Name: Capri Age: 1
             //      Name: Captain Hooks Age: 3
-            */
+
 
             #endregion
 
@@ -208,15 +240,17 @@ namespace Kohde.Assessment
 
         public static void PerformanceTest()
         {
-            var someLongDataString = "";
+            //String builder is faster as it is not immutable like a string, i.e. it does not have to be recreated everytime it is changed.
+            StringBuilder someLongDataString = new StringBuilder();
             const int sLen = 30, loops = 500000; // YOU MAY NOT CHANGE THE NUMBER OF LOOPS IN ANY WAY !!
             var source = new string('X', sLen);
+            someLongDataString.Append(source);
 
             // DO NOT CHANGE THE ACTUAL FOR LOOP IN ANY WAY !!
             // in other words, you may not change: for (INITIALIZATION; CONDITION; INCREMENT/DECREMENT)
-            for (var i = 0; i < loops; i++) 
+            for (var i = 0; i < loops; i++)
             {
-                someLongDataString += source;
+                someLongDataString.Append(source);
             }
         }
 
@@ -227,56 +261,73 @@ namespace Kohde.Assessment
         public static int GetFirstEvenValue(List<int> numbers)
         {
             // RETURN THE FIRST EVEN NUMBER IN THE SEQUENCE
-            var first = numbers.Where(x => x % 2 == 0).First();
+            //return FirstOrDefault, because the list might be empty
+            var first = numbers.Where(x => x % 2 == 0).FirstOrDefault();
             return first;
         }
 
         public static string GetSingleStringValue(List<string> stringList)
         {
-            // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
-            var first = stringList.Where(x => x.IndexOf("a") != -1).Single();
+            // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT            
+            //can return FirstOrDefault if an exception should not be thrown for an empty list, or a list containing more than one value
+            var first = stringList.Where(x => x.IndexOf("a") != -1).SingleOrDefault();
             return first;
         }
 
         #endregion
-        
+
         #region Assessment E Method
 
         public static DisposableObject DisposeSomeObject()
         {
             // IMPROVE THE FOLLOWING PIECE OF CODE
             // as well as the PerformSomeLongRunningOperation method
-            var disposableObject = new DisposableObject();
-            try
+
+            //by wrapping in "using" statement dispose will be called when the code inside the block has finished executing ( even if there was an exception )                       
+            using (var disposableObject = new DisposableObject())
             {
                 disposableObject.PerformSomeLongRunningOperation();
                 disposableObject.RaiseEvent("raised event");
-            }
-            finally
-            {
-                disposableObject.Dispose();
+                return disposableObject;
             }
 
-            return disposableObject;
         }
 
         #endregion
 
-        #region Assessment F Methods
+        #region Assessment F Methods        
 
-        public static void ShowSomeHumanInformation(Human human)
+        /*
+         * Generic method to call GetDetails from any mammal
+         * Could be even more generic for any class, then restriction should be on 'class' and not 'Mammal' 
+         * Then one would have to check if the object contains the getdetails method with reflection and call it
+         * else it should log a default output
+         */
+        public static void ShowSomeMammalInformation<T>(T mammal) where T : Mammal
         {
-            Console.WriteLine("Name:" + human.Name + " Age: " + human.Age);
+            if (mammal != null)
+            {
+                mammal.GetDetails();
+            }
         }
 
-        public static void ShowSomeDogInformation(Dog dog)
+        /*
+         * GenericTester function takes a generic Func delegate and object on which to call the delegate as input
+         * TOutType => the generic return type specified in the delegate (type returned from the delegate)
+         * TClassType => the type of the input to the delegate (in this case always a class)
+         * Contraints on TClassType => any class and that it must contain a public parameterless constructor
+         */
+        public static TOutType GenericTester<TClassType, TOutType>(Func<TClassType, TOutType> func, TClassType obj) where TClassType : class, new()
         {
-            Console.WriteLine("Name:" + dog.Name + " Age: " + dog.Age);
-        }
+            //If the input obj is null, then create a new instance of the input type given in the delegate function
+            if (obj == null)
+            {
+                //Create a new instance of the TClassType by using reflection (i.e. get type at runtime) and set it to obj
+                obj = Activator.CreateInstance<TClassType>();
 
-        public static void ShowSomeCatInformation(Cat cat)
-        {
-            Console.WriteLine("Name:" + cat.Name + " Age: " + cat.Age);
+            }
+            //return the result of the function that was evaluated with the input parameter
+            return func(obj);
         }
 
         #endregion
@@ -289,9 +340,11 @@ namespace Kohde.Assessment
             {
                 ThrowException();
             }
-            catch (ArithmeticException e)
+            catch (ArithmeticException)
             {
-                throw e;
+                //If 'throw e' is used here it basically throws the exception from this point onwards.
+                //Just using 'throw' keeps the stack trace intact (passes the exception along) when rethrowing exceptions.
+                throw;
             }
         }
 
@@ -310,8 +363,16 @@ namespace Kohde.Assessment
             // CALL THE FOLLOWING METHOD: DisplaySomeStuff [WHICH IN JUST BELOW THIS ONE]
             // AND RETURN THE STRING CONTENT
 
-            // DO NOT CHANGE THE NAME, RETURN TYPE OR ANY IMPLEMENTATION OF THIS METHOD NOR THE BELOW METHOD
-            throw new NotImplementedException(); // ATT: REMOVE THIS LINE
+            // DO NOT CHANGE THE NAME, RETURN TYPE OR ANY IMPLEMENTATION OF THIS METHOD NOR THE BELOW METHOD            
+
+            //Get method by using method name
+            var method = typeof(Program).GetMethod("DisplaySomeStuff");
+            //Make generic method and substitute type for type arguments
+            var generic = method.MakeGenericMethod(typeof(string));
+            //Create some random string argument
+            var args = new[] { "some string" };
+            //return the value after the generic method was invoked
+            return (string)generic.Invoke(null, args);
         }
 
         public static string DisplaySomeStuff<T>(T toDisplay) where T : class
@@ -348,13 +409,90 @@ namespace Kohde.Assessment
             // 1. register the interfaces and classes
             // TODO: ???
 
-            // 2. resolve the IDeviceProcessor
-            //var deviceProcessor = ???
+            //Get a container instance 
+            var container = Ioc.Container;
+            //register the DeviceProcessor with service as IDeviceProcessor (will throw exception if service has already been registered)
+            container.Register<IDeviceProcessor, DeviceProcessor>();
+            //register the SamsungDevice with service as IDevice (will throw exception if service has already been registered)
+            container.Register<IDevice, SamsungDevice>();
+
+            // 2. resolve the IDeviceProcessor service to get an instance of DeviceProcessor           
+            var deviceProcessor = container.Resolve<IDeviceProcessor>();
             // call the GetDevicePrice method
-            //Console.WriteLine(deviceProcessor.GetDevicePrice());
+            Console.WriteLine(deviceProcessor.GetDevicePrice());
         }
 
         #endregion
+
+        #region Dungeon Methods
+
+        //IEnumerable<char> is a generic collection of type char
+        //IEnumerable<char> is used here instead of string, since we know we will be iterating through each element of the input.
+        //By using IEnumerable<char> it increases performance (we basically tell the compiler this is something we are going to iterate over)
+        public static string SelectOnlyVowels(this IEnumerable<char> str)
+        {
+            //List to store chars to match against                         
+            List<char> vowels = new List<char>() { 'a', 'e', 'o', 'u', 'i' };
+            //return chars that are found in the list above and join the result in a string
+            return string.Join("", str.Where(x => vowels.Contains(x)));
+        }
+
+        /*
+         * To pass the InvokeLvlB2ExtensionMethod test
+         */
+        //IEnumerable<T> is a generic collection of with a generic type
+        //source is the input collection
+        //Func is the input function delegate
+        //The generic method is contrained to the any class
+        public static IEnumerable<T> CustomWhere<T>(this IEnumerable<T> source, Func<T, bool> func) where T : class
+        {
+            //Iterate through each element of source
+            foreach (var item in source)
+            {
+                //check if the item should be returned, i.e. if it passes the lambda expression provided
+                if (func(item))
+                {
+                    //Below is just to print the result, but is not required
+                    Type type = typeof(T);
+                    MethodInfo method = type.GetMethod("GetDetails");
+                    var result = method.Invoke(item, null);
+                    Console.WriteLine(result);
+
+                    //yield return is used to return a collection/sequence of values
+                    yield return item;
+                }
+            }
+        }
+
+        /*
+         * To pass the InvokeLvlB1ExtensionMethod test
+         */
+        //Here the method takes an expression tree as an input rather than a delegate function
+        //public static IEnumerable<T> CustomWhere<T>(this IEnumerable<T> source, System.Linq.Expressions.Expression<Func<T, bool>> func)
+        //{
+        //    //compile the expression tree into callable code
+        //    Func<T, bool> compiledDelegate = func.Compile();
+
+        //    //iterate through each element of source
+        //    foreach (var element in source)
+        //    {
+        //        //check if the item should be returned, i.e. if it passes the lambda expression provided
+        //        if (compiledDelegate(element))
+        //        {
+        //            //Below is just to print the result, but is not required
+        //            Type type = typeof(T);
+        //            MethodInfo method = type.GetMethod("GetDetails");
+        //            var result = method.Invoke(element, null);
+        //            Console.WriteLine(result);
+
+        //            //yield return is used to return a collection/sequence of values
+        //            yield return element;
+        //        }
+        //    }
+        //}
+
+        #endregion
+
     }
 
     public interface IDevice
