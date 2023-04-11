@@ -72,13 +72,30 @@ namespace Kohde.Assessment
 
             // there are multiple corrections required!!
             // correct the following statement(s)
+
+
+            //this for me depends what you want to acheive
+            //Direct casting to IDisposable won't work if the object does not implement the IDisposable interface (like Dog)
+            //Using the "as" keyword for casting will work, but will return null if the object does not implement the IDisposable interface (like Dog).           
+
+            //What could have been done is for Mammal to implement IDisposable             
+            //Then dog would be able to call the Dispose method of its base class
+
+            //The below code will however work in the sense that it doesn't produce errors, but it doesn't do anything
             try
             {
-                //bulldog cannot be cast to IDisposable if it is null, so instansiate it
-                Dog bulldog = new Dog();
-                //the using statement block ensures that the object is still disposed
-                using (var disposibleDog = (IDisposable)bulldog)
+                //The below would work if Mammal implments IDisposable
+                //bulldog can also not be null if you want to call Dispose on it. It needs to be an instance of the object
+                //Dog bulldog = new Dog();
+                //var disposeDog = (IDisposable)bulldog;
+                //disposeDog.Dispose();
+
+                Dog bulldog = null;
+                //the using statement block ensures that the object is still disposed, even with exceptions
+                //although in this case dispose cannot be called since Dog or Mammal doesn't implement IDisposable    
+                using (var disposeDog = bulldog as IDisposable)
                 {
+                    //In this case disposeDog will still be null
                     //do suff
                 }
             }
@@ -104,7 +121,7 @@ namespace Kohde.Assessment
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
 
             //This could have been done in a foreach, but I think the reason was only to
-            //demonstrate the use of a generic method for different objecs
+            //demonstrate the use of a generic method for different objec types
             ShowSomeMammalInformation(human);
             ShowSomeMammalInformation(dog);
             ShowSomeMammalInformation(cat);
@@ -245,10 +262,9 @@ namespace Kohde.Assessment
 
         public static string GetSingleStringValue(List<string> stringList)
         {
-            // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
-            //return FirstOrDefault, because the list might be empty 
-            //can return SingleOrDefault if an error should rather be thrown
-            var first = stringList.Where(x => x.IndexOf("a") != -1).FirstOrDefault();
+            // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT            
+            //can return FirstOrDefault if an exception should not be thrown for an empty list
+            var first = stringList.Where(x => x.IndexOf("a") != -1).SingleOrDefault();
             return first;
         }
 
@@ -265,10 +281,10 @@ namespace Kohde.Assessment
             using (var disposableObject = new DisposableObject())
             {
                 disposableObject.PerformSomeLongRunningOperation();
-                disposableObject.RaiseEvent("raised event");                
+                disposableObject.RaiseEvent("raised event");
                 return disposableObject;
             }
-            
+
         }
 
         #endregion
@@ -283,22 +299,25 @@ namespace Kohde.Assessment
          */
         public static void ShowSomeMammalInformation<T>(T mammal) where T : Mammal
         {
-            mammal.GetDetails();
+            if (mammal != null)
+            {
+                mammal.GetDetails();
+            }
         }
 
         /*
          * GenericTester function takes a generic Func delegate and object on which to call the delegate as input
-         * TOutType => the generic return type specified in the delegate
-         * TClassType => the type of the input to the delegate
-         * Contraints on TClassType => any class and that it must contain a public parameterless constructor         * 
+         * TOutType => the generic return type specified in the delegate (type returned from the delegate)
+         * TClassType => the type of the input to the delegate (in this case always a class)
+         * Contraints on TClassType => any class and that it must contain a public parameterless constructor
          */
         public static TOutType GenericTester<TClassType, TOutType>(Func<TClassType, TOutType> func, TClassType obj) where TClassType : class, new()
         {
-            //If the input obj is null, then create a new instance of the output type given in the delegate function
+            //If the input obj is null, then create a new instance of the input type given in the delegate function
             if (obj == null)
             {
                 //Create a new instance of the TClassType by using reflection (i.e. get type at runtime) and set it to obj
-                obj = Activator.CreateInstance<TClassType>(); ;
+                obj = Activator.CreateInstance<TClassType>();
 
             }
             //return the result of the function that was evaluated with the input parameter
@@ -317,7 +336,7 @@ namespace Kohde.Assessment
             }
             catch (ArithmeticException)
             {
-                //If 'throw e' is used here it basically throws the exception from this point.
+                //If 'throw e' is used here it basically throws the exception from this point onwards.
                 //Just using 'throw' keeps the stack trace intact (passes the exception along) when rethrowing exceptions.
                 throw;
             }
@@ -342,7 +361,7 @@ namespace Kohde.Assessment
 
             //Get method by using method name
             var method = typeof(Program).GetMethod("DisplaySomeStuff");
-            //Make generic method and Substitute type for type arguments
+            //Make generic method and substitute type for type arguments
             var generic = method.MakeGenericMethod(typeof(string));
             //Create some random string argument
             var args = new[] { "some string" };
@@ -391,9 +410,9 @@ namespace Kohde.Assessment
             //register the SamsungDevice with service as IDevice (will throw exception if service has already been registered)
             container.Register<IDevice, SamsungDevice>();
 
-            //// 2. resolve the IDeviceProcessor service to get an instance of DeviceProcessor           
+            // 2. resolve the IDeviceProcessor service to get an instance of DeviceProcessor           
             var deviceProcessor = container.Resolve<IDeviceProcessor>();
-            //// call the GetDevicePrice method
+            // call the GetDevicePrice method
             Console.WriteLine(deviceProcessor.GetDevicePrice());
         }
 
@@ -401,9 +420,9 @@ namespace Kohde.Assessment
 
         #region Dungeon Methods
 
-        //IEnumerable<char> is a generic collection
+        //IEnumerable<char> is a generic collection of type char
         //IEnumerable<char> is used here instead of string, since we know we will be iterating through each element of the input.
-        //By using IEnumerable<char> it increases performance 
+        //By using IEnumerable<char> it increases performance (we basically tell the compiler this is something we are going to iterate over)
         public static string SelectOnlyVowels(this IEnumerable<char> str)
         {
             //List to store chars to match against                         
@@ -415,7 +434,11 @@ namespace Kohde.Assessment
         /*
          * To pass the InvokeLvlB2ExtensionMethod test
          */
-        public static IEnumerable<T> CustomWhere<T>(this IEnumerable<T> source, Func<T, bool> func)
+        //IEnumerable<T> is a generic collection of with a generic type
+        //source is the input collection
+        //Func is the input function delegate
+        //The generic method is contrained to the any class
+        public static IEnumerable<T> CustomWhere<T>(this IEnumerable<T> source, Func<T, bool> func) where T : class
         {
             //Iterate through each element of source
             foreach (var item in source)
