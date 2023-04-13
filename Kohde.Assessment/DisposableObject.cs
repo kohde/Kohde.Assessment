@@ -35,13 +35,17 @@ namespace Kohde.Assessment
 
         protected virtual void Dispose(bool disposing)
         {
+            // If disposing is true, dispose of managed resources
             if (disposing)
             {
-                // Dispose managed resources
+                // Set the event handler to null to prevent memory leaks
+                SomethingHappened = null;
             }
 
-            // Free native resources
+            // Reset the Counter to 1
+            Counter = 1;
         }
+
 
         public void Dispose()
         {

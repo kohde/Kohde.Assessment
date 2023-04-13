@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kohde.Assessment</RootNamespace>
     <AssemblyName>Kohde.Assessment</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -46,14 +46,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cat.cs" />
+    <Compile Include="AssessmentA\Interfaces\IMammal.cs" />
+    <Compile Include="AssessmentA\Mammal.cs" />
+    <Compile Include="AssessmentA\Cat.cs" />
     <Compile Include="Container\DuplicateRegistrationException.cs" />
     <Compile Include="Container\IContainer.cs" />
     <Compile Include="Container\Ioc.cs" />
     <Compile Include="Container\SimpleContainer.cs" />
     <Compile Include="DisposableObject.cs" />
-    <Compile Include="Dog.cs" />
-    <Compile Include="Human.cs" />
+    <Compile Include="AssessmentA\Dog.cs" />
+    <Compile Include="AssessmentA\Human.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
