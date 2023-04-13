@@ -1,14 +1,13 @@
 ﻿namespace Kohde.Assessment
 {
-    public class Dog
+    public class Dog: Mammal, IFood
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
-        public string Food { get; set; }
-
-        public string GetDetails()
+        public Dog() { }
+        public Dog(int age, string name, string food) : base(age, name)
         {
-            return "Name: " + Name + "Age: " + Age;
+            Food = food;
         }
+
+        public string Food { get; set; }
     }
 }

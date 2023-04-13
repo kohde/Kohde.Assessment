@@ -15,7 +15,8 @@ namespace Kohde.Assessment
         {
             foreach (var i in Enumerable.Range(1, 10))
             {
-                this.SomethingHappened += HandleSomethingHappened;
+                if(this.SomethingHappened == null)
+                    this.SomethingHappened += HandleSomethingHappened;
             }
         }
 
@@ -45,6 +46,11 @@ namespace Kohde.Assessment
 
         public void Dispose()
         {
+            foreach (var listeners in SomethingHappened.GetInvocationList())
+            {
+                SomethingHappened -= (MyEventHandler)listeners;
+            }
+
             Dispose(true);
             GC.SuppressFinalize(this);
         }
