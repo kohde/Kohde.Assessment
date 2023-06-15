@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Kohde.Assessment.UnitTest
 {
-    [TestClass]
     public class AssessmentC
     {
-        [TestMethod]
+        [Fact]
         public void FirstOrDefaultUsed()
         {
             var value = Program.GetFirstEvenValue(new List<int>
@@ -16,10 +15,10 @@ namespace Kohde.Assessment.UnitTest
             });
 
             Trace.TraceInformation("Value: {0}", value);
-            Assert.IsTrue(value%2 == 0, "Indicates whether the use made use of the correct logic");
+            Assert.True(value % 2 == 0, "Indicates whether the use made use of the correct logic");
         }
 
-        [TestMethod]
+        [Fact]
         public void SingleOrDefaultUsed()
         {
             var value = Program.GetSingleStringValue(new List<string>
@@ -35,7 +34,7 @@ namespace Kohde.Assessment.UnitTest
                 "Jhn", "Jn", "Sarah", "Pt"
             });
 
-            Assert.IsTrue(!string.IsNullOrEmpty(value2));
+            Assert.True(!string.IsNullOrEmpty(value2));
         }
     }
 }

@@ -1,15 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace Kohde.Assessment.UnitTest
 {
-    [TestClass]
     public class AssessmentH
     {
-        [TestMethod]
+        [Fact]
         public void ReflectionTest()
         {
             var withReflection = Program.CallMethodWithReflection();
-            Assert.IsTrue(!string.IsNullOrEmpty(withReflection), "Indicates whether the method was implemented correctly");                        
+            Assert.True(!string.IsNullOrEmpty(withReflection), "Indicates whether the method was implemented correctly");
         }
     }
 }

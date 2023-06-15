@@ -1,56 +1,56 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
+﻿using System.Linq;
+using Kohde.Assessment.Mammals;
+using Xunit;
 
 namespace Kohde.Assessment.UnitTest
 {
-    [TestClass]
     public class AssessmentA
     {
-        [TestMethod]
+        [Fact]
         public void TestA1()
         {
-            Assert.AreNotSame(typeof(object), typeof(Human).BaseType);
+            Assert.NotSame(typeof(object), typeof(Human).BaseType);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestA2()
         {
-            Assert.IsTrue(typeof(Human).BaseType.IsAbstract);
+            Assert.True(typeof(Human).BaseType.IsAbstract);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestA3()
         {
-            Assert.AreSame(typeof(Human).GetMethod("ToString").DeclaringType, typeof(Human));
+            Assert.Same(typeof(Human).GetMethod("ToString").DeclaringType, typeof(Human));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestA4()
         {
-            Assert.AreNotSame(typeof(object), typeof(Human).BaseType);
+            Assert.NotSame(typeof(object), typeof(Human).BaseType);
 
-            Assert.AreSame(typeof(Human).BaseType.GetMethod("GetDetails").DeclaringType, typeof(Human).BaseType);
+            Assert.Same(typeof(Human).BaseType.GetMethod("GetDetails").DeclaringType, typeof(Human).BaseType);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestA5()
         {
-            var properties = typeof (Human).BaseType.GetProperties().ToList();
+            var properties = typeof(Human).BaseType.GetProperties().ToList();
 
-            Assert.IsTrue(properties.Count > 0);
+            Assert.True(properties.Count > 0);
 
-            Assert.IsTrue(properties.FirstOrDefault(x => x.Name.Equals("Name")) != null);
-            Assert.IsTrue(properties.FirstOrDefault(x => x.Name.Equals("Age")) != null);
+            Assert.True(properties.FirstOrDefault(x => x.Name.Equals("Name")) != null);
+            Assert.True(properties.FirstOrDefault(x => x.Name.Equals("Age")) != null);
         }
 
-        [TestMethod]
+        [Fact]
         public void ABonus1()
         {
-            var baseType = typeof (Human).BaseType;
-            Assert.IsTrue(baseType != null);
+            var baseType = typeof(Human).BaseType;
+            Assert.True(baseType != null);
             {
                 var interfaces = baseType.GetInterfaces();
-                Assert.IsTrue(interfaces != null && interfaces.Any());
+                Assert.True(interfaces != null && interfaces.Any());
             }
         }
     }
