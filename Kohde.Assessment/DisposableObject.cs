@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kohde.Assessment
 {
@@ -11,12 +12,16 @@ namespace Kohde.Assessment
 
         public int Counter { get; private set; }
 
-        public void PerformSomeLongRunningOperation()
+        private const int HandlerCount = 10;
+
+        public async Task PerformSomeLongRunningOperationAsync()
         {
-            foreach (var i in Enumerable.Range(1, 10))
+            foreach (var i in Enumerable.Range(1, HandlerCount))
             {
                 this.SomethingHappened += HandleSomethingHappened;
             }
+
+            await Task.CompletedTask;
         }
 
         public void RaiseEvent(string data)
@@ -37,7 +42,15 @@ namespace Kohde.Assessment
         {
             if (disposing)
             {
-                // Dispose managed resources
+                this.Counter = 1;
+                //you should not need to unsubscribe from each handler, since the handler and subscribers are in
+                //the same class, so there will no longer be any references, opposed to outside classes subscribing on the handler.
+                foreach (var i in Enumerable.Range(1, HandlerCount))
+                {
+                    this.SomethingHappened -= HandleSomethingHappened;
+                }
+
+                this.SomethingHappened = null;
             }
 
             // Free native resources

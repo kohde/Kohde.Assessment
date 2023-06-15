@@ -1,12 +1,11 @@
 ﻿using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Kohde.Assessment.UnitTest
 {
-    [TestClass]
     public class AssessmentB
     {
-        [TestMethod]
+        [Fact]
         public void PerformanceTest()
         {
             // check whether the performance has increased
@@ -15,7 +14,7 @@ namespace Kohde.Assessment.UnitTest
             Program.PerformanceTest();
             s.Stop();
             Trace.TraceInformation("Performance: {0}ms", s.ElapsedMilliseconds);
-            Assert.IsTrue(s.ElapsedMilliseconds < 1000, "Elapsed Milliseconds greater than 1 second indicates slow performance");
+            Assert.True(s.ElapsedMilliseconds < 1000, "Elapsed Milliseconds greater than 1 second indicates slow performance");
         }
     }
 }
