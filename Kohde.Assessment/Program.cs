@@ -1,6 +1,12 @@
-﻿using System;
+﻿using Kohde.Assessment.Container;
+using Kohde.Assessment.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Security.Policy;
+using System.Text;
+using System.Xml.Linq;
 
 namespace Kohde.Assessment
 {
@@ -16,23 +22,35 @@ namespace Kohde.Assessment
             // the below class declarations looks like a 1st year student developed it
             // NOTE: this includes the class declarations as well
             // IMPROVE THE ARCHITECTURE 
-            Human human = new Human();
-            human.Name = "John";
-            human.Age = 35;
-            human.Gender = "M";
-            Console.WriteLine(human.GetDetails());
 
-            Dog dog = new Dog();
-            dog.Name = "Walter";
-            dog.Age = 7;
-            dog.Food = "Epol";
-            Console.WriteLine(dog.GetDetails());
+            // Darren Potts: The instantiation can be simplified from setting each
+            // property individually 
+            Human human = new Human()
+            {
+                Name = "John",
+                Age = 35,
+                Gender = "M"
+            };
 
-            Cat cat = new Cat();
-            cat.Name = "Snowball";
-            cat.Age = 35;
-            cat.Food = "Whiskers";
-            Console.WriteLine(cat.GetDetails());
+            // Darren Potts: ToString can be overridden instead of creating a new
+            // method
+            Console.WriteLine(human.ToString());
+
+            Dog dog = new Dog
+            {
+                Name = "Walter",
+                Age = 7,
+                Food = "Epol"
+            };
+            Console.WriteLine(dog.ToString());
+
+            Cat cat = new Cat
+            {
+                Name = "Snowball",
+                Age = 35,
+                Food = "Whiskers"
+            };
+            Console.WriteLine(cat.ToString());
 
             #endregion
 
@@ -70,22 +88,33 @@ namespace Kohde.Assessment
 
             // there are multiple corrections required!!
             // correct the following statement(s)
+            Dog bulldog;
             try
             {
-                Dog bulldog = null;
-                var disposeDog = (IDisposable) bulldog;
-                disposeDog.Dispose();
+                // Darren Potts: As far as I understand, an object only needs to be disposed
+                // if the class deals with unmanaged resources or has managed resources within
+                // the class which require disposing, which this class does not
+                // and so does not require to be Disposed. The Garbage Collector will handle 
+                // clean up.
+                // if need be the try catch can implement a finally to clear up the Dog object
+                // if instantiated however the garbage collector will take care of it so it is 
+                // not neccessary
+                bulldog = new Dog();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                bulldog = null;
             }
 
             #endregion
 
             #region Assessment E
 
-            DisposeSomeObject();            
+            DisposeSomeObject();
 
             #endregion
 
@@ -96,9 +125,11 @@ namespace Kohde.Assessment
             // output must still render as: Name: [name] Age: [age]
             // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
-            ShowSomeHumanInformation(human);
-            ShowSomeDogInformation(dog);
-            ShowSomeCatInformation(cat);
+
+            // Darren Potts: Replaced methods with generic method
+            ShowSomeMammalInformation(human);
+            ShowSomeMammalInformation(dog);
+            ShowSomeMammalInformation(cat);
 
 
             // # SECTION B #
@@ -109,10 +140,12 @@ namespace Kohde.Assessment
 
             // UNCOMMENT THE FOLLOWING PIECE OF CODE - IT WILL CAUSE A COMPILER ERROR - BECAUSE YOU HAVE TO CREATE THE METHOD
 
-            //string a = Program.GenericTester(walter => walter.GetDetails(), dog);
-            //Console.WriteLine("Result A: {0}", a);
-            //int b = Program.GenericTester(snowball => snowball.Age, cat);
-            //Console.WriteLine("Result B: {0}", b);
+            Dog dog1 = null;
+
+            string a = Program.GenericTester(walter => walter.GetDetails(), dog);
+            Console.WriteLine("Result A: {0}", a);
+            int b = Program.GenericTester(snowball => snowball.Age, cat);
+            Console.WriteLine("Result B: {0}", b);
 
             #endregion
 
@@ -159,20 +192,19 @@ namespace Kohde.Assessment
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*  
-                const string abc = "asduqwezxc";
-                foreach (var vowel in abc.SelectOnlyVowels())
-                {
-                    Console.WriteLine("{0}", vowel);
-                }
-            */
+            const string abc = "asduqwezxc";
+            foreach (var vowel in abc.SelectOnlyVowels())
+            {
+                Console.WriteLine("{0}", vowel);
+            }
+
             // < REQUIRED OUTPUT => a u e
 
             // > UNCOMMENT THE CODE BELOW AND CREATE A METHOD SO THAT THE FOLLOWING CODE WILL WORK
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*
+            
             List<Dog> dogs = new List<Dog>
             {
                 new Dog {Age = 8, Name = "Max"},
@@ -196,7 +228,7 @@ namespace Kohde.Assessment
             // < CATS REQUIRED OUTPUT =>
             //      Name: Capri Age: 1
             //      Name: Captain Hooks Age: 3
-            */
+            
 
             #endregion
 
@@ -208,15 +240,18 @@ namespace Kohde.Assessment
 
         public static void PerformanceTest()
         {
-            var someLongDataString = "";
+            // Darren Potts: Use StringBuilder instead, String concatenation creates a new object 
+            // each time
+            StringBuilder someLongDataString = new StringBuilder();
             const int sLen = 30, loops = 500000; // YOU MAY NOT CHANGE THE NUMBER OF LOOPS IN ANY WAY !!
             var source = new string('X', sLen);
 
             // DO NOT CHANGE THE ACTUAL FOR LOOP IN ANY WAY !!
             // in other words, you may not change: for (INITIALIZATION; CONDITION; INCREMENT/DECREMENT)
-            for (var i = 0; i < loops; i++) 
+            for (var i = 0; i < loops; i++)
             {
-                someLongDataString += source;
+                // Darren Potts: StringBuilder requires the value to be appended instead of the += concatenation
+                someLongDataString.Append(source);
             }
         }
 
@@ -227,37 +262,46 @@ namespace Kohde.Assessment
         public static int GetFirstEvenValue(List<int> numbers)
         {
             // RETURN THE FIRST EVEN NUMBER IN THE SEQUENCE
-            var first = numbers.Where(x => x % 2 == 0).First();
+
+            // Darren Potts: Made use of FirstOrDefault in the case where the list does 
+            // not contain an even number, an exception won't be thrown but will return null 
+            // in which case error handling can be done
+            var first = numbers.FirstOrDefault(x => x % 2 == 0);
             return first;
         }
 
         public static string GetSingleStringValue(List<string> stringList)
         {
             // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
-            var first = stringList.Where(x => x.IndexOf("a") != -1).Single();
+
+            // Darren Potts: Where the test wanted SingleOrDefault to be used
+            // in this case there are more than 1 elements that contain the value 'a' 
+            // which causes an exception by use of SingleOrDefault.
+            // Is there a way it can be accomplished using SingleOrDefault ? 
+            var first = stringList.FirstOrDefault(x => x.Contains("a"));
             return first;
         }
 
         #endregion
-        
+
         #region Assessment E Method
 
         public static DisposableObject DisposeSomeObject()
         {
             // IMPROVE THE FOLLOWING PIECE OF CODE
             // as well as the PerformSomeLongRunningOperation method
-            var disposableObject = new DisposableObject();
-            try
+
+            // Darren Potts: making use of 'using'statement ensures that a disposable instance is
+            // disposed even if an exception occurs within the block of the using statement
+            // and is a bit more concise than ty, catch 
+            DisposableObject disposableObject = new DisposableObject();
+
+            using (disposableObject)
             {
                 disposableObject.PerformSomeLongRunningOperation();
                 disposableObject.RaiseEvent("raised event");
+                return disposableObject;
             }
-            finally
-            {
-                disposableObject.Dispose();
-            }
-
-            return disposableObject;
         }
 
         #endregion
@@ -279,6 +323,57 @@ namespace Kohde.Assessment
             Console.WriteLine("Name:" + cat.Name + " Age: " + cat.Age);
         }
 
+        // Darren Potts: Created a generic method to display information for all the mammal
+        // classes that is constrained by the BaseClass
+        public static void ShowSomeMammalInformation<T>(T mammal) where T : BaseClass
+        {
+            Console.WriteLine($"Name: {mammal.Name} Age: {mammal.Age}");
+        }
+
+        // Darren Potts: This was my first attempt, however it does not follow test specifications
+        // it does run and return
+        public static T GenericTester<T, TBase>(Func<dynamic, T> func, TBase mammal) where TBase : BaseClass, new ()
+        {
+            if (mammal is null)
+                mammal = new TBase();
+
+            return func.Invoke(mammal);
+        }
+
+        // Darren Potts: This was my next few attempt, but unfortunately I was unable to figure this one out
+        //public static T GenericTester<T, TBase>(Func<TBase, T> func, TBase mammal) where TBase : BaseClass, new()
+        //{
+            //if (mammal is null)
+            //    mammal = new TBase();
+
+            //MethodInfo methodInfo = func.Method;
+            //object targetObject = func.Target;
+
+            //MethodInfo generic = methodInfo;
+            //var parameters = new object[] { methodInfo, mammal };
+            //var result = generic.Invoke(targetObject, parameters);
+            //return (T)result;
+
+            //MethodInfo methodInfo = func.Method;
+            //object targetObject = func.Target;
+
+            //var result = (T)methodInfo.Invoke(targetObject, new object[]
+            //{
+            //     func, mammal
+            //});
+
+            //T result = (T)methodInfo.Invoke(targetObject, new object[] { mammal });
+
+            //return result;
+
+            //string Func1(Dog x) => x.GetDetails();
+            //Type[] typeArgs1 = { typeof(Dog), typeof(string) };
+            //var generic1 = method.MakeGenericMethod(typeArgs1);
+            //var resultA = generic1.Invoke(typeof(Program), new object[]
+            //{
+            //    (Func<Dog, string>) Func1, dog
+            //});
+        //}
         #endregion
 
         #region Assessment G Methods
@@ -289,9 +384,15 @@ namespace Kohde.Assessment
             {
                 ThrowException();
             }
-            catch (ArithmeticException e)
+            catch
             {
-                throw e;
+                // Darren Potts: an exception can be thrown in 2 ways using the throw keyword which
+                // preserves the original stack trace so that it can be viewed when the exception is caught
+                // and handled later.
+
+                // or by throwing the exception variable again however the stack trace is reset to start
+                // at this line of code the stack trace that was originally in the exception is lost.
+                throw;
             }
         }
 
@@ -311,7 +412,12 @@ namespace Kohde.Assessment
             // AND RETURN THE STRING CONTENT
 
             // DO NOT CHANGE THE NAME, RETURN TYPE OR ANY IMPLEMENTATION OF THIS METHOD NOR THE BELOW METHOD
-            throw new NotImplementedException(); // ATT: REMOVE THIS LINE
+
+            MethodInfo method = typeof(Program).GetMethod(nameof(Program.DisplaySomeStuff));
+            MethodInfo generic = method.MakeGenericMethod(typeof(string[]));
+            var parameters = new object[] { new[] { "This is a string to display" } };
+            var result = generic.Invoke(null, parameters);
+            return (string)result;
         }
 
         public static string DisplaySomeStuff<T>(T toDisplay) where T : class
@@ -348,10 +454,45 @@ namespace Kohde.Assessment
             // 1. register the interfaces and classes
             // TODO: ???
 
+            // Darren Potts: Use the existing IoC container to register the interface with 
+            // its corresponding concrete class
+            Ioc.Container.Register<IDevice, SamsungDevice>();
+            Ioc.Container.Register<IDeviceProcessor, DeviceProcessor>();
+
             // 2. resolve the IDeviceProcessor
-            //var deviceProcessor = ???
+
+            // Darren Potts: the relationship is registered to the container,
+            // we can create the object by calling Resolve method.
+            var deviceProcessor = Ioc.Container.Resolve(typeof(IDeviceProcessor)) as IDeviceProcessor;
             // call the GetDevicePrice method
-            //Console.WriteLine(deviceProcessor.GetDevicePrice());
+            Console.WriteLine(deviceProcessor.GetDevicePrice());
+        }
+
+        #endregion
+
+        #region Dungeon
+        public static string SelectOnlyVowels(this IEnumerable<char> letterString)
+        {
+            const string vowels = "aeiou";
+
+            string vowelsFound = "";
+            foreach (char c in letterString)
+            {
+                if (vowels.Any(x => x == c))
+                {
+                   vowelsFound += c;
+                }
+            }
+            return vowelsFound;
+        }
+
+        public static IEnumerable<T> CustomWhere<T>(this IEnumerable<T> source, Func<T, bool> filter)
+        {
+            foreach (var item in source)
+            {
+                if (filter(item))
+                    yield return item;
+            }
         }
 
         #endregion
