@@ -13,10 +13,10 @@ namespace Kohde.Assessment
 
         public void PerformSomeLongRunningOperation()
         {
-            foreach (var i in Enumerable.Range(1, 10))
-            {
-                this.SomethingHappened += HandleSomethingHappened;
-            }
+            // Darren Potts: I am usure of this one, 
+            // is it better to subscribe to the same even in a loop? or to run the loop on the object
+            // raising the event ?
+            this.SomethingHappened += HandleSomethingHappened;
         }
 
         public void RaiseEvent(string data)
@@ -40,12 +40,16 @@ namespace Kohde.Assessment
                 // Dispose managed resources
             }
 
+            this.SomethingHappened -= HandleSomethingHappened;
+
+
             // Free native resources
         }
 
         public void Dispose()
         {
             Dispose(true);
+
             GC.SuppressFinalize(this);
         }
 
