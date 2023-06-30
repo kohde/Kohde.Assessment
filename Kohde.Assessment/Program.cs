@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Kohde.Assessment
 {
@@ -16,22 +17,13 @@ namespace Kohde.Assessment
             // the below class declarations looks like a 1st year student developed it
             // NOTE: this includes the class declarations as well
             // IMPROVE THE ARCHITECTURE 
-            Human human = new Human();
-            human.Name = "John";
-            human.Age = 35;
-            human.Gender = "M";
+            Human human = new Human("John", 35, "M");
             Console.WriteLine(human.GetDetails());
 
-            Dog dog = new Dog();
-            dog.Name = "Walter";
-            dog.Age = 7;
-            dog.Food = "Epol";
+            Dog dog = new Dog("Walter", 7, "Epol");
             Console.WriteLine(dog.GetDetails());
 
-            Cat cat = new Cat();
-            cat.Name = "Snowball";
-            cat.Age = 35;
-            cat.Food = "Whiskers";
+            Cat cat = new Cat("Snowball", 35, "Whiskers");
             Console.WriteLine(cat.GetDetails());
 
             #endregion
@@ -72,20 +64,22 @@ namespace Kohde.Assessment
             // correct the following statement(s)
             try
             {
-                Dog bulldog = null;
-                var disposeDog = (IDisposable) bulldog;
-                disposeDog.Dispose();
+                Dog bulldog = new Dog();
+                if (bulldog is IDisposable disposeDog)
+                {
+                    disposeDog.Dispose();
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.ToString ());
             }
 
             #endregion
 
             #region Assessment E
 
-            DisposeSomeObject();            
+            DisposeSomeObject();
 
             #endregion
 
@@ -96,9 +90,9 @@ namespace Kohde.Assessment
             // output must still render as: Name: [name] Age: [age]
             // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
-            ShowSomeHumanInformation(human);
-            ShowSomeDogInformation(dog);
-            ShowSomeCatInformation(cat);
+            ShowSomeMammalInformation(human);
+            ShowSomeMammalInformation(dog);
+            ShowSomeMammalInformation(cat);
 
 
             // # SECTION B #
@@ -109,10 +103,10 @@ namespace Kohde.Assessment
 
             // UNCOMMENT THE FOLLOWING PIECE OF CODE - IT WILL CAUSE A COMPILER ERROR - BECAUSE YOU HAVE TO CREATE THE METHOD
 
-            //string a = Program.GenericTester(walter => walter.GetDetails(), dog);
-            //Console.WriteLine("Result A: {0}", a);
-            //int b = Program.GenericTester(snowball => snowball.Age, cat);
-            //Console.WriteLine("Result B: {0}", b);
+            string a = Program.GenericTester(walter => walter.GetDetails(), dog);
+            Console.WriteLine("Result A: {0}", a);
+            int b = Program.GenericTester(snowball => snowball.Age, cat);
+            Console.WriteLine("Result B: {0}", b);
 
             #endregion
 
@@ -208,7 +202,7 @@ namespace Kohde.Assessment
 
         public static void PerformanceTest()
         {
-            var someLongDataString = "";
+            StringBuilder someLongDataString = new StringBuilder();
             const int sLen = 30, loops = 500000; // YOU MAY NOT CHANGE THE NUMBER OF LOOPS IN ANY WAY !!
             var source = new string('X', sLen);
 
@@ -216,7 +210,7 @@ namespace Kohde.Assessment
             // in other words, you may not change: for (INITIALIZATION; CONDITION; INCREMENT/DECREMENT)
             for (var i = 0; i < loops; i++) 
             {
-                someLongDataString += source;
+                someLongDataString.Append(source);
             }
         }
 
@@ -227,14 +221,14 @@ namespace Kohde.Assessment
         public static int GetFirstEvenValue(List<int> numbers)
         {
             // RETURN THE FIRST EVEN NUMBER IN THE SEQUENCE
-            var first = numbers.Where(x => x % 2 == 0).First();
+            var first = numbers.FirstOrDefault(x => x % 2 == 0);
             return first;
         }
 
         public static string GetSingleStringValue(List<string> stringList)
         {
             // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
-            var first = stringList.Where(x => x.IndexOf("a") != -1).Single();
+            var first = stringList.FirstOrDefault(x => x.Contains('a'));
             return first;
         }
 
@@ -246,37 +240,28 @@ namespace Kohde.Assessment
         {
             // IMPROVE THE FOLLOWING PIECE OF CODE
             // as well as the PerformSomeLongRunningOperation method
-            var disposableObject = new DisposableObject();
-            try
-            {
+            using(var disposableObject = new DisposableObject()) {
                 disposableObject.PerformSomeLongRunningOperation();
                 disposableObject.RaiseEvent("raised event");
+                return disposableObject;
             }
-            finally
-            {
-                disposableObject.Dispose();
-            }
-
-            return disposableObject;
         }
 
         #endregion
 
         #region Assessment F Methods
-
-        public static void ShowSomeHumanInformation(Human human)
+        public static void ShowSomeMammalInformation<Type>(Type mammal) where Type : IMammal
         {
-            Console.WriteLine("Name:" + human.Name + " Age: " + human.Age);
+            Console.WriteLine(mammal.GetDetails());
         }
 
-        public static void ShowSomeDogInformation(Dog dog)
+        public static TypeOut GenericTester<TypeIn, TypeOut>(Func<TypeIn, TypeOut> func, TypeIn input) where TypeIn : new()
         {
-            Console.WriteLine("Name:" + dog.Name + " Age: " + dog.Age);
-        }
-
-        public static void ShowSomeCatInformation(Cat cat)
-        {
-            Console.WriteLine("Name:" + cat.Name + " Age: " + cat.Age);
+            if (input == null)
+            {
+                input = new TypeIn();
+            }
+            return func(input);
         }
 
         #endregion
@@ -289,9 +274,9 @@ namespace Kohde.Assessment
             {
                 ThrowException();
             }
-            catch (ArithmeticException e)
+            catch (ArithmeticException)
             {
-                throw e;
+                throw;
             }
         }
 
