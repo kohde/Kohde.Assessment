@@ -1,0 +1,7 @@
+C:\Users\kamik\source\repos\Kohde.Assessment\Kohde.Assessment\bin\Debug\Kohde.Assessment.exe.config
+C:\Users\kamik\source\repos\Kohde.Assessment\Kohde.Assessment\bin\Debug\Kohde.Assessment.exe
+C:\Users\kamik\source\repos\Kohde.Assessment\Kohde.Assessment\bin\Debug\Kohde.Assessment.pdb
+C:\Users\kamik\source\repos\Kohde.Assessment\Kohde.Assessment\obj\Debug\Kohde.Assessment.csproj.AssemblyReference.cache
+C:\Users\kamik\source\repos\Kohde.Assessment\Kohde.Assessment\obj\Debug\Kohde.Assessment.csproj.CoreCompileInputs.cache
+C:\Users\kamik\source\repos\Kohde.Assessment\Kohde.Assessment\obj\Debug\Kohde.Assessment.exe
+C:\Users\kamik\source\repos\Kohde.Assessment\Kohde.Assessment\obj\Debug\Kohde.Assessment.pdb
