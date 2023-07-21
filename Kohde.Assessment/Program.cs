@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
-namespace Kohde.Assessment
+namespace Kohde.Assessment 
 {
     // *** NOTE ***
     // ALL CHANGES MUST BE ACCOMPANIED BY COMMENTS 
@@ -16,22 +17,19 @@ namespace Kohde.Assessment
             // the below class declarations looks like a 1st year student developed it
             // NOTE: this includes the class declarations as well
             // IMPROVE THE ARCHITECTURE 
-            Human human = new Human();
-            human.Name = "John";
-            human.Age = 35;
-            human.Gender = "M";
+
+            // =====================================================================================
+            // I used the DRY principles to clean this up. I used object initializer syntax which
+            // I just learnt about
+            // =====================================================================================
+
+            Human human = new Human { Name = "John ", Age = 35, Gender = "M" };
             Console.WriteLine(human.GetDetails());
 
-            Dog dog = new Dog();
-            dog.Name = "Walter";
-            dog.Age = 7;
-            dog.Food = "Epol";
+            Dog dog = new Dog { Name = "Walter ", Age = 7, Food = "Epol" };
             Console.WriteLine(dog.GetDetails());
 
-            Cat cat = new Cat();
-            cat.Name = "Snowball";
-            cat.Age = 35;
-            cat.Food = "Whiskers";
+            Cat cat = new Cat { Name = "Snowball ", Age = 35, Food = "Whiskers" };
             Console.WriteLine(cat.GetDetails());
 
             #endregion
@@ -41,6 +39,13 @@ namespace Kohde.Assessment
             // you'll notice the following piece of code takes an
             // age to execute - CORRECT THIS
             // IT MUST EXECUTE IN UNDER A SECOND
+
+            // =====================================================================================
+            // The first thing I noted was that for each iteration it creates a new instance.
+            // After a short google search I found a more efficient approach by appending a string
+            // as opposed to initilizing the string each time, then appending
+            // =====================================================================================
+
             PerformanceTest();
 
             #endregion
@@ -48,6 +53,12 @@ namespace Kohde.Assessment
             #region Assessment C
 
             // correct the following LINQ statement found in their respective methods
+
+            // =====================================================================================
+            // The only thing I can think of here is that it does not cater for
+            // when there are no even numbers... But I'm not 100% sure
+            // =====================================================================================
+
             var numbers = new List<int>()
             {
                 1, 4, 5, 9, 11, 15, 20, 27, 34, 55 // you may not change the numbers
@@ -55,6 +66,14 @@ namespace Kohde.Assessment
             // the following method must return the first event number - as suggested by it's name
             var firstValue = GetFirstEvenValue(numbers);
             Console.WriteLine("First Number: " + firstValue);
+
+            // =====================================================================================
+            // When searching for a solution to this I came across an exact replica of this question
+            // I avoided this Stackoverflow thread to make sure I couldn't cheat... Just saying
+            // Again, the only thing I can see in the method is that it doesn't cater for an empty
+            // list or a situation where there is no letter "a". Also it seems to only return the
+            // letter and not the whole word 
+            // =====================================================================================
 
             var strings = new List<string>()
             {
@@ -70,11 +89,17 @@ namespace Kohde.Assessment
 
             // there are multiple corrections required!!
             // correct the following statement(s)
+            // ====================================================================
+            // I see that it's trying to dispose of the 
+            // variable bulldog, but it's set to null and thats throwing errors.
+            // ====================================================================
+
             try
             {
                 Dog bulldog = null;
-                var disposeDog = (IDisposable) bulldog;
+                var disposeDog = (IDisposable)bulldog;
                 disposeDog.Dispose();
+                
             }
             catch (Exception ex)
             {
@@ -85,7 +110,7 @@ namespace Kohde.Assessment
 
             #region Assessment E
 
-            DisposeSomeObject();            
+            DisposeSomeObject();
 
             #endregion
 
@@ -111,7 +136,7 @@ namespace Kohde.Assessment
 
             //string a = Program.GenericTester(walter => walter.GetDetails(), dog);
             //Console.WriteLine("Result A: {0}", a);
-            //int b = Program.GenericTester(snowball => snowball.Age, cat);
+            //int b = Program.GenericTester(snowball => snowball.Age, cat); 
             //Console.WriteLine("Result B: {0}", b);
 
             #endregion
@@ -127,7 +152,7 @@ namespace Kohde.Assessment
             }
             catch (ArithmeticException e)
             {
-                Console.WriteLine("Implicitly specified:{0}{1}", Environment.NewLine, e.StackTrace);
+                Console.WriteLine("Implicitly specified:{0}{1}", Environment.NewLine, e.Message);
             }
 
             #endregion            
@@ -208,15 +233,15 @@ namespace Kohde.Assessment
 
         public static void PerformanceTest()
         {
-            var someLongDataString = "";
             const int sLen = 30, loops = 500000; // YOU MAY NOT CHANGE THE NUMBER OF LOOPS IN ANY WAY !!
             var source = new string('X', sLen);
+            StringBuilder someLongDataString = new StringBuilder();
 
             // DO NOT CHANGE THE ACTUAL FOR LOOP IN ANY WAY !!
             // in other words, you may not change: for (INITIALIZATION; CONDITION; INCREMENT/DECREMENT)
             for (var i = 0; i < loops; i++) 
             {
-                someLongDataString += source;
+                someLongDataString.Append(source);
             }
         }
 
@@ -227,14 +252,14 @@ namespace Kohde.Assessment
         public static int GetFirstEvenValue(List<int> numbers)
         {
             // RETURN THE FIRST EVEN NUMBER IN THE SEQUENCE
-            var first = numbers.Where(x => x % 2 == 0).First();
+            var first = numbers.FirstOrDefault(x => x % 2 == 0);
             return first;
         }
 
         public static string GetSingleStringValue(List<string> stringList)
         {
             // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
-            var first = stringList.Where(x => x.IndexOf("a") != -1).Single();
+            var first = stringList.Where(x => x.IndexOf("a") != -1).FirstOrDefault();
             return first;
         }
 
@@ -250,7 +275,8 @@ namespace Kohde.Assessment
             try
             {
                 disposableObject.PerformSomeLongRunningOperation();
-                disposableObject.RaiseEvent("raised event");
+                disposableObject.RaiseEvent("raised event"); 
+
             }
             finally
             {
