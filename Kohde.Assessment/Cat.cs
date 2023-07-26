@@ -1,14 +1,14 @@
 ﻿namespace Kohde.Assessment
 {
-    public class Cat
+    public class Cat : MammalBase, IPet
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
-        public string Food { get; set; }
-
-        public string GetDetails()
+        public Cat() { }
+        public Cat(string food, string name, int age)
         {
-            return "Name: " + Name + "Age: " + Age;
+            Food = food;
+            Name = name;
+            Age = age;
         }
+        public string Food { get; set; }
     }
 }

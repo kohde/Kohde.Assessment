@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Kohde.Assessment
@@ -7,21 +9,26 @@ namespace Kohde.Assessment
 
     public class DisposableObject : IDisposable
     {
+
         public event MyEventHandler SomethingHappened;
-
         public int Counter { get; private set; }
-
+        bool isDisposed = false;
         public void PerformSomeLongRunningOperation()
         {
             foreach (var i in Enumerable.Range(1, 10))
             {
+                //bcodendaal:
+                //My inclination is that the += operator is not the most efficient.
+                //I am however not sure how to improve this performance without using 
+                //something like a List<MyEventHandler>();
+
                 this.SomethingHappened += HandleSomethingHappened;
             }
         }
 
         public void RaiseEvent(string data)
         {
-            if (this.SomethingHappened != null)
+            if (SomethingHappened != null)
             {
                 this.SomethingHappened(data);
             }
@@ -35,12 +42,18 @@ namespace Kohde.Assessment
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!isDisposed)
             {
-                // Dispose managed resources
+                if (disposing)
+                {
+                    // Dispose managed resourcesc
+                    Counter = 1;
+                    //the default for a reference type is Null. You can also use (default) here.
+                    SomethingHappened = null;
+                }
+                // Free native resources
+                isDisposed = true;
             }
-
-            // Free native resources
         }
 
         public void Dispose()

@@ -50,6 +50,8 @@
     <Compile Include="Container\DuplicateRegistrationException.cs" />
     <Compile Include="Container\IContainer.cs" />
     <Compile Include="Container\Ioc.cs" />
+    <Compile Include="IPet.cs" />
+    <Compile Include="MammalBase.cs" />
     <Compile Include="Container\SimpleContainer.cs" />
     <Compile Include="DisposableObject.cs" />
     <Compile Include="Dog.cs" />
