@@ -9,7 +9,9 @@ namespace Kohde.Assessment.UnitTest
         public void ReflectionTest()
         {
             var withReflection = Program.CallMethodWithReflection();
-            Assert.IsTrue(!string.IsNullOrEmpty(withReflection), "Indicates whether the method was implemented correctly");                        
+
+            //IsNullOrWhiteSpace checks for null, empty or whitespace as opposed to IsNullOrEmpty just checking for null or empty.
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(withReflection), "Indicates whether the method was implemented correctly");
         }
     }
 }

@@ -46,14 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cat.cs" />
+    <Compile Include="Objects\Classes\Animal.cs" />
+    <Compile Include="Objects\Classes\Cat.cs" />
     <Compile Include="Container\DuplicateRegistrationException.cs" />
     <Compile Include="Container\IContainer.cs" />
     <Compile Include="Container\Ioc.cs" />
     <Compile Include="Container\SimpleContainer.cs" />
     <Compile Include="DisposableObject.cs" />
-    <Compile Include="Dog.cs" />
-    <Compile Include="Human.cs" />
+    <Compile Include="Objects\Classes\Dog.cs" />
+    <Compile Include="Objects\Classes\Entity.cs" />
+    <Compile Include="Objects\Classes\Human.cs" />
+    <Compile Include="Objects\Interfaces\IAnimal.cs" />
+    <Compile Include="Objects\Interfaces\IEntity.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
