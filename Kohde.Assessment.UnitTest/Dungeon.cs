@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using Kohde.Assessment.Objects.Classes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Kohde.Assessment.UnitTest

@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 
 namespace Kohde.Assessment.UnitTest
 {
@@ -14,7 +14,7 @@ namespace Kohde.Assessment.UnitTest
             s.Start();
             Program.PerformanceTest();
             s.Stop();
-            Trace.TraceInformation("Performance: {0}ms", s.ElapsedMilliseconds);
+            Trace.TraceInformation($"Performance: {s.ElapsedMilliseconds}ms"); //cleaner
             Assert.IsTrue(s.ElapsedMilliseconds < 1000, "Elapsed Milliseconds greater than 1 second indicates slow performance");
         }
     }

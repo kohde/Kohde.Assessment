@@ -1,6 +1,6 @@
-﻿using System;
-using Kohde.Assessment.Container;
+﻿using Kohde.Assessment.Container;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Kohde.Assessment.UnitTest
 {
@@ -12,7 +12,7 @@ namespace Kohde.Assessment.UnitTest
         {
             Program.PerformIoCActions();
 
-            var deviceProcessor = Ioc.Container.Resolve(typeof (IDeviceProcessor));
+            var deviceProcessor = Ioc.Container.Resolve(typeof(IDeviceProcessor));
             var processor = deviceProcessor as IDeviceProcessor;
             Assert.IsNotNull(processor, "IDeviceProcessor has not been implemented correctly");
             // call the GetDevicePrice method

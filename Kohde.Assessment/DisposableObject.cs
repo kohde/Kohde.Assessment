@@ -11,11 +11,20 @@ namespace Kohde.Assessment
 
         public int Counter { get; private set; }
 
+        //Subscribe the event handler once only.
+        //Also check if it has already been subscribed before attempting to subscribe.
         public void PerformSomeLongRunningOperation()
         {
-            foreach (var i in Enumerable.Range(1, 10))
+            MyEventHandler handler = HandleSomethingHappened;
+
+            if (this.SomethingHappened == null)
             {
-                this.SomethingHappened += HandleSomethingHappened;
+                this.SomethingHappened += handler;
+
+                for (int i = 1; i <= 9; i++)
+                {
+                    this.SomethingHappened += handler;
+                }
             }
         }
 
@@ -37,6 +46,14 @@ namespace Kohde.Assessment
         {
             if (disposing)
             {
+                if (this.SomethingHappened != null)
+                {
+                    foreach (var handler in this.SomethingHappened.GetInvocationList())
+                    {
+                        this.SomethingHappened -= (MyEventHandler)handler;
+                    }
+                }
+
                 // Dispose managed resources
             }
 

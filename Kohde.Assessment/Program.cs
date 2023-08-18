@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Kohde.Assessment.Container;
+using Kohde.Assessment.Objects.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Kohde.Assessment
 {
@@ -16,24 +19,22 @@ namespace Kohde.Assessment
             // the below class declarations looks like a 1st year student developed it
             // NOTE: this includes the class declarations as well
             // IMPROVE THE ARCHITECTURE 
-            Human human = new Human();
-            human.Name = "John";
-            human.Age = 35;
-            human.Gender = "M";
-            Console.WriteLine(human.GetDetails());
 
-            Dog dog = new Dog();
-            dog.Name = "Walter";
-            dog.Age = 7;
-            dog.Food = "Epol";
-            Console.WriteLine(dog.GetDetails());
+            /* There was commonality between the human, dog and cat classes as they shared properties like age and name.
+               This lead me to make use of abstract classes and interfaces that the classes could inherit from and implement the functionality.
+             * Created folders to store the respective files. Did so because in future when a solution grows it makes for easier navigation to the files you seek.
+             * Within the classes/interfaces I declared the properties in Alphabetical order (Age, Name etc). 
+               May seem silly because there are not many properties in the classes now, but humans tend to look for order when reading through a list.
+               So should a class contain many properties you scan a class more easily to find what you're looking for.*/
 
-            Cat cat = new Cat();
-            cat.Name = "Snowball";
-            cat.Age = 35;
-            cat.Food = "Whiskers";
-            Console.WriteLine(cat.GetDetails());
+            var cat = new Cat(35, "Whiskers", "Snowball");
+            Console.WriteLine(cat.ToString());
 
+            var dog = new Dog(7, "Epol", "Walter");
+            Console.WriteLine(dog.ToString());
+
+            var human = new Human(35, "M", "John");
+            Console.WriteLine(human.ToString());
             #endregion
 
             #region Assessment B
@@ -47,7 +48,7 @@ namespace Kohde.Assessment
 
             #region Assessment C
 
-            // correct the following LINQ statement found in their respective methods
+            //correct the following LINQ statement found in their respective methods
             var numbers = new List<int>()
             {
                 1, 4, 5, 9, 11, 15, 20, 27, 34, 55 // you may not change the numbers
@@ -70,10 +71,14 @@ namespace Kohde.Assessment
 
             // there are multiple corrections required!!
             // correct the following statement(s)
+
+            /*Object was null when attempting to dispose of it. This results in a null ref exception when the code is run.
+              To correct this an instance of Dog needs to be instatiated.
+              The Dog class also needs to implement IDisposable for the code to work.*/
             try
             {
-                Dog bulldog = null;
-                var disposeDog = (IDisposable) bulldog;
+                Dog bulldog = new Dog();
+                var disposeDog = (IDisposable)bulldog;
                 disposeDog.Dispose();
             }
             catch (Exception ex)
@@ -85,7 +90,7 @@ namespace Kohde.Assessment
 
             #region Assessment E
 
-            DisposeSomeObject();            
+            DisposeSomeObject();
 
             #endregion
 
@@ -96,10 +101,9 @@ namespace Kohde.Assessment
             // output must still render as: Name: [name] Age: [age]
             // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
-            ShowSomeHumanInformation(human);
-            ShowSomeDogInformation(dog);
-            ShowSomeCatInformation(cat);
-
+            ShowSomeMammalInformation(cat);
+            ShowSomeMammalInformation(dog);
+            ShowSomeMammalInformation(human);
 
             // # SECTION B #
             // BY MAKING USE OF REFLECTION (amongst other things):
@@ -109,10 +113,10 @@ namespace Kohde.Assessment
 
             // UNCOMMENT THE FOLLOWING PIECE OF CODE - IT WILL CAUSE A COMPILER ERROR - BECAUSE YOU HAVE TO CREATE THE METHOD
 
-            //string a = Program.GenericTester(walter => walter.GetDetails(), dog);
-            //Console.WriteLine("Result A: {0}", a);
-            //int b = Program.GenericTester(snowball => snowball.Age, cat);
-            //Console.WriteLine("Result B: {0}", b);
+            string a = Program.GenericTester(walter => walter.GetDetails(), dog);
+            Console.WriteLine("Result A: {0}", a);
+            int b = Program.GenericTester(snowball => snowball.Age, cat);
+            Console.WriteLine("Result B: {0}", b);
 
             #endregion
 
@@ -121,6 +125,9 @@ namespace Kohde.Assessment
             // in the following statement, everything works fine
             // but, it has a huge flaw! 
             // correct the following piece of code
+
+            //In CatchAndRethrowExplicitly(), the exception was being rethrown which would override the original stacktrace.
+            //Changing it from throw e --> throw preserves the original stack trace.
             try
             {
                 CatchAndRethrowExplicitly();
@@ -208,15 +215,16 @@ namespace Kohde.Assessment
 
         public static void PerformanceTest()
         {
-            var someLongDataString = "";
+            //StringBuilder executes faster than string so it's the better performance wise.
+            var someLongDataString = new StringBuilder();
             const int sLen = 30, loops = 500000; // YOU MAY NOT CHANGE THE NUMBER OF LOOPS IN ANY WAY !!
             var source = new string('X', sLen);
 
             // DO NOT CHANGE THE ACTUAL FOR LOOP IN ANY WAY !!
             // in other words, you may not change: for (INITIALIZATION; CONDITION; INCREMENT/DECREMENT)
-            for (var i = 0; i < loops; i++) 
+            for (var i = 0; i < loops; i++)
             {
-                someLongDataString += source;
+                someLongDataString.Append(source);
             }
         }
 
@@ -224,59 +232,60 @@ namespace Kohde.Assessment
 
         #region Assessment C Method
 
+        /* Using FirstOrDefault is the better option should the sequence not contain a match. 
+           It would return a default value and no exception is thrown.*/
+
         public static int GetFirstEvenValue(List<int> numbers)
         {
             // RETURN THE FIRST EVEN NUMBER IN THE SEQUENCE
-            var first = numbers.Where(x => x % 2 == 0).First();
+            var first = numbers.FirstOrDefault(x => x % 2 == 0);
             return first;
         }
 
         public static string GetSingleStringValue(List<string> stringList)
         {
             // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
-            var first = stringList.Where(x => x.IndexOf("a") != -1).Single();
+            var first = stringList.FirstOrDefault(x => x.Contains("a"));
             return first;
         }
 
         #endregion
-        
+
         #region Assessment E Method
 
         public static DisposableObject DisposeSomeObject()
         {
             // IMPROVE THE FOLLOWING PIECE OF CODE
             // as well as the PerformSomeLongRunningOperation method
-            var disposableObject = new DisposableObject();
-            try
+
+            //Swapped out the try finally for a using statement.
+            //Reason for this is to ensure that the object is disposed when code completes successfully or exception occurs.
+            using (var disposableObject = new DisposableObject())
             {
                 disposableObject.PerformSomeLongRunningOperation();
                 disposableObject.RaiseEvent("raised event");
+                return disposableObject;
             }
-            finally
-            {
-                disposableObject.Dispose();
-            }
-
-            return disposableObject;
         }
 
         #endregion
 
         #region Assessment F Methods
 
-        public static void ShowSomeHumanInformation(Human human)
+        public static void ShowSomeMammalInformation<T>(T Entity) where T : Entity
         {
-            Console.WriteLine("Name:" + human.Name + " Age: " + human.Age);
+            Console.WriteLine(Entity.GetDetails());
         }
 
-        public static void ShowSomeDogInformation(Dog dog)
+        public static TResult GenericTester<T, TResult>(Func<T, TResult> expression, T instance)
+          where T : new()
         {
-            Console.WriteLine("Name:" + dog.Name + " Age: " + dog.Age);
-        }
+            if (instance == null) //check to cater for the following scenario dog = null, the method should create a new instance and not fail.
+            {
+                instance = new T();
+            }
 
-        public static void ShowSomeCatInformation(Cat cat)
-        {
-            Console.WriteLine("Name:" + cat.Name + " Age: " + cat.Age);
+            return expression(instance);
         }
 
         #endregion
@@ -289,9 +298,9 @@ namespace Kohde.Assessment
             {
                 ThrowException();
             }
-            catch (ArithmeticException e)
+            catch
             {
-                throw e;
+                throw;
             }
         }
 
@@ -311,7 +320,16 @@ namespace Kohde.Assessment
             // AND RETURN THE STRING CONTENT
 
             // DO NOT CHANGE THE NAME, RETURN TYPE OR ANY IMPLEMENTATION OF THIS METHOD NOR THE BELOW METHOD
-            throw new NotImplementedException(); // ATT: REMOVE THIS LINE
+
+            //Knowledge on reflection was a bit rusty so did some researching.
+            //This set me on the right path: https://stackoverflow.com/questions/232535/how-do-i-use-reflection-to-call-a-generic-method
+            var method = typeof(Program).GetMethod(nameof(Program.DisplaySomeStuff));
+            var myType = new Type[] { typeof(string) };
+            var methodInfo = method.MakeGenericMethod(myType);
+            var parameters = new object[] { "Lucky no. 7" };
+            var result = (string)methodInfo.Invoke(null, parameters);
+
+            return result;
         }
 
         public static string DisplaySomeStuff<T>(T toDisplay) where T : class
@@ -346,12 +364,15 @@ namespace Kohde.Assessment
              */
 
             // 1. register the interfaces and classes
-            // TODO: ???
+
+            //Following singleton lifecycle. I'm aware of the differences between transient vs. scoped vs. singleton lifecycles.
+            Ioc.Container.Register<IDeviceProcessor, DeviceProcessor>();
+            Ioc.Container.Register<IDevice, SamsungDevice>();
 
             // 2. resolve the IDeviceProcessor
-            //var deviceProcessor = ???
             // call the GetDevicePrice method
-            //Console.WriteLine(deviceProcessor.GetDevicePrice());
+            var deviceProcessor = Ioc.Container.Resolve<IDeviceProcessor>();
+            Console.WriteLine(deviceProcessor.GetDevicePrice());
         }
 
         #endregion
