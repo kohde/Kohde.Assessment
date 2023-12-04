@@ -38,9 +38,13 @@ namespace Kohde.Assessment
             if (disposing)
             {
                 // Dispose managed resources
+                //set the counter to one as indicated by test cases when item is dispossed
+                Counter = 1;
             }
 
             // Free native resources
+            //Set instance of event handler to null
+            SomethingHappened = null;
         }
 
         public void Dispose()
