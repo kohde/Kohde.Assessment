@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Policy;
 
 namespace Kohde.Assessment
 {
@@ -37,7 +38,10 @@ namespace Kohde.Assessment
         {
             if (disposing)
             {
-                // Dispose managed resources
+				// Dispose managed resources
+				//I believe both of these are managed resources which we essentially have to reset
+				this.Counter = 1;
+                SomethingHappened = null;
             }
 
             // Free native resources
