@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Kohde.Assessment.Container;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Kohde.Assessment
 {
@@ -11,27 +13,35 @@ namespace Kohde.Assessment
     {
         static void Main(string[] args)
         {
-            #region Assessment A
+			#region Assessment A
 
-            // the below class declarations looks like a 1st year student developed it
-            // NOTE: this includes the class declarations as well
-            // IMPROVE THE ARCHITECTURE 
-            Human human = new Human();
-            human.Name = "John";
-            human.Age = 35;
-            human.Gender = "M";
+			// the below class declarations looks like a 1st year student developed it
+			// NOTE: this includes the class declarations as well
+			// IMPROVE THE ARCHITECTURE 
+
+			//I prefer this way of instantiating objects for readability, could also be done in a constructor
+			var human = new Human()
+            {
+                Name = "John",
+                Age = 35,
+                Gender = "M"
+            };
             Console.WriteLine(human.GetDetails());
 
-            Dog dog = new Dog();
-            dog.Name = "Walter";
-            dog.Age = 7;
-            dog.Food = "Epol";
+            var dog = new Dog()
+            {
+                Name = "Walter",
+                Age = 7,
+                Food = "Epol"
+            };
             Console.WriteLine(dog.GetDetails());
 
-            Cat cat = new Cat();
-            cat.Name = "Snowball";
-            cat.Age = 35;
-            cat.Food = "Whiskers";
+            var cat = new Cat()
+            {
+                Name = "Snowball",
+                Age = 35,
+                Food = "Whiskers"
+            };
             Console.WriteLine(cat.GetDetails());
 
             #endregion
@@ -72,10 +82,15 @@ namespace Kohde.Assessment
             // correct the following statement(s)
             try
             {
-                Dog bulldog = null;
-                var disposeDog = (IDisposable) bulldog;
-                disposeDog.Dispose();
-            }
+				//I couldnt exactly see what was wanted here.
+				//I could have instantiated a new bulldog object and/or made Dog implement IDisposable
+                //but I went with trying to keep the null and just make the following safer.
+
+				Dog bulldog = null;
+				var disposeDog = bulldog as IDisposable;
+				disposeDog?.Dispose();
+
+			}
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
@@ -96,10 +111,11 @@ namespace Kohde.Assessment
             // output must still render as: Name: [name] Age: [age]
             // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
-            ShowSomeHumanInformation(human);
-            ShowSomeDogInformation(dog);
-            ShowSomeCatInformation(cat);
-
+            
+            //Removed non generic methods as even they would be the same if they called the new generic one.
+            ShowSomeMammalInformation(human);
+			ShowSomeMammalInformation(dog);
+			ShowSomeMammalInformation(cat);
 
             // # SECTION B #
             // BY MAKING USE OF REFLECTION (amongst other things):
@@ -109,10 +125,10 @@ namespace Kohde.Assessment
 
             // UNCOMMENT THE FOLLOWING PIECE OF CODE - IT WILL CAUSE A COMPILER ERROR - BECAUSE YOU HAVE TO CREATE THE METHOD
 
-            //string a = Program.GenericTester(walter => walter.GetDetails(), dog);
-            //Console.WriteLine("Result A: {0}", a);
-            //int b = Program.GenericTester(snowball => snowball.Age, cat);
-            //Console.WriteLine("Result B: {0}", b);
+            string a = Program.GenericTester(walter => walter.GetDetails(), dog);
+            Console.WriteLine("Result A: {0}", a);
+            int b = Program.GenericTester(snowball => snowball.Age, cat);
+            Console.WriteLine("Result B: {0}", b);
 
             #endregion
 
@@ -159,20 +175,17 @@ namespace Kohde.Assessment
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*  
-                const string abc = "asduqwezxc";
-                foreach (var vowel in abc.SelectOnlyVowels())
-                {
-                    Console.WriteLine("{0}", vowel);
-                }
-            */
+            const string abc = "asduqwezxc";
+            foreach (var vowel in abc.SelectOnlyVowels())
+            {
+                Console.WriteLine("{0}", vowel);
+            }
             // < REQUIRED OUTPUT => a u e
 
             // > UNCOMMENT THE CODE BELOW AND CREATE A METHOD SO THAT THE FOLLOWING CODE WILL WORK
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*
             List<Dog> dogs = new List<Dog>
             {
                 new Dog {Age = 8, Name = "Max"},
@@ -181,7 +194,7 @@ namespace Kohde.Assessment
             };
 
             var foo = dogs.CustomWhere(x => x.Age > 6 && x.Name.SelectOnlyVowels().Any());
-
+            
             // < DOGS REQUIRED OUTPUT =>
             //      Name: Max Age: 8
              
@@ -196,7 +209,6 @@ namespace Kohde.Assessment
             // < CATS REQUIRED OUTPUT =>
             //      Name: Capri Age: 1
             //      Name: Captain Hooks Age: 3
-            */
 
             #endregion
 
@@ -208,34 +220,45 @@ namespace Kohde.Assessment
 
         public static void PerformanceTest()
         {
-            var someLongDataString = "";
+			var someLongDataString = "";
             const int sLen = 30, loops = 500000; // YOU MAY NOT CHANGE THE NUMBER OF LOOPS IN ANY WAY !!
             var source = new string('X', sLen);
 
-            // DO NOT CHANGE THE ACTUAL FOR LOOP IN ANY WAY !!
-            // in other words, you may not change: for (INITIALIZATION; CONDITION; INCREMENT/DECREMENT)
-            for (var i = 0; i < loops; i++) 
-            {
-                someLongDataString += source;
-            }
-        }
+			// DO NOT CHANGE THE ACTUAL FOR LOOP IN ANY WAY !!
+			// in other words, you may not change: for (INITIALIZATION; CONDITION; INCREMENT/DECREMENT)
+
+			//tried string.concat but it was too slow at this scale
+			//tried making it a list, and that was fastest but changed the structure so not good
+			//StringBuilder was quick and kept the structure after a tostring so ultimitly best option
+
+			StringBuilder stringbuilder = new StringBuilder();
+			for (var i = 0; i < loops; i++)
+				stringbuilder.Append(source);
+
+            someLongDataString = stringbuilder.ToString();
+		}
 
         #endregion
 
         #region Assessment C Method
 
         public static int GetFirstEvenValue(List<int> numbers)
-        {
-            // RETURN THE FIRST EVEN NUMBER IN THE SEQUENCE
-            var first = numbers.Where(x => x % 2 == 0).First();
-            return first;
+		{
+			// RETURN THE FIRST EVEN NUMBER IN THE SEQUENCE
+			
+            // Since the possible values are known, I went with FirstOrDefault
+			// But this would not provide accurate results if 0 was a possible value
+			// FirstOrDefault to fetch first instance or return default(0)
+			return numbers.FirstOrDefault(x => x % 2 == 0);
         }
 
         public static string GetSingleStringValue(List<string> stringList)
         {
-            // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
-            var first = stringList.Where(x => x.IndexOf("a") != -1).Single();
-            return first;
+			// THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
+
+			//chose FirstOrDefault to fetch first instance and return default("")
+			//SingleOrDefault would throw an exception if more than one match is found so could have been used if an exception was wanted
+			return stringList.FirstOrDefault(x => x.Contains("a"));
         }
 
         #endregion
@@ -246,44 +269,46 @@ namespace Kohde.Assessment
         {
             // IMPROVE THE FOLLOWING PIECE OF CODE
             // as well as the PerformSomeLongRunningOperation method
-            var disposableObject = new DisposableObject();
-            try
+
+            //changed try/finally to using statement to ensure Dispose is called at the end of its scope
+            using (var disposableObject = new DisposableObject())
             {
                 disposableObject.PerformSomeLongRunningOperation();
                 disposableObject.RaiseEvent("raised event");
+                return disposableObject;
             }
-            finally
-            {
-                disposableObject.Dispose();
-            }
-
-            return disposableObject;
         }
 
-        #endregion
+		#endregion
 
-        #region Assessment F Methods
+		#region Assessment F Methods
 
-        public static void ShowSomeHumanInformation(Human human)
-        {
-            Console.WriteLine("Name:" + human.Name + " Age: " + human.Age);
-        }
+		//changed name of method to match instructions
+		//Added generic type T ensureing it's a Mammal or derived from Mammal
+		public static void ShowSomeMammalInformation<T>(T genericMammal) where T : Mammal
+		{
+			//cast to Mammal to access GetDetails method
+			var mammal = (Mammal)genericMammal;
+			//null check in case a null is passed
+			Console.WriteLine(mammal?.GetDetails());
+		}
 
-        public static void ShowSomeDogInformation(Dog dog)
-        {
-            Console.WriteLine("Name:" + dog.Name + " Age: " + dog.Age);
-        }
+        //Generic method takes in T and returns TResult, with constriant new() to ensure it has a constructor
+		public static TResult GenericTester<T, TResult>(Func<T, TResult> func, T obj) where T : new()
+		{
+            //just calling new T() should have worked because of the constraint but using reflection it was a requirement
+            //could have also fetched the constructor from the type but I prefer activator.CreateInstance 
+            if (obj == null)
+                obj = (T)Activator.CreateInstance(typeof(T));
 
-        public static void ShowSomeCatInformation(Cat cat)
-        {
-            Console.WriteLine("Name:" + cat.Name + " Age: " + cat.Age);
-        }
+            return func(obj);
+		}
 
-        #endregion
+		#endregion
 
-        #region Assessment G Methods
+		#region Assessment G Methods
 
-        public static void CatchAndRethrowExplicitly()
+		public static void CatchAndRethrowExplicitly()
         {
             try
             {
@@ -291,7 +316,8 @@ namespace Kohde.Assessment
             }
             catch (ArithmeticException e)
             {
-                throw e;
+				// Throw again but don't use the exception e to preserve the stack trace
+				throw;
             }
         }
 
@@ -306,26 +332,34 @@ namespace Kohde.Assessment
 
         public static string CallMethodWithReflection()
         {
-            // BY MAKING USE OF ONLY REFLECTION
-            // CALL THE FOLLOWING METHOD: DisplaySomeStuff [WHICH IN JUST BELOW THIS ONE]
-            // AND RETURN THE STRING CONTENT
+			// BY MAKING USE OF ONLY REFLECTION
+			// CALL THE FOLLOWING METHOD: DisplaySomeStuff [WHICH IN JUST BELOW THIS ONE]
+			// AND RETURN THE STRING CONTENT
 
-            // DO NOT CHANGE THE NAME, RETURN TYPE OR ANY IMPLEMENTATION OF THIS METHOD NOR THE BELOW METHOD
-            throw new NotImplementedException(); // ATT: REMOVE THIS LINE
-        }
+			// DO NOT CHANGE THE NAME, RETURN TYPE OR ANY IMPLEMENTATION OF THIS METHOD NOR THE BELOW METHOD
+
+			//fetch method info for DisplaySomeStuff in Program class
+			var methodInfo = typeof(Program).GetMethod("DisplaySomeStuff");
+
+			//make generic method with string as the single type argument
+			var genericMethod = methodInfo?.MakeGenericMethod(typeof(string));
+
+			//invoke the method
+			return (string)genericMethod?.Invoke(null, new object[] { "test" });
+		}
 
         public static string DisplaySomeStuff<T>(T toDisplay) where T : class
         {
             return string.Format("Here it is: {0}", toDisplay);
         }
 
-        #endregion
+		#endregion
 
-        #region IoC / DI
+		#region IoC / DI
 
-        public static void PerformIoCActions()
-        {
-            /*  An very simple IoC / DI container has been created for you. All the code can be viewed in the Container folder.
+		public static void PerformIoCActions()
+		{
+			/*  An very simple IoC / DI container has been created for you. All the code can be viewed in the Container folder.
              *  By making use of the classes provided, perform the following tasks:
              *  
              *  Two classes and two interfaces have been created for you, namely:
@@ -345,19 +379,46 @@ namespace Kohde.Assessment
              *  Some of the code below has been done, but you need to fill in the blanks
              */
 
-            // 1. register the interfaces and classes
-            // TODO: ???
+			// 1. register the interfaces and classes
 
-            // 2. resolve the IDeviceProcessor
-            //var deviceProcessor = ???
-            // call the GetDevicePrice method
-            //Console.WriteLine(deviceProcessor.GetDevicePrice());
-        }
+			// register implemented classes for the interfaces
+			Ioc.Container.Register<IDevice, SamsungDevice>();
+			Ioc.Container.Register<IDeviceProcessor, DeviceProcessor>();
 
-        #endregion
-    }
+			// 2. resolve the IDeviceProcessor
+			// resolve an instance of the IDeviceProcessor
+			var deviceProcessor = Ioc.Container.Resolve<IDeviceProcessor>();
 
-    public interface IDevice
+			// call the GetDevicePrice method
+			Console.WriteLine(deviceProcessor.GetDevicePrice());
+		}
+
+		#endregion
+
+		#region Dungeon
+
+		// extension method to select only vowels from an IEnumerable<char>
+		public static IEnumerable<char> SelectOnlyVowels(this IEnumerable<char> chars)
+		{
+            //thought about using regex but thats probably overkill
+            //a simple where and contains does the trick
+			return chars.Where(c => "aeiou".Contains(char.ToLower(c)));
+		}
+
+		//extension method to filter a list of mammals based on a Func<T, bool>
+		public static IEnumerable<T> CustomWhere<T>(this List<T> mammals, Func<T, bool> func) where T : Mammal
+		{
+            foreach (var mammal in mammals)
+			{
+				if (func.Invoke(mammal))
+					yield return mammal;// yield return to automaticaly build return response
+			}
+		}
+
+		#endregion
+	}
+
+	public interface IDevice
     {
         string DeviceCode { get; }
     }

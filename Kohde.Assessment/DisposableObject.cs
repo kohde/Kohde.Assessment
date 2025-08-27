@@ -13,9 +13,12 @@ namespace Kohde.Assessment
 
         public void PerformSomeLongRunningOperation()
         {
-            foreach (var i in Enumerable.Range(1, 10))
+			//Leaving the loop as is to simulate long running operation
+			foreach (var i in Enumerable.Range(1, 10))
             {
-                this.SomethingHappened += HandleSomethingHappened;
+				//unsubscribe before subscribing to avoid multiple subscriptions
+				this.SomethingHappened -= HandleSomethingHappened;
+				this.SomethingHappened += HandleSomethingHappened;
             }
         }
 
@@ -37,8 +40,10 @@ namespace Kohde.Assessment
         {
             if (disposing)
             {
-                // Dispose managed resources
-            }
+				// Dispose managed resources
+				// Unsubscribe all event handlers
+				this.SomethingHappened = null;
+			}
 
             // Free native resources
         }
