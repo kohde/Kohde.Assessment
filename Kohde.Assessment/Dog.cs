@@ -1,14 +1,8 @@
 ﻿namespace Kohde.Assessment
 {
-    public class Dog
-    {
-        public string Name { get; set; }
-        public int Age { get; set; }
-        public string Food { get; set; }
-
-        public string GetDetails()
-        {
-            return "Name: " + Name + "Age: " + Age;
-        }
-    }
+	//Dog implements Mammal abstract class so removed duplicate properties and methods
+	public class Dog : Mammal
+	{
+		public string Food { get; set; }
+	}
 }
