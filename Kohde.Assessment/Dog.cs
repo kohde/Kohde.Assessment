@@ -1,14 +1,17 @@
-﻿namespace Kohde.Assessment
+﻿using System.Xml.Linq;
+
+namespace Kohde.Assessment
 {
-    public class Dog
+    /// <summary>
+    /// Dog now inherits from Organism and only defines what is unique (Food).
+    /// </summary>
+    public class Dog : Organism
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
         public string Food { get; set; }
 
-        public string GetDetails()
+        public override string GetDetails()
         {
-            return "Name: " + Name + "Age: " + Age;
+            return $"Dog - Name: {Name}, Age: {Age}, Food: {Food}";
         }
     }
 }
