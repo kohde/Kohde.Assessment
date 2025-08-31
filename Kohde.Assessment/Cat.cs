@@ -1,14 +1,14 @@
 ﻿namespace Kohde.Assessment
 {
-    public class Cat
+    //The Cat is inherently a Pet and will awlas be able to do what a Pet can do
+    //The Cat class allows us to properties and methods specific to cats while still being able to do what a Pet can do
+    public class Cat: Pet, IPet
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
-        public string Food { get; set; }
-
-        public string GetDetails()
+        public Cat(string name, int age, string food): base(name, age, food)
         {
-            return "Name: " + Name + "Age: " + Age;
+        }
+        public Cat() : base()
+        {
         }
     }
 }
