@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Kohde.Assessment.Container;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Kohde.Assessment
 {
@@ -73,8 +75,11 @@ namespace Kohde.Assessment
             try
             {
                 Dog bulldog = null;
-                var disposeDog = (IDisposable) bulldog;
-                disposeDog.Dispose();
+
+                if (bulldog is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
             }
             catch (Exception ex)
             {
@@ -96,9 +101,11 @@ namespace Kohde.Assessment
             // output must still render as: Name: [name] Age: [age]
             // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
-            ShowSomeHumanInformation(human);
-            ShowSomeDogInformation(dog);
-            ShowSomeCatInformation(cat);
+           
+            ShowSomeMammalInformation(human);
+            ShowSomeMammalInformation(dog);
+            ShowSomeMammalInformation(cat);
+
 
 
             // # SECTION B #
@@ -109,10 +116,10 @@ namespace Kohde.Assessment
 
             // UNCOMMENT THE FOLLOWING PIECE OF CODE - IT WILL CAUSE A COMPILER ERROR - BECAUSE YOU HAVE TO CREATE THE METHOD
 
-            //string a = Program.GenericTester(walter => walter.GetDetails(), dog);
-            //Console.WriteLine("Result A: {0}", a);
-            //int b = Program.GenericTester(snowball => snowball.Age, cat);
-            //Console.WriteLine("Result B: {0}", b);
+            string a = Program.GenericTester(walter => walter.GetDetails(), dog);
+            Console.WriteLine("Result A: {0}", a);
+            int b = Program.GenericTester(snowball => snowball.Age, cat);
+            Console.WriteLine("Result B: {0}", b);
 
             #endregion
 
@@ -159,20 +166,23 @@ namespace Kohde.Assessment
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*  
-                const string abc = "asduqwezxc";
+           
+
+
+
+            const string abc = "asduqwezxc";
                 foreach (var vowel in abc.SelectOnlyVowels())
                 {
                     Console.WriteLine("{0}", vowel);
                 }
-            */
+            
             // < REQUIRED OUTPUT => a u e
 
             // > UNCOMMENT THE CODE BELOW AND CREATE A METHOD SO THAT THE FOLLOWING CODE WILL WORK
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*
+            
             List<Dog> dogs = new List<Dog>
             {
                 new Dog {Age = 8, Name = "Max"},
@@ -196,7 +206,7 @@ namespace Kohde.Assessment
             // < CATS REQUIRED OUTPUT =>
             //      Name: Capri Age: 1
             //      Name: Captain Hooks Age: 3
-            */
+            
 
             #endregion
 
@@ -204,20 +214,22 @@ namespace Kohde.Assessment
             Console.ReadLine();
         }
 
+        
         #region Assessment B Method
 
         public static void PerformanceTest()
         {
-            var someLongDataString = "";
             const int sLen = 30, loops = 500000; // YOU MAY NOT CHANGE THE NUMBER OF LOOPS IN ANY WAY !!
             var source = new string('X', sLen);
+            var sb = new System.Text.StringBuilder(sLen * loops);
 
             // DO NOT CHANGE THE ACTUAL FOR LOOP IN ANY WAY !!
             // in other words, you may not change: for (INITIALIZATION; CONDITION; INCREMENT/DECREMENT)
             for (var i = 0; i < loops; i++) 
-            {
-                someLongDataString += source;
+            {   
+                sb.Append(source);
             }
+            var result = sb.ToString();
         }
 
         #endregion
@@ -227,15 +239,14 @@ namespace Kohde.Assessment
         public static int GetFirstEvenValue(List<int> numbers)
         {
             // RETURN THE FIRST EVEN NUMBER IN THE SEQUENCE
-            var first = numbers.Where(x => x % 2 == 0).First();
+            var first = numbers.FirstOrDefault(x => x % 2 == 0);
             return first;
         }
 
         public static string GetSingleStringValue(List<string> stringList)
         {
             // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
-            var first = stringList.Where(x => x.IndexOf("a") != -1).Single();
-            return first;
+            return stringList.FirstOrDefault(x => x.ToLower().Contains("a"));
         }
 
         #endregion
@@ -250,7 +261,6 @@ namespace Kohde.Assessment
             try
             {
                 disposableObject.PerformSomeLongRunningOperation();
-                disposableObject.RaiseEvent("raised event");
             }
             finally
             {
@@ -279,6 +289,23 @@ namespace Kohde.Assessment
             Console.WriteLine("Name:" + cat.Name + " Age: " + cat.Age);
         }
 
+        public static void ShowSomeMammalInformation<T>(T mammal) where T : Mammal
+        {
+            Console.WriteLine(mammal.GetDetails());
+        }
+
+        public static TResult GenericTester<TInput, TResult>(Func<TInput, TResult> func, TInput input) where TInput : new()
+        {
+            if (func == null)
+                throw new ArgumentNullException(nameof(func));
+
+            if (input == null)
+            {
+                input = new TInput();
+            }
+
+            return func(input);
+        }
         #endregion
 
         #region Assessment G Methods
@@ -289,9 +316,9 @@ namespace Kohde.Assessment
             {
                 ThrowException();
             }
-            catch (ArithmeticException e)
+            catch (ArithmeticException)
             {
-                throw e;
+                throw;
             }
         }
 
@@ -311,7 +338,11 @@ namespace Kohde.Assessment
             // AND RETURN THE STRING CONTENT
 
             // DO NOT CHANGE THE NAME, RETURN TYPE OR ANY IMPLEMENTATION OF THIS METHOD NOR THE BELOW METHOD
-            throw new NotImplementedException(); // ATT: REMOVE THIS LINE
+            var method = typeof(Program).GetMethod("DisplaySomeStuff");
+            var genericMethod = method.MakeGenericMethod(typeof(string));
+            var result = genericMethod.Invoke(null, new object[] { "Reflection works!" });
+
+            return (string)result;
         }
 
         public static string DisplaySomeStuff<T>(T toDisplay) where T : class
@@ -347,14 +378,61 @@ namespace Kohde.Assessment
 
             // 1. register the interfaces and classes
             // TODO: ???
+            var container = Ioc.Container;
+            container.Register<IDevice, SamsungDevice>();
+            container.Register<IDeviceProcessor, DeviceProcessor>();
+
 
             // 2. resolve the IDeviceProcessor
-            //var deviceProcessor = ???
+            var deviceProcessor = container.Resolve<IDeviceProcessor>();         
             // call the GetDevicePrice method
-            //Console.WriteLine(deviceProcessor.GetDevicePrice());
+            Console.WriteLine(deviceProcessor.GetDevicePrice());
         }
 
         #endregion
+
+        #region Bonus XP - Dungeon Methods
+
+        public static IEnumerable<char> SelectOnlyVowels(IEnumerable<char> input)
+        {
+            if (input == null) yield break;
+
+            var vowels = "aeiouAEIOU";
+            foreach (var c in input)
+            {
+                if (vowels.Contains(c))
+                    yield return c;
+            }
+        }
+
+        public static IEnumerable<char> SelectOnlyVowels(this string input)
+        {
+            if (string.IsNullOrEmpty(input)) yield break;
+
+            foreach (var c in input.ToCharArray())
+            {
+                if ("aeiouAEIOU".Contains(c))
+                    yield return c;
+            }
+        }
+
+        public static IEnumerable<T> CustomWhere<T>(this IEnumerable<T> collection, Func<T, bool> predicate)
+        {
+            if (collection == null || predicate == null) yield break;
+
+            foreach (var item in collection)
+            {
+                if (predicate(item))
+                    yield return item;
+            }
+        }
+
+
+
+        #endregion
+
+
+
     }
 
     public interface IDevice
@@ -393,3 +471,4 @@ namespace Kohde.Assessment
         }
     }
 }
+

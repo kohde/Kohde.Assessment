@@ -13,18 +13,15 @@ namespace Kohde.Assessment
 
         public void PerformSomeLongRunningOperation()
         {
-            foreach (var i in Enumerable.Range(1, 10))
-            {
-                this.SomethingHappened += HandleSomethingHappened;
-            }
+            SomethingHappened += HandleSomethingHappened;
+
+            SomethingHappened?.Invoke("performing long operation");
+
         }
 
         public void RaiseEvent(string data)
         {
-            if (this.SomethingHappened != null)
-            {
-                this.SomethingHappened(data);
-            }
+            SomethingHappened?.Invoke(data);
         }
 
         private void HandleSomethingHappened(string foo)
@@ -37,10 +34,15 @@ namespace Kohde.Assessment
         {
             if (disposing)
             {
-                // Dispose managed resources
+                // Unsubscribe all event handlers
+                if (SomethingHappened != null)
+                {
+                    foreach (var d in SomethingHappened.GetInvocationList())
+                    {
+                        SomethingHappened -= (MyEventHandler)d;
+                    }
+                }
             }
-
-            // Free native resources
         }
 
         public void Dispose()
