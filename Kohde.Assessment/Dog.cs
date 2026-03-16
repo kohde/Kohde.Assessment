@@ -1,14 +1,16 @@
 ﻿namespace Kohde.Assessment
 {
-    public class Dog
+    public class Dog : Entity
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
         public string Food { get; set; }
 
-        public string GetDetails()
+        //public Dog(string name, int age, string food) : base (name, age)
+        //{
+        //    Food = food;
+        //}
+        public override string GetDetails()
         {
-            return "Name: " + Name + "Age: " + Age;
+            return base.GetDetails() + $" Food: {Food}";
         }
     }
 }

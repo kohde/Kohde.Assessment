@@ -53,7 +53,9 @@
     <Compile Include="Container\SimpleContainer.cs" />
     <Compile Include="DisposableObject.cs" />
     <Compile Include="Dog.cs" />
+    <Compile Include="Entity.cs" />
     <Compile Include="Human.cs" />
+    <Compile Include="IEntity.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
