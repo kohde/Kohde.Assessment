@@ -16,7 +16,8 @@ namespace Kohde.Assessment.UnitTest
 
             var human = new Human
             {
-                Name = "John Doe", Age = 34
+                Name = "John Doe", 
+                Age = 34
             };
             var dog = new Dog
             {

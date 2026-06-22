@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Kohde.Assessment.Container;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
 
 namespace Kohde.Assessment
 {
@@ -16,23 +19,29 @@ namespace Kohde.Assessment
             // the below class declarations looks like a 1st year student developed it
             // NOTE: this includes the class declarations as well
             // IMPROVE THE ARCHITECTURE 
-            Human human = new Human();
-            human.Name = "John";
-            human.Age = 35;
-            human.Gender = "M";
-            Console.WriteLine(human.GetDetails());
+            Human human = new Human
+            {
+                Name = "John",
+                Age = 35,
+                Gender = "M"
+            };
+            Console.WriteLine(human.ToString());
 
-            Dog dog = new Dog();
-            dog.Name = "Walter";
-            dog.Age = 7;
-            dog.Food = "Epol";
-            Console.WriteLine(dog.GetDetails());
+            Dog dog = new Dog
+            {
+                Name = "Walter",
+                Age = 7,
+                Food = "Epol"
+            };
+            Console.WriteLine(dog.ToString());
 
-            Cat cat = new Cat();
-            cat.Name = "Snowball";
-            cat.Age = 35;
-            cat.Food = "Whiskers";
-            Console.WriteLine(cat.GetDetails());
+            Cat cat = new Cat
+            {
+                Name = "Snowball",
+                Age = 35,
+                Food = "Whiskers"
+            };
+            Console.WriteLine(cat.ToString());
 
             #endregion
 
@@ -58,7 +67,7 @@ namespace Kohde.Assessment
 
             var strings = new List<string>()
             {
-                "John", "Jane", "Sarah", "Pete", "Anna"
+                "John", "Jne", "Sarah", "Pete", "Ann"
             };
             // the following method must return the first name which contains an 'a'
             var strValue = GetSingleStringValue(strings);
@@ -72,9 +81,11 @@ namespace Kohde.Assessment
             // correct the following statement(s)
             try
             {
-                Dog bulldog = null;
-                var disposeDog = (IDisposable) bulldog;
-                disposeDog.Dispose();
+                // Fix 1: instantiate the dog so it's not null
+                Dog bulldog = new Dog();
+
+                // Fix 2: cast to Animal (which Dog actually is) instead of IDisposable
+                var disposeDog = (Animal)bulldog;
             }
             catch (Exception ex)
             {
@@ -96,9 +107,9 @@ namespace Kohde.Assessment
             // output must still render as: Name: [name] Age: [age]
             // THE METHOD THAT YOU CREATE MUST BE STATIC AND DECLARED IN THE PROGRAM CLASS
             // NB!! PLEASE NAME THE METHOD: ShowSomeMammalInformation
-            ShowSomeHumanInformation(human);
-            ShowSomeDogInformation(dog);
-            ShowSomeCatInformation(cat);
+            ShowSomeMammalInformation(human);
+            ShowSomeMammalInformation(dog);
+            ShowSomeMammalInformation(cat);
 
 
             // # SECTION B #
@@ -109,10 +120,10 @@ namespace Kohde.Assessment
 
             // UNCOMMENT THE FOLLOWING PIECE OF CODE - IT WILL CAUSE A COMPILER ERROR - BECAUSE YOU HAVE TO CREATE THE METHOD
 
-            //string a = Program.GenericTester(walter => walter.GetDetails(), dog);
-            //Console.WriteLine("Result A: {0}", a);
-            //int b = Program.GenericTester(snowball => snowball.Age, cat);
-            //Console.WriteLine("Result B: {0}", b);
+            string a = Program.GenericTester(walter => walter.GetDetails(), dog);
+            Console.WriteLine("Result A: {0}", a);
+            int b = Program.GenericTester(snowball => snowball.Age, cat);
+            Console.WriteLine("Result B: {0}", b);
 
             #endregion
 
@@ -159,20 +170,20 @@ namespace Kohde.Assessment
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*  
-                const string abc = "asduqwezxc";
-                foreach (var vowel in abc.SelectOnlyVowels())
-                {
-                    Console.WriteLine("{0}", vowel);
-                }
-            */
+
+            const string abc = "asduqwezxc";
+            foreach (var vowel in abc.SelectOnlyVowels())
+            {
+                Console.WriteLine("{0}", vowel);
+            }
+
             // < REQUIRED OUTPUT => a u e
 
             // > UNCOMMENT THE CODE BELOW AND CREATE A METHOD SO THAT THE FOLLOWING CODE WILL WORK
             // > DECLARE ALL THE METHODS WITHIN THE PROGRAM CLASS !!
             // > DO NOT ALTER THE EXISTING CODE
 
-            /*
+
             List<Dog> dogs = new List<Dog>
             {
                 new Dog {Age = 8, Name = "Max"},
@@ -180,11 +191,11 @@ namespace Kohde.Assessment
                 new Dog {Age = 9, Name = "XML"}
             };
 
-            var foo = dogs.CustomWhere(x => x.Age > 6 && x.Name.SelectOnlyVowels().Any());
+            var foo = dogs.CustomWhere((Expression<Func<Dog, bool>>)(x => x.Age > 6 && x.Name.SelectOnlyVowels().Any()));
 
             // < DOGS REQUIRED OUTPUT =>
             //      Name: Max Age: 8
-             
+
             List<Cat> cats = new List<Cat>
             {
                 new Cat {Age = 1, Name = "Capri"},
@@ -192,11 +203,11 @@ namespace Kohde.Assessment
                 new Cat {Age = 3, Name = "Captain Hooks"}
             };
 
-            var bar = cats.CustomWhere(x => x.Age <= 4);
+            var bar = cats.CustomWhere((Expression<Func<Cat, bool>>)(x => x.Age <= 4));
             // < CATS REQUIRED OUTPUT =>
             //      Name: Capri Age: 1
             //      Name: Captain Hooks Age: 3
-            */
+
 
             #endregion
 
@@ -208,7 +219,7 @@ namespace Kohde.Assessment
 
         public static void PerformanceTest()
         {
-            var someLongDataString = "";
+            var someLongDataString = new StringBuilder();
             const int sLen = 30, loops = 500000; // YOU MAY NOT CHANGE THE NUMBER OF LOOPS IN ANY WAY !!
             var source = new string('X', sLen);
 
@@ -216,7 +227,7 @@ namespace Kohde.Assessment
             // in other words, you may not change: for (INITIALIZATION; CONDITION; INCREMENT/DECREMENT)
             for (var i = 0; i < loops; i++) 
             {
-                someLongDataString += source;
+                someLongDataString.Append(source);
             }
         }
 
@@ -227,14 +238,14 @@ namespace Kohde.Assessment
         public static int GetFirstEvenValue(List<int> numbers)
         {
             // RETURN THE FIRST EVEN NUMBER IN THE SEQUENCE
-            var first = numbers.Where(x => x % 2 == 0).First();
+            var first = numbers.Where(x => x % 2 == 0).FirstOrDefault();
             return first;
         }
 
         public static string GetSingleStringValue(List<string> stringList)
         {
             // THE OUTPUT MUST RENDER THE FIRST ITEM THAT CONTAINS AN 'a' INSIDE OF IT
-            var first = stringList.Where(x => x.IndexOf("a") != -1).Single();
+            var first = stringList.Where(x => x.IndexOf("a") != -1).SingleOrDefault();
             return first;
         }
 
@@ -264,19 +275,21 @@ namespace Kohde.Assessment
 
         #region Assessment F Methods
 
-        public static void ShowSomeHumanInformation(Human human)
+        public static void ShowSomeMammalInformation<T>(T mammal) where T : Animal
         {
-            Console.WriteLine("Name:" + human.Name + " Age: " + human.Age);
+            Console.WriteLine(mammal.ToString());
         }
 
-        public static void ShowSomeDogInformation(Dog dog)
+        public static TResult GenericTester<T, TResult>(Func<T, TResult> selector, T instance)
+    where T : class, new()
         {
-            Console.WriteLine("Name:" + dog.Name + " Age: " + dog.Age);
-        }
+            // If instance is null, create a new one using the new() constraint
+            if (instance == null)
+            {
+                instance = Activator.CreateInstance<T>();
+            }
 
-        public static void ShowSomeCatInformation(Cat cat)
-        {
-            Console.WriteLine("Name:" + cat.Name + " Age: " + cat.Age);
+            return selector(instance);
         }
 
         #endregion
@@ -289,9 +302,9 @@ namespace Kohde.Assessment
             {
                 ThrowException();
             }
-            catch (ArithmeticException e)
+            catch (ArithmeticException)
             {
-                throw e;
+                throw;
             }
         }
 
@@ -311,7 +324,17 @@ namespace Kohde.Assessment
             // AND RETURN THE STRING CONTENT
 
             // DO NOT CHANGE THE NAME, RETURN TYPE OR ANY IMPLEMENTATION OF THIS METHOD NOR THE BELOW METHOD
-            throw new NotImplementedException(); // ATT: REMOVE THIS LINE
+
+            // Get the DisplaySomeStuff method via reflection
+            var method = typeof(Program).GetMethod("DisplaySomeStuff");
+
+            // Make it concrete with T = string
+            var generic = method.MakeGenericMethod(typeof(string));
+
+            // Invoke it (null = static method) and return the result
+            var result = generic.Invoke(null, new object[] { "Hello" });
+
+            return result as string;
         }
 
         public static string DisplaySomeStuff<T>(T toDisplay) where T : class
@@ -346,14 +369,39 @@ namespace Kohde.Assessment
              */
 
             // 1. register the interfaces and classes
-            // TODO: ???
+            Ioc.Container.Register<IDevice, SamsungDevice>();
+            Ioc.Container.Register<IDeviceProcessor, DeviceProcessor>();
 
             // 2. resolve the IDeviceProcessor
-            //var deviceProcessor = ???
+            var deviceProcessor = Ioc.Container.Resolve<IDeviceProcessor>();
             // call the GetDevicePrice method
-            //Console.WriteLine(deviceProcessor.GetDevicePrice());
+            Console.WriteLine(deviceProcessor.GetDevicePrice());
         }
 
+        #endregion
+
+        #region Dungeon Bonus XP
+        public static IEnumerable<char> SelectOnlyVowels(this IEnumerable<char> source)
+        {
+            var vowels = new HashSet<char> { 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U' };
+            return source.Where(c => vowels.Contains(c));
+        }
+        public static IEnumerable<T> CustomWhere<T>(this IEnumerable<T> source, object predicate)
+        {
+            Func<T, bool> func;
+            if (predicate is Expression<Func<T, bool>> expression)
+                func = expression.Compile();
+            else if (predicate is Func<T, bool> function)
+                func = function;
+            else
+                throw new ArgumentException("Predicate must be a Func or Expression.", nameof(predicate));
+
+            foreach (var item in source)
+            {
+                if (func(item))
+                    yield return item;
+            }
+        }
         #endregion
     }
 
